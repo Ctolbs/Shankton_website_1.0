@@ -756,6 +756,21 @@
     });
   });
 
+  // Read ?unit= URL param on load
+  const urlUnit = new URLSearchParams(window.location.search).get('unit');
+  if (urlUnit && ['a','b','whole'].includes(urlUnit)) {
+    tabs.forEach(t => t.classList.remove('active'));
+    panels.forEach(p => p.classList.remove('active'));
+    const targetTab = document.querySelector('[data-unit="' + urlUnit + '"]');
+    if (targetTab) targetTab.classList.add('active');
+    document.getElementById('panel-' + urlUnit).classList.add('active');
+    document.querySelectorAll('.booking-unit-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.booking-panel').forEach(p => p.classList.remove('active'));
+    const targetBookBtn = document.querySelector('[data-book-unit="' + urlUnit + '"]');
+    if (targetBookBtn) targetBookBtn.classList.add('active');
+    document.getElementById('book-' + urlUnit).classList.add('active');
+  }
+
   // Booking card unit switcher
   const bookBtns = document.querySelectorAll('.booking-unit-btn');
   bookBtns.forEach(btn => {
