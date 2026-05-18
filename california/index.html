@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>California — Shankton Properties</title>
+  <meta name="description" content="Shankton Peninsula in Belmont Shore, Long Beach. Two private suites between Alamitos Bay and the Pacific. Roof decks, 360° views, fifty meters to sand.">
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    /* Region hero */
+    .region-hero {
+      min-height: 80vh;
+      background: var(--obsidian);
+      position: relative;
+      overflow: hidden;
+      padding-top: 64px;
+      display: flex;
+      align-items: flex-end;
+    }
+    .region-hero-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, #1a2830 0%, #0f1a1f 40%, #080f12 100%);
+    }
+    .region-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(11,15,14,0.85) 0%, rgba(11,15,14,0.1) 60%, transparent 100%);
+    }
+    .region-hero-content {
+      position: relative;
+      z-index: 1;
+      padding: 0 40px 72px;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    .region-hero-content h1 { color: var(--bone); margin: 16px 0 20px; max-width: 680px; }
+    .region-hero-intro { font-size: 18px; color: rgba(245,241,232,0.6); max-width: 520px; line-height: 1.7; }
+
+    /* Stats bar */
+    .region-stats {
+      background: #1C2B2E;
+      padding: 32px 0;
+    }
+    .region-stats-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+    .region-stat {
+      padding: 0 24px;
+      border-right: 1px solid rgba(245,241,232,0.08);
+    }
+    .region-stat:first-child { padding-left: 0; }
+    .region-stat:last-child { border-right: none; }
+    .region-stat-value { font-family: 'Tenor Sans', serif; font-size: 36px; color: var(--bone); margin-bottom: 4px; }
+    .region-stat-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(245,241,232,0.4); font-weight: 500; }
+
+    /* Section spacing */
+    .section { padding: 80px 0; }
+    .section-inner { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+    .section-bone { background: var(--bone); }
+    .section-dark { background: var(--obsidian); }
+    .section-mid { background: #F0EDE4; }
+
+    /* Two-col grid */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    .two-col-image {
+      aspect-ratio: 4/3;
+      background: linear-gradient(135deg,#1C2B2E,#0f1c1e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Unit cards */
+    .units-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; margin-top: 48px; }
+    .unit-card { background: white; }
+    .unit-card-image { aspect-ratio: 16/9; }
+    .unit-card-image-bg { width: 100%; height: 100%; background: linear-gradient(135deg,#1C2B2E,#0e1a1c); display: flex; align-items: center; justify-content: center; }
+    .unit-card-body { padding: 28px 28px 32px; }
+    .unit-tag { display: inline-block; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 500; background: var(--emerald); color: var(--bone); padding: 4px 10px; margin-bottom: 16px; }
+    .unit-name { font-family: 'Tenor Sans', serif; font-size: 22px; color: var(--text); margin-bottom: 8px; }
+    .unit-tagline { font-size: 14px; line-height: 1.6; color: #5a5f5e; margin-bottom: 20px; }
+    .unit-specs { font-size: 12px; color: var(--text-muted); letter-spacing: 0.5px; margin-bottom: 20px; }
+    .unit-rating { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+    .unit-rating .star { color: var(--sand); }
+
+    /* Neighborhood guide */
+    .guide-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
+    .guide-card { padding: 32px; background: white; border: 1px solid rgba(0,0,0,0.07); }
+    .guide-card-icon { font-size: 24px; margin-bottom: 16px; }
+    .guide-card-title { font-family: 'Tenor Sans', serif; font-size: 18px; color: var(--text); margin-bottom: 10px; }
+    .guide-card-text { font-size: 13px; line-height: 1.7; color: #5a5f5e; }
+
+    /* Host card (dark) */
+    .host-strip { background: var(--obsidian); padding: 64px 0; }
+    .host-card { background: #111615; padding: 32px; display: flex; gap: 20px; }
+    .host-avatar { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 500; color: var(--bone); flex-shrink: 0; }
+    .host-name { font-family: 'Tenor Sans', serif; font-size: 20px; color: var(--bone); margin-bottom: 4px; }
+    .host-role { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--sand); font-weight: 500; margin-bottom: 12px; }
+    .host-bio-text { font-size: 13px; line-height: 1.65; color: rgba(245,241,232,0.5); }
+
+    /* Reviews */
+    .reviews-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 32px; }
+    .review-card { background: white; padding: 28px; border: 1px solid rgba(0,0,0,0.07); }
+    .review-card-text { font-size: 15px; line-height: 1.65; color: var(--text); margin-bottom: 20px; font-style: italic; }
+    .review-card-author { display: flex; align-items: center; gap: 10px; }
+    .review-card-avatar { width: 36px; height: 36px; border-radius: 50%; background: #1C2B2E; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; color: var(--bone); flex-shrink: 0; }
+    .review-card-meta { font-size: 13px; font-weight: 500; color: var(--text); }
+    .review-card-date { font-size: 12px; color: var(--text-muted); }
+
+    @media (max-width: 960px) {
+      .region-stats-inner { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+      .region-stat { border-right: none; padding-left: 0; }
+      .two-col { grid-template-columns: 1fr; gap: 40px; }
+      .units-grid { grid-template-columns: 1fr; }
+      .guide-grid { grid-template-columns: repeat(2, 1fr); }
+      .reviews-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .region-hero-content { padding: 0 24px 48px; }
+      .section-inner { padding: 0 24px; }
+      .guide-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Nav ──────────────────────────────────────────────────────────────── -->
+<nav class="nav">
+  <a href="/" class="nav-logo">
+    <svg width="22" height="28" viewBox="0 0 56 72" fill="none">
+      <polygon points="28,0 48,18 48,52 28,72 8,52 8,18" fill="#1A332F"/>
+      <polygon points="28,0 48,18 28,24" fill="#3A6560"/>
+      <polygon points="28,0 8,18 28,24" fill="#2A4A45"/>
+      <polygon points="8,52 28,24 28,72" fill="#3A6560" opacity="0.8"/>
+      <polygon points="28,24 8,18 48,18" fill="#4A7570" opacity="0.6"/>
+    </svg>
+    <div class="nav-logo-text">
+      <span class="nav-logo-name">Shankton</span>
+      <span class="nav-logo-sub">Properties</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#collection">The Collection</a></li>
+    <li><a href="../nicaragua/">Nicaragua</a></li>
+    <li><a href="/california/" class="active" style="color:var(--sand);">California</a></li>
+    <li><a href="/#team">The Team</a></li>
+    <li><a href="/#collection" class="nav-cta">Reserve</a></li>
+  </ul>
+</nav>
+
+<!-- ── Hero ─────────────────────────────────────────────────────────────── -->
+<div class="region-hero">
+  <div class="region-hero-bg"></div>
+  <div class="region-hero-overlay"></div>
+  <div class="region-hero-content">
+    <p class="eyebrow">Belmont Shore · Long Beach, CA</p>
+    <h1>Between the bay and the Pacific.</h1>
+    <p class="region-hero-intro">Two private suites with rooftop decks and 360° views. Fifty meters to sand. One mile to 2nd Street. Jasmin runs California.</p>
+  </div>
+</div>
+
+<!-- ── Stats ─────────────────────────────────────────────────────────────── -->
+<div class="region-stats">
+  <div class="region-stats-inner">
+    <div class="region-stat">
+      <div class="region-stat-value">351+</div>
+      <div class="region-stat-label">Reviews</div>
+    </div>
+    <div class="region-stat">
+      <div class="region-stat-value">4.89★</div>
+      <div class="region-stat-label">Combined rating</div>
+    </div>
+    <div class="region-stat">
+      <div class="region-stat-value">9.9/10</div>
+      <div class="region-stat-label">Booking.com score</div>
+    </div>
+    <div class="region-stat">
+      <div class="region-stat-value">50m</div>
+      <div class="region-stat-label">To Alamitos Bay beach</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── The units ──────────────────────────────────────────────────────────── -->
+<div class="section section-bone">
+  <div class="section-inner">
+    <p class="eyebrow">Shankton Peninsula</p>
+    <h2 style="margin-top:12px;max-width:560px;">One building. Two units.<br>Book one or both.</h2>
+    <p style="font-size:15px;line-height:1.75;color:#5a5f5e;margin-top:20px;max-width:600px;">Peninsula sits at the tip of Belmont Shore — the narrow strip of land between Alamitos Bay and the Pacific Ocean. Both units have private rooftop decks. Both are 50 meters to the bay beach. The whole building sleeps 12.</p>
+
+    <div class="units-grid">
+      <div class="unit-card">
+        <div class="unit-card-image">
+          <div class="unit-card-image-bg">
+            <span class="eyebrow" style="color:rgba(245,241,232,0.2);">Photo coming</span>
+          </div>
+        </div>
+        <div class="unit-card-body">
+          <div class="unit-tag">Unit A</div>
+          <div class="unit-name">2 BR · 2.5 BA · Sleeps 6</div>
+          <p class="unit-tagline">Ground floor. Private entrance. Thuma king in the master. Private rooftop deck. 50m to the bay. Two dedicated parking spots.</p>
+          <div class="unit-specs">2 bedrooms · 2.5 bathrooms · King + Queen</div>
+          <div class="unit-rating"><span class="star">★</span> 4.89 · Available on Airbnb · From $285/night</div>
+          <a href="../peninsula/?unit=a" class="btn btn-primary" style="display:inline-block;">View Unit A →</a>
+        </div>
+      </div>
+      <div class="unit-card">
+        <div class="unit-card-image">
+          <div class="unit-card-image-bg" style="background:linear-gradient(135deg,#192528,#0c1517);">
+            <span class="eyebrow" style="color:rgba(245,241,232,0.2);">Photo coming</span>
+          </div>
+        </div>
+        <div class="unit-card-body">
+          <div class="unit-tag" style="background:var(--tide);">Unit B</div>
+          <div class="unit-name">3 BR · 3 BA · Sleeps 6</div>
+          <p class="unit-tagline">Upper floor. Bay views from every window. Three bedrooms. Thuma king in the master. Private rooftop deck above. Sleeps 6 with room to breathe.</p>
+          <div class="unit-specs">3 bedrooms · 3 bathrooms · King + 2 Queens</div>
+          <div class="unit-rating"><span class="star">★</span> 9.9/10 on Booking.com · From $325/night</div>
+          <a href="../peninsula/?unit=b" class="btn btn-primary" style="display:inline-block;">View Unit B →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Whole building callout -->
+    <div style="background:var(--obsidian);padding:32px 40px;margin-top:2px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;">
+      <div>
+        <p class="eyebrow" style="color:rgba(245,241,232,0.4);">For groups of 8–12</p>
+        <div style="font-family:'Tenor Sans',serif;font-size:22px;color:var(--bone);margin-top:8px;">Book the whole building.</div>
+        <p style="font-size:14px;color:rgba(245,241,232,0.45);margin-top:8px;max-width:440px;">Two kitchens, two rooftop decks, 5 bedrooms, 5.5 baths. Whole-building rate is less than both units listed separately. Reach out to Jasmin to arrange.</p>
+      </div>
+      <a href="mailto:jasmin@shanktonproperties.com?subject=Whole%20Building%20Inquiry%20—%20Peninsula" class="btn btn-outline" style="border-color:rgba(245,241,232,0.2);color:var(--bone);white-space:nowrap;flex-shrink:0;">Contact Jasmin →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── About Belmont Shore ────────────────────────────────────────────────── -->
+<div class="section section-mid">
+  <div class="section-inner">
+    <div class="two-col">
+      <div>
+        <p class="eyebrow">Belmont Shore</p>
+        <h2 style="margin-top:12px;margin-bottom:24px;">A neighborhood that actually lives on the water.</h2>
+        <p style="font-size:16px;line-height:1.75;color:#3a3f3e;">Belmont Shore is the sliver of land at the tip of Long Beach — a real neighborhood, not a resort. Walk to the bay, walk to the ocean, walk to 2nd Street. People who live here stay for years. Jasmin is one of them.</p>
+        <p style="font-size:15px;line-height:1.75;color:#5a5f5e;margin-top:16px;">LGB airport is 10 minutes away. LAX is 30–40 minutes depending on traffic. The parking situation is genuinely easy — Peninsula includes 2 dedicated spots per unit, and street parking is available on most blocks.</p>
+        <p style="font-size:15px;line-height:1.75;color:#5a5f5e;margin-top:16px;">July and August are peak — families, surfers, everyone. September and October are better. Fewer people, the same water, the same light.</p>
+      </div>
+      <div>
+        <div class="two-col-image">
+          <span class="eyebrow" style="color:rgba(245,241,232,0.2);">Photo coming</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:2px;">
+          <div style="aspect-ratio:1;background:linear-gradient(135deg,#1a2428,#0e1519);display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,241,232,0.12);">Photo coming</span>
+          </div>
+          <div style="aspect-ratio:1;background:linear-gradient(135deg,#192528,#0d1518);display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,241,232,0.12);">Photo coming</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Neighborhood guide ─────────────────────────────────────────────────── -->
+<div class="section section-bone">
+  <div class="section-inner">
+    <p class="eyebrow">The area guide</p>
+    <h2 style="margin-top:12px;max-width:480px;">Jasmin's short list for Belmont Shore.</h2>
+    <div class="guide-grid">
+      <div class="guide-card">
+        <div class="guide-card-icon">🏖</div>
+        <div class="guide-card-title">Two beaches</div>
+        <div class="guide-card-text">Alamitos Bay is right out the door — calm, sheltered, great for paddleboarding and swimming with kids. The Pacific side is a 2-minute walk for waves and surf. Very different vibes, same distance.</div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card-icon">🍜</div>
+        <div class="guide-card-title">2nd Street</div>
+        <div class="guide-card-text">A mile-long strip of restaurants, bars, coffee, and shops. Walkable from the house — 15–20 minutes on foot, or a quick rideshare. Jasmin has a running list of her current favorites and will share it on check-in.</div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card-icon">🚤</div>
+        <div class="guide-card-title">Water activities</div>
+        <div class="guide-card-text">Alamitos Bay is one of the best paddleboard spots in LA County. Kayaks, e-foils, and boat rentals are available a short walk away. Surf on the Pacific side — Long Beach has consistent beach breaks year-round.</div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card-icon">✈️</div>
+        <div class="guide-card-title">Getting here</div>
+        <div class="guide-card-text">Long Beach Airport (LGB) is 10 minutes by car. LAX is 30–40 min. Both units include 2 dedicated parking spots. The neighborhood is walkable once you're settled — you won't need the car much.</div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card-icon">☀️</div>
+        <div class="guide-card-title">When to come</div>
+        <div class="guide-card-text">Year-round weather in Long Beach is exceptional. June gloom runs through early July. Peak season is July–August. September and October are the best — warm, clear, fewer crowds. Jasmin recommends October.</div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card-icon">🎭</div>
+        <div class="guide-card-title">Nearby</div>
+        <div class="guide-card-text">The Queen Mary is 15 minutes away. Aquarium of the Pacific is 20 minutes. Downtown Long Beach and the Pike are walkable from the property. Naples Island is a 15-minute walk — canals and gondolas worth seeing.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Reviews ────────────────────────────────────────────────────────────── -->
+<div class="section section-mid">
+  <div class="section-inner">
+    <p class="eyebrow">What guests say</p>
+    <div style="display:flex;align-items:center;gap:32px;margin-top:20px;margin-bottom:40px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:16px;">
+        <div style="font-family:'Tenor Sans',serif;font-size:40px;color:var(--text);">4.89</div>
+        <div>
+          <div style="color:var(--sand);font-size:18px;letter-spacing:2px;">★★★★★</div>
+          <div style="font-size:13px;color:var(--text-muted);">351 reviews on Airbnb + Booking</div>
+        </div>
+      </div>
+      <div style="height:48px;width:1px;background:rgba(0,0,0,0.1);"></div>
+      <div>
+        <div style="font-family:'Tenor Sans',serif;font-size:32px;color:var(--text);">9.9<span style="font-size:16px;">/10</span></div>
+        <div style="font-size:13px;color:var(--text-muted);">Booking.com score · Unit B</div>
+      </div>
+    </div>
+
+    <div class="reviews-grid">
+      <div class="review-card">
+        <p class="review-card-text">"The roof deck view is just — unreal. You can see the bay to the north and the Pacific to the south at the same time. We had breakfast up there every morning. Jasmin had the kitchen fully stocked when we arrived."</p>
+        <div class="review-card-author">
+          <div class="review-card-avatar">S</div>
+          <div>
+            <div class="review-card-meta">Stephanie L.</div>
+            <div class="review-card-date">September 2024 · Unit B</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <p class="review-card-text">"Best vacation rental experience I've ever had. Location is perfect. The beds are actually good — real quality mattresses. And Jasmin is the most thoughtful host I've encountered. She thought of everything."</p>
+        <div class="review-card-author">
+          <div class="review-card-avatar">M</div>
+          <div>
+            <div class="review-card-meta">Marcus D.</div>
+            <div class="review-card-date">July 2024 · Unit A</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <p class="review-card-text">"We walked to the beach four times a day. The bay side for morning swims with the kids, the ocean side for afternoons. Two beaches, one house. That setup is genuinely rare."</p>
+        <div class="review-card-author">
+          <div class="review-card-avatar">A</div>
+          <div>
+            <div class="review-card-meta">Amy W.</div>
+            <div class="review-card-date">August 2024 · Unit A</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <p class="review-card-text">"We came back for the second time this year. That says everything. The upper unit is spectacular — the bay views at sunrise are something I think about regularly. Already booked for next summer."</p>
+        <div class="review-card-author">
+          <div class="review-card-avatar">P</div>
+          <div>
+            <div class="review-card-meta">Paul H.</div>
+            <div class="review-card-date">October 2024 · Unit B</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Hosts ──────────────────────────────────────────────────────────────── -->
+<div class="host-strip">
+  <div class="container">
+    <p class="eyebrow">Your hosts</p>
+    <h2 style="color:var(--bone);margin-top:12px;max-width:480px;">Jasmin runs California. Clifton keeps both coasts honest.</h2>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:2px;margin-top:40px;">
+      <div class="host-card">
+        <div class="host-avatar" style="background:var(--tide);">J</div>
+        <div>
+          <div class="host-name">Jasmin</div>
+          <div class="host-role">Property Manager · California</div>
+          <p class="host-bio-text">Runs the Peninsula from the ground up. Has lived in Belmont Shore for years — knows 2nd Street, the beach access points, the parking situation, and which coffee shop is worth the walk. She's the reason the California reviews say "the host thought of everything."</p>
+        </div>
+      </div>
+      <div class="host-card">
+        <div class="host-avatar">C</div>
+        <div>
+          <div class="host-name">Clifton</div>
+          <div class="host-role">Co-Founder</div>
+          <p class="host-bio-text">Co-founded Shankton with Chris nearly a decade ago. Peninsula is the West Coast anchor — the property that started the California side of the portfolio. Runs the collection year-round across both coasts.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CTA strip ──────────────────────────────────────────────────────────── -->
+<div style="background:var(--emerald);padding:64px 0;">
+  <div style="max-width:1200px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;">
+    <div>
+      <p class="eyebrow" style="color:rgba(245,241,232,0.5);">Ready when you are</p>
+      <h2 style="color:var(--bone);margin-top:12px;">One unit or the whole building.<br>Jasmin will sort it out.</h2>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;flex-shrink:0;">
+      <a href="../peninsula/" class="btn btn-primary" style="white-space:nowrap;">View Peninsula →</a>
+      <a href="../nicaragua/" class="btn btn-outline" style="white-space:nowrap;border-color:rgba(245,241,232,0.3);color:var(--bone);">Also in Nicaragua →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── Footer ────────────────────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none;padding-top:0;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <svg width="18" height="23" viewBox="0 0 56 72" fill="none">
+          <polygon points="28,0 48,18 48,52 28,72 8,52 8,18" fill="#1A332F"/>
+          <polygon points="28,0 48,18 28,24" fill="#3A6560"/>
+          <polygon points="8,52 28,24 28,72" fill="#3A6560" opacity="0.8"/>
+        </svg>
+        <span style="font-size:12px;color:rgba(245,241,232,0.3);">Rare places, pro tips, local hosts. Along an emerald coast.</span>
+      </div>
+      <span class="footer-legal">© 2026 Shankton Properties</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nicaragua — Shankton Properties</title>
+  <meta name="description" content="Two properties on the Nicaraguan Pacific coast. Playa Gigante — where the water runs emerald and the surf breaks clean. Shankton Harbour and Shankton Tower.">
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    /* Region hero */
+    .region-hero {
+      min-height: 80vh;
+      background: var(--obsidian);
+      position: relative;
+      overflow: hidden;
+      padding-top: 64px;
+      display: flex;
+      align-items: flex-end;
+    }
+    .region-hero-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, #0e2218 0%, #081410 40%, #040c08 100%);
+    }
+    .region-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(11,15,14,0.85) 0%, rgba(11,15,14,0.1) 60%, transparent 100%);
+    }
+    .region-hero-content {
+      position: relative;
+      z-index: 1;
+      padding: 0 40px 72px;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    .region-hero-content h1 { color: var(--bone); margin: 16px 0 20px; max-width: 680px; }
+    .region-hero-intro { font-size: 18px; color: rgba(245,241,232,0.6); max-width: 520px; line-height: 1.7; }
+
+    /* Stats bar */
+    .region-stats {
+      background: var(--emerald);
+      padding: 32px 0;
+    }
+    .region-stats-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+    .region-stat {
+      padding: 0 24px;
+      border-right: 1px solid rgba(245,241,232,0.12);
+    }
+    .region-stat:first-child { padding-left: 0; }
+    .region-stat:last-child { border-right: none; }
+    .region-stat-value { font-family: 'Tenor Sans', serif; font-size: 36px; color: var(--bone); margin-bottom: 4px; }
+    .region-stat-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(245,241,232,0.45); font-weight: 500; }
+
+    /* Section spacing */
+    .section { padding: 80px 0; }
+    .section-inner { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+    .section-bone { background: var(--bone); }
+    .section-dark { background: var(--obsidian); }
+    .section-mid { background: #F0EDE4; }
+
+    /* Two-col grid */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    .two-col-image {
+      aspect-ratio: 4/3;
+      background: linear-gradient(135deg,#1A332F,#0d1e1c);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Properties in this region */
+    .properties-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; margin-top: 48px; }
+
+    /* Crew grid */
+    .crew-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin-top: 48px; }
+    .crew-member { background: #111615; padding: 32px 28px; }
+    .crew-avatar-lg { width: 64px; height: 64px; border-radius: 50%; background: var(--emerald); display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 500; color: var(--bone); margin-bottom: 20px; }
+    .crew-name { font-family: 'Tenor Sans', serif; font-size: 20px; color: var(--bone); margin-bottom: 4px; }
+    .crew-role { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--sand); font-weight: 500; margin-bottom: 16px; }
+    .crew-bio { font-size: 13px; line-height: 1.65; color: rgba(245,241,232,0.45); }
+
+    /* Guide cards */
+    .guide-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
+    .guide-card { padding: 32px; background: white; border: 1px solid rgba(0,0,0,0.07); }
+    .guide-card-icon { font-size: 24px; margin-bottom: 16px; }
+    .guide-card-title { font-family: 'Tenor Sans', serif; font-size: 18px; color: var(--text); margin-bottom: 10px; }
+    .guide-card-text { font-size: 13px; line-height: 1.7; color: #5a5f5e; }
+
+    /* Season strip */
+    .season-strip { background: var(--obsidian); padding: 64px 0; }
+    .season-inner { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+    .season-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2px; margin-top: 32px; }
+    .season-month {
+      padding: 16px 8px;
+      text-align: center;
+      background: #111615;
+    }
+    .season-month-label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: rgba(245,241,232,0.3); margin-bottom: 8px; }
+    .season-bar { height: 4px; background: rgba(245,241,232,0.1); position: relative; }
+    .season-bar-fill { height: 100%; background: var(--tide); }
+    .season-bar-fill.peak { background: var(--sand); }
+    .season-bar-fill.off { background: rgba(245,241,232,0.08); }
+
+    @media (max-width: 960px) {
+      .region-stats-inner { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+      .region-stat { border-right: none; padding-left: 0; }
+      .two-col { grid-template-columns: 1fr; gap: 40px; }
+      .properties-grid { grid-template-columns: 1fr; }
+      .crew-grid { grid-template-columns: repeat(2, 1fr); }
+      .guide-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .region-hero-content { padding: 0 24px 48px; }
+      .section-inner { padding: 0 24px; }
+      .season-inner { padding: 0 24px; }
+      .crew-grid { grid-template-columns: 1fr; }
+      .guide-grid { grid-template-columns: 1fr; }
+      .season-month-label { font-size: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Nav ──────────────────────────────────────────────────────────────── -->
+<nav class="nav">
+  <a href="/" class="nav-logo">
+    <svg width="22" height="28" viewBox="0 0 56 72" fill="none">
+      <polygon points="28,0 48,18 48,52 28,72 8,52 8,18" fill="#1A332F"/>
+      <polygon points="28,0 48,18 28,24" fill="#3A6560"/>
+      <polygon points="28,0 8,18 28,24" fill="#2A4A45"/>
+      <polygon points="8,52 28,24 28,72" fill="#3A6560" opacity="0.8"/>
+      <polygon points="28,24 8,18 48,18" fill="#4A7570" opacity="0.6"/>
+    </svg>
+    <div class="nav-logo-text">
+      <span class="nav-logo-name">Shankton</span>
+      <span class="nav-logo-sub">Properties</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#collection">The Collection</a></li>
+    <li><a href="/nicaragua/" class="active" style="color:var(--sand);">Nicaragua</a></li>
+    <li><a href="/california/">California</a></li>
+    <li><a href="/#team">The Team</a></li>
+    <li><a href="/#collection" class="nav-cta">Reserve</a></li>
+  </ul>
+</nav>
+
+<!-- ── Hero ─────────────────────────────────────────────────────────────── -->
+<div class="region-hero">
+  <div class="region-hero-bg"></div>
+  <div class="region-hero-overlay"></div>
+  <div class="region-hero-content">
+    <p class="eyebrow">Pacific Coast · Nicaragua</p>
+    <h1>Where the water runs emerald, we keep a key.</h1>
+    <p class="region-hero-intro">Two properties on the Nicaraguan Pacific coast. A private sea shelf. A cliff-top tower. The same crew handling both for a decade.</p>
+  </div>
+</div>
+
+<!-- ── Stats ─────────────────────────────────────────────────────────────── -->
+<div class="region-stats">
+  <div class="region-stats-inner">
+    <div class="region-stat">
+      <div class="region-stat-value">568+</div>
+      <div class="region-stat-label">Nicaragua reviews</div>
+    </div>
+    <div class="region-stat">
+      <div class="region-stat-value">4.83★</div>
+      <div class="region-stat-label">Combined rating</div>
+    </div>
+    <div class="region-stat">
+      <div class="region-stat-value">10 yrs</div>
+      <div class="region-stat-label">Local crew tenure</div>
+    </div>
+    <div class="region-stat">
+      <div class="region-stat-value">2</div>
+      <div class="region-stat-label">Properties at Playa Gigante</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Properties ─────────────────────────────────────────────────────────── -->
+<div class="section section-bone">
+  <div class="section-inner">
+    <p class="eyebrow">The Nicaragua Collection</p>
+    <h2 style="margin-top:12px;max-width:560px;">Two properties. One coast.<br>Same crew behind both.</h2>
+    <div class="properties-grid">
+      <div class="property-card">
+        <div class="property-card-image">
+          <div class="property-card-image-placeholder" style="background:linear-gradient(160deg,#1A332F,#0d1e1c);min-height:240px;">
+            <span class="eyebrow" style="color:rgba(245,241,232,0.2);">Photo coming</span>
+          </div>
+        </div>
+        <div class="property-card-body">
+          <p class="eyebrow property-card-location">Playa Gigante · Nicaragua</p>
+          <h3 class="property-card-name">Shankton Harbour</h3>
+          <p class="property-card-tagline">The only home in Gigante with its own sea shelf. Tide pools, snorkeling, reef fishing — from your platform. Pool. Private beach.</p>
+          <div style="font-size:13px;color:var(--text-muted);margin:12px 0;"><span style="color:var(--sand);">★</span> 4.87 · 278 reviews · 90% five-star</div>
+          <div class="property-card-meta">
+            <div class="property-specs">3 BR · 3.5 BA · Sleeps 8 · From $325/night</div>
+            <a href="../harbour/" class="property-card-link">View <span>→</span></a>
+          </div>
+        </div>
+      </div>
+      <div class="property-card">
+        <div class="property-card-image">
+          <div class="property-card-image-placeholder" style="background:linear-gradient(160deg,#0d2018,#060e0b);min-height:240px;">
+            <span class="eyebrow" style="color:rgba(245,241,232,0.2);">Photo coming</span>
+          </div>
+        </div>
+        <div class="property-card-body">
+          <p class="eyebrow property-card-location">Playa Gigante · Nicaragua</p>
+          <h3 class="property-card-name">Shankton Tower</h3>
+          <p class="property-card-tagline">Cliff-top Pacific views, four floors up. Infinity pool over the ocean. Private beach. Bunk room for the kids. Built for groups.</p>
+          <div style="font-size:13px;color:var(--text-muted);margin:12px 0;"><span style="color:var(--sand);">★</span> 4.79 · 290 reviews · 84% five-star</div>
+          <div class="property-card-meta">
+            <div class="property-specs">4 BR + bunk · 4 BA · Sleeps 12 · From $385/night</div>
+            <a href="../tower/" class="property-card-link">View <span>→</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── About Playa Gigante ────────────────────────────────────────────────── -->
+<div class="section section-mid">
+  <div class="section-inner">
+    <div class="two-col">
+      <div>
+        <p class="eyebrow">Playa Gigante</p>
+        <h2 style="margin-top:12px;margin-bottom:24px;">A fishing village that's mostly still a fishing village.</h2>
+        <p style="font-size:16px;line-height:1.75;color:#3a3f3e;">Playa Gigante sits on the Nicaraguan Pacific coast, south of San Juan del Sur. It's remote — no resort strip, no chain hotels. A handful of guesthouses, a few restaurants, and two Shankton properties at the edge of the water.</p>
+        <p style="font-size:15px;line-height:1.75;color:#5a5f5e;margin-top:16px;">The reef breaks clean. The water is warm year-round. In the right season, the ocean turns green-blue in a way that doesn't photograph right — you have to see it yourself. The crew has been here since before Shankton existed, and they're the reason we're still here.</p>
+        <p style="font-size:15px;line-height:1.75;color:#5a5f5e;margin-top:16px;">Danny does airport pickups from Managua. Nemer knows every surf break, every boat captain, every chef worth calling. The house handles everything — or gets out of the way so you can.</p>
+      </div>
+      <div>
+        <div class="two-col-image">
+          <span class="eyebrow" style="color:rgba(245,241,232,0.2);">Photo coming</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:2px;">
+          <div style="aspect-ratio:1;background:linear-gradient(135deg,#152B28,#0a1210);display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,241,232,0.12);">Photo coming</span>
+          </div>
+          <div style="aspect-ratio:1;background:linear-gradient(135deg,#0d2018,#060e0b);display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,241,232,0.12);">Photo coming</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── The crew ───────────────────────────────────────────────────────────── -->
+<div class="season-strip">
+  <div class="season-inner">
+    <p class="eyebrow">The Nicaragua Crew</p>
+    <h2 style="color:var(--bone);margin-top:12px;max-width:560px;">The people who've been here since the beginning.</h2>
+    <div class="crew-grid">
+      <div class="crew-member">
+        <div class="crew-avatar-lg">N</div>
+        <div class="crew-name">Nemer Alberto</div>
+        <div class="crew-role">GM · Nicaragua</div>
+        <p class="crew-bio">Born and raised on Ometepe. He knows the surf forecast, the chefs, the road conditions — because they're his home. Manages both properties and can arrange anything from a private chef to a fishing charter.</p>
+      </div>
+      <div class="crew-member">
+        <div class="crew-avatar-lg" style="background:#1e3a34;">D</div>
+        <div class="crew-name">Danny</div>
+        <div class="crew-role">Logistics · Drivers · Airports</div>
+        <p class="crew-bio">Handles all airport runs from Managua. Knows every road in Rivas. The kind of driver who knows the shortcut before Google Maps does. Three-hour drive from Managua to Gigante — you won't notice the time.</p>
+      </div>
+      <div class="crew-member">
+        <div class="crew-avatar-lg" style="background:#243f38;">T</div>
+        <div class="crew-name">Tamara</div>
+        <div class="crew-role">Housekeeping Lead</div>
+        <p class="crew-bio">Runs housekeeping for both properties. The one responsible for every "the house was immaculate" review. She's been with Shankton since the first year. Has a system — and the system works.</p>
+      </div>
+      <div class="crew-member">
+        <div class="crew-avatar-lg" style="background:#2a4a3e;">F</div>
+        <div class="crew-name">Francisco</div>
+        <div class="crew-role">Maintenance · Grounds</div>
+        <p class="crew-bio">Keeps both properties running. Maintenance, grounds, pool, the generator — everything that makes a remote property work without friction. If something breaks, Francisco has usually already fixed it before you noticed.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Destination guide ──────────────────────────────────────────────────── -->
+<div class="section section-bone">
+  <div class="section-inner">
+    <p class="eyebrow">The area guide</p>
+    <h2 style="margin-top:12px;max-width:560px;">What to know before you go.</h2>
+    <div class="guide-grid">
+      <div class="guide-card">
+        <div class="guide-card-icon">🏄</div>
+        <div class="guide-card-title">Surf</div>
+        <div class="guide-card-text">Best season is October–March. Popoyo is 20 minutes away — one of the most consistent Pacific breaks in Central America. Manzanillo and Playa Santana are also nearby. Nemer knows which break suits your level. Boards available at both properties.</div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card-icon">🐠</div>
+        <div class="guide-card-title">Snorkeling + diving</div>
+        <div class="guide-card-text">Harbour's private sea shelf is the best entry point on the coast for reef snorkeling. No boat needed — just walk out the back. Reef fishing from the shelf too. Nemer can arrange boat dives and deeper reef trips.</div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card-icon">🍽</div>
+        <div class="guide-card-title">Food</div>
+        <div class="guide-card-text">Private chef available at both properties on request — highly recommended for groups. Gigante village has a short list of spots worth knowing. Nemer sends the list on check-in. Both kitchens stocked for self-catering on arrival.</div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card-icon">✈️</div>
+        <div class="guide-card-title">Getting here</div>
+        <div class="guide-card-text">Fly into Managua (MGA). Danny picks up directly from the airport — 3 hours to Gigante, mostly on paved highway. You can also fly to Liberia (LIR) in Costa Rica for a different routing. Book Danny when you book the house.</div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card-icon">🔌</div>
+        <div class="guide-card-title">Power + WiFi</div>
+        <div class="guide-card-text">Nicaragua has occasional power outages, especially in rainy season. Both properties have generators and backup connectivity. You'll stay connected for work or streaming — but the best nights are the ones you leave the phone inside.</div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card-icon">🌧</div>
+        <div class="guide-card-title">Seasons</div>
+        <div class="guide-card-text">Dry season (Dec–Apr) is peak. Rainy season (May–Nov) is when the surf is best and the landscape is at its most green. October and November are the sweet spot — great swell, lower rates, fewer people. We prefer it.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Season calendar ────────────────────────────────────────────────────── -->
+<div class="season-strip">
+  <div class="season-inner">
+    <p class="eyebrow">When to go</p>
+    <h2 style="color:var(--bone);margin-top:12px;margin-bottom:8px;">Every month has a reason. October has two.</h2>
+    <p style="font-size:14px;color:rgba(245,241,232,0.4);margin-bottom:32px;max-width:480px;">Peak season (Sand bar), shoulder (Tide bar), off-peak (dark). Shankton team's honest take on each month.</p>
+
+    <div style="overflow-x:auto;">
+      <div style="display:grid;grid-template-columns:repeat(12,1fr);gap:2px;min-width:600px;">
+        <div style="background:#111615;padding:16px 8px;text-align:center;">
+          <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:rgba(245,241,232,0.3);margin-bottom:10px;">Jan</div>
+          <div style="height:4px;background:var(--sand);"></div>
+          <div style="font-size:10px;color:rgba(245,241,232,0.35);margin-top:8px;line-height:1.4;">Peak<br>dry</div>
+        </div>
+        <div style="background:#111615;padding:16px 8px;text-align:center;">
+          <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:rgba(245,241,232,0.3);margin-bottom:10px;">Feb</div>
+          <div style="height:4px;background:var(--sand);"></div>
+          <div style="font-size:10px;color:rgba(245,241,232,0.35);margin-top:8px;line-height:1.4;">Peak<br>dry</div>
+        </div>
+        <div style="background:#111615;padding:16px 8px;text-align:center;">
+          <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:rgba(245,241,232,0.3);margin-bottom:10px;">Mar</div>
+          <div style="height:4px;background:var(--sand);"></div>
+          <div style="font-size:10px;color:rgba(245,241,232,0.35);margin-top:8px;line-height:1.4;">Peak<br>dry</div>
+        </div>
+        <div style="background:#111615;padding:16px 8px;text-align:center;">
+          <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:rgba(245,241,232,0.3);margin-bottom:10px;">Apr</div>
+          <div style="height:4px;background:var(--tide);"></div>
+          <div style="font-size:10px;color:rgba(245,241,232,0.35);margin-top:8px;line-height:1.4;">Trans<br>ition</div>
+        </div>
+        <div style="background:#111615;padding:16px 8px;text-align:center;">
+          <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:rgba(245,241,232,0.3);margin-bottom:10px;">May</div>
+          <div style="height:4px;background:rgba(245,241,232,0.1);"></div>
+          <div style="font-size:10px;color:rgba(245,241,232,0.35);margin-top:8px;line-height:1.4;">Rainy<br>begins</div>
+        </div>
+        <div style="background:#111615;padding:16px 8px;text-align:center;">
+          <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:rgba(245,241,232,0.3);margin-bottom:10px;">Jun</div>
+          <div style="height:4px;background:rgba(245,241,232,0.1);"></div>
+          <div style="font-size:10px;color:rgba(245,241,232,0.35);margin-top:8px;line-height:1.4;">Green<br>season</div>
+        </div>
+        <div style="background:#111615;padding:16px 8px;text-align:center;">
+          <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:rgba(245,241,232,0.3);margin-bottom:10px;">Jul</div>
+          <div style="height:4px;background:var(--tide);"></div>
+          <div style="font-size:10px;color:rgba(245,241,232,0.35);margin-top:8px;line-height:1.4;">Surf<br>builds</div>
+        </div>
+        <div style="background:#111615;padding:16px 8px;text-align:center;">
+          <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:rgba(245,241,232,0.3);margin-bottom:10px;">Aug</div>
+          <div style="height:4px;background:var(--tide);"></div>
+          <div style="font-size:10px;color:rgba(245,241,232,0.35);margin-top:8px;line-height:1.4;">Good<br>surf</div>
+        </div>
+        <div style="background:#111615;padding:16px 8px;text-align:center;">
+          <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:rgba(245,241,232,0.3);margin-bottom:10px;">Sep</div>
+          <div style="height:4px;background:var(--tide);"></div>
+          <div style="font-size:10px;color:rgba(245,241,232,0.35);margin-top:8px;line-height:1.4;">Surf<br>season</div>
+        </div>
+        <div style="background:#111615;padding:16px 8px;text-align:center;border:1px solid rgba(212,185,140,0.2);">
+          <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--sand);margin-bottom:10px;">Oct</div>
+          <div style="height:4px;background:var(--sand);"></div>
+          <div style="font-size:10px;color:var(--sand);margin-top:8px;line-height:1.4;">Best<br>month</div>
+        </div>
+        <div style="background:#111615;padding:16px 8px;text-align:center;border:1px solid rgba(212,185,140,0.2);">
+          <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--sand);margin-bottom:10px;">Nov</div>
+          <div style="height:4px;background:var(--sand);"></div>
+          <div style="font-size:10px;color:var(--sand);margin-top:8px;line-height:1.4;">Peak<br>surf</div>
+        </div>
+        <div style="background:#111615;padding:16px 8px;text-align:center;">
+          <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:rgba(245,241,232,0.3);margin-bottom:10px;">Dec</div>
+          <div style="height:4px;background:var(--sand);"></div>
+          <div style="font-size:10px;color:rgba(245,241,232,0.35);margin-top:8px;line-height:1.4;">Peak<br>dry</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CTA strip ──────────────────────────────────────────────────────────── -->
+<div style="background:var(--emerald);padding:64px 0;">
+  <div style="max-width:1200px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;">
+    <div>
+      <p class="eyebrow" style="color:rgba(245,241,232,0.5);">Ready when you are</p>
+      <h2 style="color:var(--bone);margin-top:12px;">Two properties at Playa Gigante.<br>Same crew. Different experiences.</h2>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;flex-shrink:0;">
+      <a href="../harbour/" class="btn btn-primary" style="white-space:nowrap;">View Harbour →</a>
+      <a href="../tower/" class="btn btn-outline" style="white-space:nowrap;border-color:rgba(245,241,232,0.3);color:var(--bone);">View Tower →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── Footer ────────────────────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none;padding-top:0;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <svg width="18" height="23" viewBox="0 0 56 72" fill="none">
+          <polygon points="28,0 48,18 48,52 28,72 8,52 8,18" fill="#1A332F"/>
+          <polygon points="28,0 48,18 28,24" fill="#3A6560"/>
+          <polygon points="8,52 28,24 28,72" fill="#3A6560" opacity="0.8"/>
+        </svg>
+        <span style="font-size:12px;color:rgba(245,241,232,0.3);">Rare places, pro tips, local hosts. Along an emerald coast.</span>
+      </div>
+      <span class="footer-legal">© 2026 Shankton Properties</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shankton Peninsula — Belmont Shore, Long Beach</title>
+  <meta name="description" content="Two private suites between the bay and the Pacific. Roof decks with 360° views. Fifty meters to sand. Unit A 2BR/2.5BA or Unit B 3BR/3BA — each sleeps 6.">
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    .property-hero {
+      min-height: 92vh;
+      background: var(--obsidian);
+      display: grid;
+      grid-template-rows: 1fr auto;
+      position: relative;
+      overflow: hidden;
+      padding-top: 64px;
+    }
+    .property-hero-image {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(160deg, #1C2B2E 0%, #0f1c1e 50%, #07100f 100%);
+      position: relative;
+    }
+    .property-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(11,15,14,0.9) 0%, rgba(11,15,14,0.2) 50%, transparent 100%);
+    }
+    .property-hero-content {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 64px 40px 48px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .property-hero-content h1 { color: var(--bone); margin: 16px 0 12px; }
+    .property-hero-sub { font-size: 18px; color: rgba(245,241,232,0.65); max-width: 520px; margin-bottom: 32px; }
+    .property-hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .rating-badge {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 14px; color: var(--bone); font-weight: 500;
+    }
+    .rating-badge .star { color: var(--sand); }
+    .spec-pill {
+      font-size: 12px; color: rgba(245,241,232,0.5);
+      border: 1px solid rgba(245,241,232,0.15);
+      padding: 5px 14px;
+    }
+
+    /* Unit selector */
+    .unit-selector {
+      background: var(--obsidian);
+      border-bottom: 1px solid rgba(245,241,232,0.08);
+      padding: 0 40px;
+      display: flex;
+      gap: 0;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .unit-tab {
+      padding: 20px 32px;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: rgba(245,241,232,0.35);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+      user-select: none;
+    }
+    .unit-tab.active {
+      color: var(--sand);
+      border-bottom-color: var(--sand);
+    }
+    .unit-tab:hover:not(.active) { color: rgba(245,241,232,0.6); }
+    .unit-selector-wrap { background: var(--obsidian); }
+
+    /* Gallery */
+    .gallery { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 240px 240px; gap: 2px; background: var(--obsidian); }
+    .gallery-main { grid-row: span 2; }
+    .gallery-cell { overflow: hidden; }
+    .gallery-cell-bg { width: 100%; height: 100%; transition: transform 0.4s ease; }
+    .gallery-cell:hover .gallery-cell-bg { transform: scale(1.04); }
+
+    /* Content layout */
+    .property-body { background: var(--bone); }
+    .property-layout { display: grid; grid-template-columns: 1fr 360px; gap: 64px; max-width: 1200px; margin: 0 auto; padding: 64px 40px; }
+
+    /* Unit panel visibility */
+    .unit-panel { display: none; }
+    .unit-panel.active { display: block; }
+
+    /* Booking card */
+    .booking-card {
+      background: white;
+      border: 1px solid rgba(0,0,0,0.1);
+      padding: 32px;
+      position: sticky;
+      top: 88px;
+      align-self: start;
+    }
+    .booking-price { font-family: 'Tenor Sans', serif; font-size: 28px; color: var(--text); margin-bottom: 4px; }
+    .booking-price-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+
+    .booking-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-bottom: 16px; border-bottom: 1.5px solid var(--text); }
+    .booking-field { padding: 12px 0; }
+    .booking-field:first-child { border-right: 1px solid rgba(0,0,0,0.12); padding-right: 16px; }
+    .booking-field:last-child { padding-left: 16px; }
+    .booking-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 500; color: var(--sand); margin-bottom: 6px; }
+    .booking-value { font-size: 15px; color: var(--text); }
+
+    .booking-guests { border-bottom: 1.5px solid var(--text); padding: 12px 0; margin-bottom: 24px; }
+
+    .booking-total { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(0,0,0,0.1); }
+    .booking-total-label { font-size: 14px; font-weight: 500; }
+    .booking-total-amount { font-size: 16px; font-weight: 500; }
+
+    .booking-note { font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 12px; line-height: 1.5; }
+
+    .booking-card-unit-switch {
+      display: flex;
+      gap: 0;
+      margin-bottom: 20px;
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+    .booking-unit-btn {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 500;
+      cursor: pointer;
+      color: var(--text-muted);
+      background: white;
+      border: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .booking-unit-btn.active {
+      background: var(--emerald);
+      color: var(--bone);
+    }
+    .booking-unit-btn:hover:not(.active) { background: rgba(0,0,0,0.03); }
+
+    /* Booking panel */
+    .booking-panel { display: none; }
+    .booking-panel.active { display: block; }
+
+    /* Specs grid */
+    .specs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid rgba(0,0,0,0.08); margin: 32px 0; }
+    .spec-item { padding: 20px 24px; border-right: 1px solid rgba(0,0,0,0.08); border-bottom: 1px solid rgba(0,0,0,0.08); }
+    .spec-item:nth-child(3n) { border-right: none; }
+    .spec-item:nth-last-child(-n+3) { border-bottom: none; }
+    .spec-item-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--sand); font-weight: 500; margin-bottom: 6px; }
+    .spec-item-value { font-size: 15px; font-weight: 500; color: var(--text); }
+
+    /* Amenities */
+    .amenities-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px 32px; margin-top: 24px; }
+    .amenity { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #3a3f3e; }
+    .amenity::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--tide); flex-shrink: 0; }
+
+    /* Reviews */
+    .reviews-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 32px; }
+    .review-card { background: white; padding: 28px; border: 1px solid rgba(0,0,0,0.07); }
+    .review-card-text { font-size: 15px; line-height: 1.65; color: var(--text); margin-bottom: 20px; font-style: italic; }
+    .review-card-author { display: flex; align-items: center; gap: 10px; }
+    .review-card-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--emerald); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; color: var(--bone); flex-shrink: 0; }
+    .review-card-meta { font-size: 13px; font-weight: 500; color: var(--text); }
+    .review-card-date { font-size: 12px; color: var(--text-muted); }
+
+    /* Area guide */
+    .area-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 32px; }
+    .area-card { padding: 24px; background: white; border: 1px solid rgba(0,0,0,0.07); }
+    .area-card-icon { font-size: 20px; margin-bottom: 12px; }
+    .area-card-title { font-family: 'Tenor Sans', serif; font-size: 17px; color: var(--text); margin-bottom: 8px; }
+    .area-card-text { font-size: 13px; line-height: 1.6; color: #5a5f5e; }
+
+    /* Host section */
+    .host-strip { background: var(--obsidian); padding: 64px 0; }
+    .hosts-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; margin-top: 40px; }
+    .host-card { background: #111615; padding: 32px; display: flex; gap: 20px; }
+    .host-avatar { width: 56px; height: 56px; border-radius: 50%; background: var(--emerald); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 500; color: var(--bone); flex-shrink: 0; }
+    .host-name { font-family: 'Tenor Sans', serif; font-size: 20px; color: var(--bone); margin-bottom: 4px; }
+    .host-role { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--sand); font-weight: 500; margin-bottom: 12px; }
+    .host-bio-text { font-size: 13px; line-height: 1.65; color: rgba(245,241,232,0.5); }
+
+    /* Whole property strip */
+    .whole-strip {
+      background: var(--emerald);
+      padding: 48px 0;
+    }
+    .whole-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 40px;
+      align-items: center;
+    }
+
+    /* More properties */
+    .more-properties { background: var(--bone); padding: 64px 0; border-top: 1px solid rgba(0,0,0,0.06); }
+    .more-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; margin-top: 40px; }
+
+    @media (max-width: 960px) {
+      .property-layout { grid-template-columns: 1fr; gap: 40px; }
+      .booking-card { position: static; }
+      .gallery { grid-template-columns: 1fr 1fr; grid-template-rows: 200px 200px; }
+      .gallery-main { grid-row: span 1; grid-column: span 2; }
+      .reviews-grid, .area-grid, .hosts-grid, .more-grid { grid-template-columns: 1fr; }
+      .specs-grid { grid-template-columns: repeat(2, 1fr); }
+      .whole-inner { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .property-hero-content { padding: 40px 24px 32px; }
+      .property-layout { padding: 40px 24px; }
+      .gallery { grid-template-columns: 1fr; grid-template-rows: auto; }
+      .gallery-main { grid-column: span 1; }
+      .specs-grid { grid-template-columns: 1fr 1fr; }
+      .amenities-grid { grid-template-columns: 1fr; }
+      .unit-selector { padding: 0 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Nav ──────────────────────────────────────────────────────────────── -->
+<nav class="nav">
+  <a href="/" class="nav-logo">
+    <svg width="22" height="28" viewBox="0 0 56 72" fill="none">
+      <polygon points="28,0 48,18 48,52 28,72 8,52 8,18" fill="#1A332F"/>
+      <polygon points="28,0 48,18 28,24" fill="#3A6560"/>
+      <polygon points="28,0 8,18 28,24" fill="#2A4A45"/>
+      <polygon points="8,52 28,24 28,72" fill="#3A6560" opacity="0.8"/>
+      <polygon points="28,24 8,18 48,18" fill="#4A7570" opacity="0.6"/>
+    </svg>
+    <div class="nav-logo-text">
+      <span class="nav-logo-name">Shankton</span>
+      <span class="nav-logo-sub">Properties</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#collection">The Collection</a></li>
+    <li><a href="../nicaragua/">Nicaragua</a></li>
+    <li><a href="../california/">California</a></li>
+    <li><a href="/#team">The Team</a></li>
+    <li><a href="#reserve" class="nav-cta">Reserve</a></li>
+  </ul>
+</nav>
+
+<!-- ── Hero ─────────────────────────────────────────────────────────────── -->
+<div class="property-hero">
+  <div class="property-hero-image" style="min-height:calc(92vh - 64px);">
+    <div class="property-hero-overlay"></div>
+  </div>
+  <div class="property-hero-content">
+    <p class="eyebrow">Belmont Shore · Long Beach, CA</p>
+    <h1>Shankton Peninsula</h1>
+    <p class="property-hero-sub">Two private suites between the bay and the Pacific. Roof decks with 360° views. Fifty meters to sand.</p>
+    <div class="property-hero-meta">
+      <div class="rating-badge"><span class="star">★</span> 4.89 · 351 reviews · 9.9/10 on Booking</div>
+      <span class="spec-pill">2 units</span>
+      <span class="spec-pill">Sleeps 6 each</span>
+      <span class="spec-pill">Rooftop decks</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── Unit selector ─────────────────────────────────────────────────────── -->
+<div class="unit-selector-wrap">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="unit-selector" id="unit-selector-tabs">
+      <div class="unit-tab active" data-unit="a">Unit A — 2 BR · 2.5 BA · Sleeps 6</div>
+      <div class="unit-tab" data-unit="b">Unit B — 3 BR · 3 BA · Sleeps 6</div>
+      <div class="unit-tab" data-unit="whole">Whole property — 5 BR · Sleeps 12</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Gallery ──────────────────────────────────────────────────────────── -->
+<div class="gallery">
+  <div class="gallery-cell gallery-main">
+    <div class="gallery-cell-bg" style="background:linear-gradient(135deg,#1C2B2E,#0f1c1e);height:100%;display:flex;align-items:center;justify-content:center;">
+      <span class="eyebrow" style="color:rgba(245,241,232,0.2);">Main photo</span>
+    </div>
+  </div>
+  <div class="gallery-cell">
+    <div class="gallery-cell-bg" style="background:linear-gradient(135deg,#172628,#0c1718);height:100%;display:flex;align-items:center;justify-content:center;">
+      <span class="eyebrow" style="color:rgba(245,241,232,0.15);font-size:10px;">Rooftop deck</span>
+    </div>
+  </div>
+  <div class="gallery-cell">
+    <div class="gallery-cell-bg" style="background:linear-gradient(135deg,#1a2a2c,#0d1a1c);height:100%;display:flex;align-items:center;justify-content:center;">
+      <span class="eyebrow" style="color:rgba(245,241,232,0.15);font-size:10px;">Bay view</span>
+    </div>
+  </div>
+  <div class="gallery-cell">
+    <div class="gallery-cell-bg" style="background:linear-gradient(135deg,#131e20,#090f10);height:100%;display:flex;align-items:center;justify-content:center;">
+      <span class="eyebrow" style="color:rgba(245,241,232,0.15);font-size:10px;">Living room</span>
+    </div>
+  </div>
+  <div class="gallery-cell">
+    <div class="gallery-cell-bg" style="background:linear-gradient(135deg,#162224,#0a1415);height:100%;display:flex;align-items:center;justify-content:center;">
+      <span class="eyebrow" style="color:rgba(245,241,232,0.15);font-size:10px;">Bedroom</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── Body ─────────────────────────────────────────────────────────────── -->
+<div class="property-body">
+  <div class="property-layout">
+
+    <!-- Left: Content -->
+    <div>
+
+      <!-- Unit A panel -->
+      <div class="unit-panel active" id="panel-a">
+        <p class="eyebrow">Unit A · 2 Bedrooms</p>
+        <h2 style="margin-top:12px;margin-bottom:20px;">Roof deck. Bay on one side,<br>Pacific on the other.</h2>
+        <div class="divider"></div>
+
+        <p style="font-size:16px;line-height:1.75;color:#3a3f3e;margin-top:24px;">Unit A sits at the ground floor of the Peninsula building — private entrance, private roof deck. Thuma king in the master, generous second bedroom. Fifty meters to the sand on Alamitos Bay.</p>
+
+        <p style="font-size:15px;line-height:1.75;color:#5a5f5e;margin-top:16px;">Walk one block to the Pacific. Walk one mile to 2nd Street restaurants. The roof deck gives you the whole sky — bay to the north, ocean to the south. Best in early morning and at sunset.</p>
+
+        <div class="specs-grid">
+          <div class="spec-item">
+            <div class="spec-item-label">Bedrooms</div>
+            <div class="spec-item-value">2 bedrooms</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-item-label">Bathrooms</div>
+            <div class="spec-item-value">2.5 baths</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-item-label">Guests</div>
+            <div class="spec-item-value">Sleeps 6</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-item-label">Beds</div>
+            <div class="spec-item-value">King + Queen</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-item-label">To beach</div>
+            <div class="spec-item-value">50 meters</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-item-label">To 2nd St.</div>
+            <div class="spec-item-value">1 mile walk</div>
+          </div>
+        </div>
+
+        <p class="eyebrow" style="margin-top:40px;">What's included</p>
+        <div class="amenities-grid" style="margin-top:20px;">
+          <div class="amenity">Private rooftop deck</div>
+          <div class="amenity">Thuma king in master</div>
+          <div class="amenity">50m to Alamitos Bay beach</div>
+          <div class="amenity">Full kitchen</div>
+          <div class="amenity">Air conditioning</div>
+          <div class="amenity">High-speed WiFi</div>
+          <div class="amenity">Washer + dryer</div>
+          <div class="amenity">Smart TV</div>
+          <div class="amenity">Private entrance</div>
+          <div class="amenity">Self check-in</div>
+          <div class="amenity">Beach gear (chairs, umbrella)</div>
+          <div class="amenity">2 dedicated parking spaces</div>
+          <div class="amenity">CO + smoke alarms</div>
+        </div>
+      </div>
+
+      <!-- Unit B panel -->
+      <div class="unit-panel" id="panel-b">
+        <p class="eyebrow">Unit B · 3 Bedrooms</p>
+        <h2 style="margin-top:12px;margin-bottom:20px;">Three bedrooms up top.<br>Ocean air from every window.</h2>
+        <div class="divider"></div>
+
+        <p style="font-size:16px;line-height:1.75;color:#3a3f3e;margin-top:24px;">Unit B occupies the upper floor of the Peninsula building — three bedrooms, private rooftop deck above, and a full view of Alamitos Bay. Thuma king in the master. Sleeps 6 comfortably, with room to breathe.</p>
+
+        <p style="font-size:15px;line-height:1.75;color:#5a5f5e;margin-top:16px;">Rated 9.9/10 on Booking. The light up here is different — you get the bay on one side and the Pacific on the other, and from the roof deck you can see both at once. Walk to the beach in two minutes flat.</p>
+
+        <div class="specs-grid">
+          <div class="spec-item">
+            <div class="spec-item-label">Bedrooms</div>
+            <div class="spec-item-value">3 bedrooms</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-item-label">Bathrooms</div>
+            <div class="spec-item-value">3 baths</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-item-label">Guests</div>
+            <div class="spec-item-value">Sleeps 6</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-item-label">Beds</div>
+            <div class="spec-item-value">King + 2 Queens</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-item-label">To beach</div>
+            <div class="spec-item-value">50 meters</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-item-label">To 2nd St.</div>
+            <div class="spec-item-value">1 mile walk</div>
+          </div>
+        </div>
+
+        <p class="eyebrow" style="margin-top:40px;">What's included</p>
+        <div class="amenities-grid" style="margin-top:20px;">
+          <div class="amenity">Private rooftop deck</div>
+          <div class="amenity">Thuma king in master</div>
+          <div class="amenity">50m to Alamitos Bay beach</div>
+          <div class="amenity">Full kitchen</div>
+          <div class="amenity">Air conditioning</div>
+          <div class="amenity">High-speed WiFi</div>
+          <div class="amenity">Washer + dryer</div>
+          <div class="amenity">Smart TV</div>
+          <div class="amenity">Upper-floor bay views</div>
+          <div class="amenity">Self check-in</div>
+          <div class="amenity">Beach gear (chairs, umbrella)</div>
+          <div class="amenity">2 dedicated parking spaces</div>
+          <div class="amenity">CO + smoke alarms</div>
+        </div>
+      </div>
+
+      <!-- Whole property panel -->
+      <div class="unit-panel" id="panel-whole">
+        <p class="eyebrow">Full Building · 5 Bedrooms</p>
+        <h2 style="margin-top:12px;margin-bottom:20px;">The whole building.<br>Two roof decks. Sleeps twelve.</h2>
+        <div class="divider"></div>
+
+        <p style="font-size:16px;line-height:1.75;color:#3a3f3e;margin-top:24px;">Book both units together and take the whole building. Two private roof decks, 5 bedrooms across two floors, two full kitchens, and 12 guests between two private front doors. Best for larger families or two groups traveling together.</p>
+
+        <p style="font-size:15px;line-height:1.75;color:#5a5f5e;margin-top:16px;">Jasmin coordinates the handoff between units. Reach out directly to arrange whole-building bookings — pricing and availability are handled through our direct channel.</p>
+
+        <div class="specs-grid">
+          <div class="spec-item">
+            <div class="spec-item-label">Bedrooms</div>
+            <div class="spec-item-value">5 bedrooms</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-item-label">Bathrooms</div>
+            <div class="spec-item-value">5.5 baths</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-item-label">Guests</div>
+            <div class="spec-item-value">Sleeps 12</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-item-label">Roof decks</div>
+            <div class="spec-item-value">2 private</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-item-label">To beach</div>
+            <div class="spec-item-value">50 meters</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-item-label">Kitchens</div>
+            <div class="spec-item-value">2 full</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Area guide (shared) -->
+      <p class="eyebrow" style="margin-top:56px;">The area</p>
+      <h3 style="margin-top:12px;margin-bottom:4px;">Belmont Shore, Long Beach, CA</h3>
+      <div class="divider"></div>
+      <div class="area-grid">
+        <div class="area-card">
+          <div class="area-card-icon">🏖</div>
+          <div class="area-card-title">The beaches</div>
+          <div class="area-card-text">Alamitos Bay beach is literally 50m from the front door — calm water, great for families. Walk 2 minutes the other way to the Pacific. Two very different beach experiences, same building.</div>
+        </div>
+        <div class="area-card">
+          <div class="area-card-icon">🍜</div>
+          <div class="area-card-title">2nd Street</div>
+          <div class="area-card-text">Belmont Shore's main strip is a mile walk from the door. Dozens of restaurants, coffee, and bars. Walkable on a summer evening. Jasmin has a short list of her favorites.</div>
+        </div>
+        <div class="area-card">
+          <div class="area-card-icon">✈️</div>
+          <div class="area-card-title">Getting here</div>
+          <div class="area-card-text">LGB airport is 10 min away. LAX is 30–45 min depending on traffic. 2 parking spaces included — one per unit. Street parking available on most blocks.</div>
+        </div>
+      </div>
+
+      <!-- Reviews (combined) -->
+      <p class="eyebrow" style="margin-top:56px;">What guests say</p>
+      <div style="display:flex;align-items:center;gap:16px;margin-top:16px;margin-bottom:32px;">
+        <div style="font-family:'Tenor Sans',serif;font-size:40px;color:var(--text);">4.89</div>
+        <div>
+          <div style="color:var(--sand);font-size:18px;letter-spacing:2px;">★★★★★</div>
+          <div style="font-size:13px;color:var(--text-muted);">351 reviews · 9.9/10 on Booking.com</div>
+        </div>
+      </div>
+
+      <div class="reviews-grid">
+        <div class="review-card">
+          <p class="review-card-text">"We had the upper unit and the roof deck was the real star. Every morning with coffee, watching the bay wake up. Jasmin was responsive and thoughtful — stocked the kitchen before we arrived."</p>
+          <div class="review-card-author">
+            <div class="review-card-avatar">L</div>
+            <div>
+              <div class="review-card-meta">Lauren P.</div>
+              <div class="review-card-date">August 2024 · Unit B</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card">
+          <p class="review-card-text">"Location is unbeatable. You walk out the front door and you're basically on the beach. The beds were the nicest I've slept in at any rental — Thuma frames, real mattresses. Perfect for a family of four."</p>
+          <div class="review-card-author">
+            <div class="review-card-avatar">K</div>
+            <div>
+              <div class="review-card-meta">Kevin M.</div>
+              <div class="review-card-date">July 2024 · Unit A</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card">
+          <p class="review-card-text">"We booked the whole building for a family reunion — 11 people across both units. Having two kitchens and two decks made all the difference. Jasmin handled everything like clockwork."</p>
+          <div class="review-card-author">
+            <div class="review-card-avatar">N</div>
+            <div>
+              <div class="review-card-meta">Natalie R.</div>
+              <div class="review-card-date">June 2025 · Whole building</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card">
+          <p class="review-card-text">"Best Airbnb stay I've had in three years. The roof deck views are 360° — you can literally see the bay AND the ocean at the same time. Walked to 2nd Street for dinner every night."</p>
+          <div class="review-card-author">
+            <div class="review-card-avatar">B</div>
+            <div>
+              <div class="review-card-meta">Brian T.</div>
+              <div class="review-card-date">September 2024 · Unit B</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /left -->
+
+    <!-- Right: Booking card -->
+    <div id="reserve">
+      <div class="booking-card">
+        <!-- Unit switcher inside card -->
+        <div class="booking-card-unit-switch">
+          <button class="booking-unit-btn active" data-book-unit="a">Unit A</button>
+          <button class="booking-unit-btn" data-book-unit="b">Unit B</button>
+          <button class="booking-unit-btn" data-book-unit="whole">Both</button>
+        </div>
+
+        <!-- Unit A booking -->
+        <div class="booking-panel active" id="book-a">
+          <div class="booking-price">From $285 <span style="font-size:16px;color:var(--text-muted);font-family:'Inter',sans-serif;font-weight:400;">/ night</span></div>
+          <div class="booking-price-sub">2 BR · 2.5 BA · Sleeps 6 · Belmont Shore</div>
+          <div class="booking-form-row">
+            <div class="booking-field">
+              <div class="booking-label">Check in</div>
+              <div class="booking-value">Add date</div>
+            </div>
+            <div class="booking-field">
+              <div class="booking-label">Check out</div>
+              <div class="booking-value">Add date</div>
+            </div>
+          </div>
+          <div class="booking-guests">
+            <div class="booking-label">Guests</div>
+            <div class="booking-value">2 adults</div>
+          </div>
+          <a href="https://www.airbnb.com/rooms/search?q=shankton+peninsula+unit+a+long+beach" target="_blank" class="btn btn-primary" style="width:100%;text-align:center;display:block;">Check Availability</a>
+          <div class="booking-total">
+            <span class="booking-total-label">Min. stay</span>
+            <span class="booking-total-amount">2 nights</span>
+          </div>
+          <p class="booking-note">Book direct for the best rate. Available on Airbnb.</p>
+        </div>
+
+        <!-- Unit B booking -->
+        <div class="booking-panel" id="book-b">
+          <div class="booking-price">From $325 <span style="font-size:16px;color:var(--text-muted);font-family:'Inter',sans-serif;font-weight:400;">/ night</span></div>
+          <div class="booking-price-sub">3 BR · 3 BA · Sleeps 6 · Belmont Shore</div>
+          <div class="booking-form-row">
+            <div class="booking-field">
+              <div class="booking-label">Check in</div>
+              <div class="booking-value">Add date</div>
+            </div>
+            <div class="booking-field">
+              <div class="booking-label">Check out</div>
+              <div class="booking-value">Add date</div>
+            </div>
+          </div>
+          <div class="booking-guests">
+            <div class="booking-label">Guests</div>
+            <div class="booking-value">2 adults</div>
+          </div>
+          <a href="https://www.booking.com/searchresults.html?ss=shankton+peninsula+long+beach" target="_blank" class="btn btn-primary" style="width:100%;text-align:center;display:block;">Check Availability</a>
+          <div class="booking-total">
+            <span class="booking-total-label">Min. stay</span>
+            <span class="booking-total-amount">2 nights</span>
+          </div>
+          <p class="booking-note">Book direct for the best rate. Available on Booking.com and Airbnb.</p>
+        </div>
+
+        <!-- Whole building booking -->
+        <div class="booking-panel" id="book-whole">
+          <div class="booking-price" style="font-size:22px;">Whole building</div>
+          <div class="booking-price-sub" style="margin-bottom:16px;">5 BR · 5.5 BA · Sleeps 12 · Both units</div>
+          <p style="font-size:14px;line-height:1.65;color:var(--text-muted);margin-bottom:24px;">Whole-building bookings are handled direct. Reach out to Jasmin — she'll send availability and pricing for your dates.</p>
+          <a href="mailto:jasmin@shanktonproperties.com?subject=Whole%20Building%20Inquiry%20—%20Peninsula" class="btn btn-primary" style="width:100%;text-align:center;display:block;">Contact Jasmin</a>
+          <div class="booking-total">
+            <span class="booking-total-label">Min. stay</span>
+            <span class="booking-total-amount">3 nights</span>
+          </div>
+          <p class="booking-note">Whole-building rate is less than the sum of both units listed separately.</p>
+        </div>
+      </div>
+
+      <!-- Host teaser in sidebar -->
+      <div style="margin-top:24px;padding:24px;background:white;border:1px solid rgba(0,0,0,0.07);">
+        <p class="eyebrow" style="margin-bottom:16px;">Hosted by</p>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:40px;height:40px;border-radius:50%;background:var(--tide);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;color:var(--bone);flex-shrink:0;">J</div>
+            <div>
+              <div style="font-size:14px;font-weight:500;">Jasmin</div>
+              <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sand);font-weight:500;">Property Mgr · California</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:40px;height:40px;border-radius:50%;background:var(--emerald);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;color:var(--bone);flex-shrink:0;">C</div>
+            <div>
+              <div style="font-size:14px;font-weight:500;">Clifton</div>
+              <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sand);font-weight:500;">Co-Founder</div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--text-muted);margin-top:16px;line-height:1.6;">Questions about both units, or want to book the whole building? Jasmin handles California directly — she knows the neighborhood cold.</p>
+      </div>
+    </div><!-- /right -->
+
+  </div>
+</div>
+
+<!-- ── Hosts ─────────────────────────────────────────────────────────────── -->
+<div class="host-strip">
+  <div class="container">
+    <p class="eyebrow">Your hosts</p>
+    <h2 style="color:var(--bone);margin-top:12px;max-width:480px;">The people who make it work.</h2>
+    <div class="hosts-grid">
+      <div class="host-card">
+        <div class="host-avatar" style="background:var(--tide);">J</div>
+        <div>
+          <div class="host-name">Jasmin</div>
+          <div class="host-role">Property Manager · California</div>
+          <p class="host-bio-text">Runs the Peninsula from the ground up. Has lived in Belmont Shore for years and knows 2nd Street better than the restaurant owners do. She's the reason the reviews say "the host thought of everything."</p>
+        </div>
+      </div>
+      <div class="host-card">
+        <div class="host-avatar">C</div>
+        <div>
+          <div class="host-name">Clifton</div>
+          <div class="host-role">Co-Founder</div>
+          <p class="host-bio-text">Co-founded Shankton with Chris nearly a decade ago. Runs the collection across Nicaragua and California. Peninsula is the California anchor — the property that started the West Coast side of the portfolio.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── More from the collection ─────────────────────────────────────────── -->
+<div class="more-properties">
+  <div class="container">
+    <p class="eyebrow">More from the collection</p>
+    <h2 style="margin-top:12px;margin-bottom:40px;">Also in Nicaragua</h2>
+    <div class="more-grid">
+      <div class="property-card">
+        <div class="property-card-image">
+          <div class="property-card-image-placeholder" style="background:linear-gradient(160deg,#1A332F,#0d1e1c);min-height:200px;">
+            <span class="eyebrow" style="color:rgba(245,241,232,0.2);">Photo coming</span>
+          </div>
+        </div>
+        <div class="property-card-body">
+          <p class="eyebrow property-card-location">Playa Gigante · Nicaragua</p>
+          <h3 class="property-card-name">Shankton Harbour</h3>
+          <p class="property-card-tagline">The only home in Gigante with its own sea shelf. Tide pools, snorkeling, reef fishing — from your platform.</p>
+          <div class="property-card-meta">
+            <div class="property-specs">3 BR · 3.5 BA · Sleeps 8</div>
+            <a href="../harbour/" class="property-card-link">View <span>→</span></a>
+          </div>
+        </div>
+      </div>
+      <div class="property-card">
+        <div class="property-card-image">
+          <div class="property-card-image-placeholder" style="background:linear-gradient(160deg,#0d2018,#091410);min-height:200px;">
+            <span class="eyebrow" style="color:rgba(245,241,232,0.2);">Photo coming</span>
+          </div>
+        </div>
+        <div class="property-card-body">
+          <p class="eyebrow property-card-location">Playa Gigante · Nicaragua</p>
+          <h3 class="property-card-name">Shankton Tower</h3>
+          <p class="property-card-tagline">Cliff-top Pacific views. Infinity pool over the ocean. Bunk room for the kids. Sleeps 12.</p>
+          <div class="property-card-meta">
+            <div class="property-specs">4 BR + bunk · 4 BA · Sleeps 12</div>
+            <a href="../tower/" class="property-card-link">View <span>→</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Footer ────────────────────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none;padding-top:0;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <svg width="18" height="23" viewBox="0 0 56 72" fill="none">
+          <polygon points="28,0 48,18 48,52 28,72 8,52 8,18" fill="#1A332F"/>
+          <polygon points="28,0 48,18 28,24" fill="#3A6560"/>
+          <polygon points="8,52 28,24 28,72" fill="#3A6560" opacity="0.8"/>
+        </svg>
+        <span style="font-size:12px;color:rgba(245,241,232,0.3);">Rare places, pro tips, local hosts. Along an emerald coast.</span>
+      </div>
+      <span class="footer-legal">© 2026 Shankton Properties</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Unit selector tabs (top bar)
+  const tabs = document.querySelectorAll('.unit-tab');
+  const panels = document.querySelectorAll('.unit-panel');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const unit = tab.dataset.unit;
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('panel-' + unit).classList.add('active');
+
+      // Sync booking card switcher
+      document.querySelectorAll('.booking-unit-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.booking-panel').forEach(b => b.classList.remove('active'));
+      const bookBtn = document.querySelector('[data-book-unit="' + unit + '"]');
+      if (bookBtn) bookBtn.classList.add('active');
+      document.getElementById('book-' + unit).classList.add('active');
+    });
+  });
+
+  // Booking card unit switcher
+  const bookBtns = document.querySelectorAll('.booking-unit-btn');
+  bookBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const unit = btn.dataset.bookUnit;
+      bookBtns.forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.booking-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('book-' + unit).classList.add('active');
+
+      // Sync top tabs
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      const topTab = document.querySelector('[data-unit="' + unit + '"]');
+      if (topTab) topTab.classList.add('active');
+      document.getElementById('panel-' + unit).classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
