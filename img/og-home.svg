@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0F1A18;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0B0F0E;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="emeraldGlow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1A332F;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#0B0F0E;stop-opacity:0" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Subtle emerald top band -->
+  <rect width="1200" height="300" fill="url(#emeraldGlow)"/>
+
+  <!-- Left accent bar -->
+  <rect x="0" y="0" width="4" height="630" fill="#1A332F"/>
+
+  <!-- Gem logo — centered left column -->
+  <g transform="translate(120, 215) scale(3.6)">
+    <polygon points="28,0 48,18 48,52 28,72 8,52 8,18" fill="#1A332F"/>
+    <polygon points="28,0 48,18 28,24" fill="#3A6560"/>
+    <polygon points="28,0 8,18 28,24" fill="#2A4A45"/>
+    <polygon points="8,18 28,24 8,52" fill="#1A332F"/>
+    <polygon points="48,18 28,24 48,52" fill="#152B28"/>
+    <polygon points="8,52 28,24 28,72" fill="#3A6560" opacity="0.8"/>
+    <polygon points="48,52 28,24 28,72" fill="#1A332F" opacity="0.9"/>
+    <polygon points="28,24 8,18 48,18" fill="#4A7570" opacity="0.6"/>
+  </g>
+
+  <!-- Eyebrow text -->
+  <text x="340" y="248" font-family="Georgia, serif" font-size="14" fill="#D4B98C" letter-spacing="5" font-weight="normal">SHANKTON PROPERTIES</text>
+
+  <!-- Main headline -->
+  <text x="340" y="318" font-family="Georgia, 'Times New Roman', serif" font-size="64" fill="#F5F1E8" font-weight="normal" letter-spacing="-1">Where the Pacific</text>
+  <text x="340" y="390" font-family="Georgia, 'Times New Roman', serif" font-size="64" fill="#F5F1E8" font-weight="normal" letter-spacing="-1">runs emerald.</text>
+
+  <!-- Tagline -->
+  <text x="340" y="450" font-family="Georgia, serif" font-size="20" fill="#9AAFAC" letter-spacing="1">Rare places, pro tips, local hosts.</text>
+
+  <!-- Divider line -->
+  <rect x="340" y="478" width="60" height="2" fill="#3A6560"/>
+
+  <!-- Property count -->
+  <text x="340" y="516" font-family="Georgia, serif" font-size="15" fill="#6A8A85" letter-spacing="2">NICARAGUA  ·  CALIFORNIA</text>
+
+  <!-- Bottom right: shankton.com -->
+  <text x="1080" y="596" font-family="Georgia, serif" font-size="15" fill="rgba(245,241,232,0.2)" text-anchor="end" letter-spacing="1">shankton.com</text>
+</svg>

@@ -10,61 +10,21 @@
   <meta property="og:description" content="Two private suites between Alamitos Bay and the Pacific. Roof decks, 360° views, 50m to sand. Unit A 2BR or Unit B 3BR — sleeps 6 each.">
   <meta property="og:url" content="https://www.shankton.com/peninsula/">
   <meta property="og:type" content="website">
+  <meta property="og:image" content="https://www.shankton.com/img/og-peninsula.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="../styles.css">
   <style>
-    .property-hero {
-      min-height: 92vh;
-      background: var(--obsidian);
-      display: grid;
-      grid-template-rows: 1fr auto;
-      position: relative;
-      overflow: hidden;
-      padding-top: 64px;
-    }
-    .property-hero-image {
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(160deg, #1C2B2E 0%, #0f1c1e 50%, #07100f 100%);
-      position: relative;
-    }
-    .property-hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(11,15,14,0.9) 0%, rgba(11,15,14,0.2) 50%, transparent 100%);
-    }
-    .property-hero-content {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      padding: 64px 40px 48px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    .property-hero-content h1 { color: var(--bone); margin: 16px 0 12px; }
-    .property-hero-sub { font-size: 18px; color: rgba(245,241,232,0.65); max-width: 520px; margin-bottom: 32px; }
-    .property-hero-meta {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      flex-wrap: wrap;
-    }
-    .rating-badge {
-      display: flex; align-items: center; gap: 6px;
-      font-size: 14px; color: var(--bone); font-weight: 500;
-    }
-    .rating-badge .star { color: var(--sand); }
-    .spec-pill {
-      font-size: 12px; color: rgba(245,241,232,0.5);
-      border: 1px solid rgba(245,241,232,0.15);
-      padding: 5px 14px;
-    }
+    .property-hero-image { background: linear-gradient(160deg, #1C2B2E 0%, #0f1c1e 55%, #07100f 100%); }
 
-    /* Unit selector */
+    /* Unit selector — Peninsula-specific */
+    .unit-selector-wrap { background: var(--obsidian); }
     .unit-selector {
       background: var(--obsidian);
       border-bottom: 1px solid rgba(245,241,232,0.08);
       padding: 0 40px;
       display: flex;
-      gap: 0;
       max-width: 1200px;
       margin: 0 auto;
     }
@@ -80,61 +40,13 @@
       transition: color 0.2s, border-color 0.2s;
       user-select: none;
     }
-    .unit-tab.active {
-      color: var(--sand);
-      border-bottom-color: var(--sand);
-    }
+    .unit-tab.active { color: var(--sand); border-bottom-color: var(--sand); }
     .unit-tab:hover:not(.active) { color: rgba(245,241,232,0.6); }
-    .unit-selector-wrap { background: var(--obsidian); }
-
-    /* Gallery */
-    .gallery { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 240px 240px; gap: 2px; background: var(--obsidian); }
-    .gallery-main { grid-row: span 2; }
-    .gallery-cell { overflow: hidden; }
-    .gallery-cell-bg { width: 100%; height: 100%; transition: transform 0.4s ease; }
-    .gallery-cell:hover .gallery-cell-bg { transform: scale(1.04); }
-
-    /* Content layout */
-    .property-body { background: var(--bone); }
-    .property-layout { display: grid; grid-template-columns: 1fr 360px; gap: 64px; max-width: 1200px; margin: 0 auto; padding: 64px 40px; }
-
-    /* Unit panel visibility */
     .unit-panel { display: none; }
     .unit-panel.active { display: block; }
 
-    /* Booking card */
-    .booking-card {
-      background: white;
-      border: 1px solid rgba(0,0,0,0.1);
-      padding: 32px;
-      position: sticky;
-      top: 88px;
-      align-self: start;
-    }
-    .booking-price { font-family: 'Tenor Sans', serif; font-size: 28px; color: var(--text); margin-bottom: 4px; }
-    .booking-price-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
-
-    .booking-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-bottom: 16px; border-bottom: 1.5px solid var(--text); }
-    .booking-field { padding: 12px 0; }
-    .booking-field:first-child { border-right: 1px solid rgba(0,0,0,0.12); padding-right: 16px; }
-    .booking-field:last-child { padding-left: 16px; }
-    .booking-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 500; color: var(--sand); margin-bottom: 6px; }
-    .booking-value { font-size: 15px; color: var(--text); }
-
-    .booking-guests { border-bottom: 1.5px solid var(--text); padding: 12px 0; margin-bottom: 24px; }
-
-    .booking-total { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(0,0,0,0.1); }
-    .booking-total-label { font-size: 14px; font-weight: 500; }
-    .booking-total-amount { font-size: 16px; font-weight: 500; }
-
-    .booking-note { font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 12px; line-height: 1.5; }
-
-    .booking-card-unit-switch {
-      display: flex;
-      gap: 0;
-      margin-bottom: 20px;
-      border: 1px solid rgba(0,0,0,0.1);
-    }
+    /* Booking card unit switch */
+    .booking-card-unit-switch { display: flex; margin-bottom: 20px; border: 1px solid rgba(0,0,0,0.1); }
     .booking-unit-btn {
       flex: 1;
       padding: 10px;
@@ -149,59 +61,13 @@
       border: none;
       transition: background 0.2s, color 0.2s;
     }
-    .booking-unit-btn.active {
-      background: var(--emerald);
-      color: var(--bone);
-    }
+    .booking-unit-btn.active { background: var(--emerald); color: var(--bone); }
     .booking-unit-btn:hover:not(.active) { background: rgba(0,0,0,0.03); }
-
-    /* Booking panel */
     .booking-panel { display: none; }
     .booking-panel.active { display: block; }
 
-    /* Specs grid */
-    .specs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid rgba(0,0,0,0.08); margin: 32px 0; }
-    .spec-item { padding: 20px 24px; border-right: 1px solid rgba(0,0,0,0.08); border-bottom: 1px solid rgba(0,0,0,0.08); }
-    .spec-item:nth-child(3n) { border-right: none; }
-    .spec-item:nth-last-child(-n+3) { border-bottom: none; }
-    .spec-item-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--sand); font-weight: 500; margin-bottom: 6px; }
-    .spec-item-value { font-size: 15px; font-weight: 500; color: var(--text); }
-
-    /* Amenities */
-    .amenities-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px 32px; margin-top: 24px; }
-    .amenity { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #3a3f3e; }
-    .amenity::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--tide); flex-shrink: 0; }
-
-    /* Reviews */
-    .reviews-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 32px; }
-    .review-card { background: white; padding: 28px; border: 1px solid rgba(0,0,0,0.07); }
-    .review-card-text { font-size: 15px; line-height: 1.65; color: var(--text); margin-bottom: 20px; font-style: italic; }
-    .review-card-author { display: flex; align-items: center; gap: 10px; }
-    .review-card-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--emerald); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; color: var(--bone); flex-shrink: 0; }
-    .review-card-meta { font-size: 13px; font-weight: 500; color: var(--text); }
-    .review-card-date { font-size: 12px; color: var(--text-muted); }
-
-    /* Area guide */
-    .area-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 32px; }
-    .area-card { padding: 24px; background: white; border: 1px solid rgba(0,0,0,0.07); }
-    .area-card-icon { font-size: 20px; margin-bottom: 12px; }
-    .area-card-title { font-family: 'Tenor Sans', serif; font-size: 17px; color: var(--text); margin-bottom: 8px; }
-    .area-card-text { font-size: 13px; line-height: 1.6; color: #5a5f5e; }
-
-    /* Host section */
-    .host-strip { background: var(--obsidian); padding: 64px 0; }
-    .hosts-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; margin-top: 40px; }
-    .host-card { background: #111615; padding: 32px; display: flex; gap: 20px; }
-    .host-avatar { width: 56px; height: 56px; border-radius: 50%; background: var(--emerald); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 500; color: var(--bone); flex-shrink: 0; }
-    .host-name { font-family: 'Tenor Sans', serif; font-size: 20px; color: var(--bone); margin-bottom: 4px; }
-    .host-role { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--sand); font-weight: 500; margin-bottom: 12px; }
-    .host-bio-text { font-size: 13px; line-height: 1.65; color: rgba(245,241,232,0.5); }
-
-    /* Whole property strip */
-    .whole-strip {
-      background: var(--emerald);
-      padding: 48px 0;
-    }
+    /* Whole-property callout — Peninsula-specific */
+    .whole-strip { background: var(--emerald); padding: 48px 0; }
     .whole-inner {
       max-width: 1200px;
       margin: 0 auto;
@@ -212,28 +78,8 @@
       align-items: center;
     }
 
-    /* More properties */
-    .more-properties { background: var(--bone); padding: 64px 0; border-top: 1px solid rgba(0,0,0,0.06); }
-    .more-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; margin-top: 40px; }
-
-    @media (max-width: 960px) {
-      .property-layout { grid-template-columns: 1fr; gap: 40px; }
-      .booking-card { position: static; }
-      .gallery { grid-template-columns: 1fr 1fr; grid-template-rows: 200px 200px; }
-      .gallery-main { grid-row: span 1; grid-column: span 2; }
-      .reviews-grid, .area-grid, .hosts-grid, .more-grid { grid-template-columns: 1fr; }
-      .specs-grid { grid-template-columns: repeat(2, 1fr); }
-      .whole-inner { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 600px) {
-      .property-hero-content { padding: 40px 24px 32px; }
-      .property-layout { padding: 40px 24px; }
-      .gallery { grid-template-columns: 1fr; grid-template-rows: auto; }
-      .gallery-main { grid-column: span 1; }
-      .specs-grid { grid-template-columns: 1fr 1fr; }
-      .amenities-grid { grid-template-columns: 1fr; }
-      .unit-selector { padding: 0 24px; }
-    }
+    @media (max-width: 960px) { .whole-inner { grid-template-columns: 1fr; } }
+    @media (max-width: 600px) { .unit-selector { padding: 0 24px; } }
   </style>
 </head>
 <body>

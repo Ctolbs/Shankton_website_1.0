@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d1f15;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#070e0a;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="0" y="0" width="4" height="630" fill="#1A332F"/>
+  <g transform="translate(120, 230) scale(2.4)">
+    <polygon points="28,0 48,18 48,52 28,72 8,52 8,18" fill="#1A332F"/>
+    <polygon points="28,0 48,18 28,24" fill="#3A6560"/>
+    <polygon points="28,0 8,18 28,24" fill="#2A4A45"/>
+    <polygon points="8,52 28,24 28,72" fill="#3A6560" opacity="0.8"/>
+    <polygon points="28,24 8,18 48,18" fill="#4A7570" opacity="0.6"/>
+  </g>
+  <text x="340" y="240" font-family="Georgia, serif" font-size="13" fill="#D4B98C" letter-spacing="5">PACIFIC COAST · NICARAGUA</text>
+  <text x="340" y="310" font-family="Georgia, 'Times New Roman', serif" font-size="62" fill="#F5F1E8" font-weight="normal" letter-spacing="-1">Where the water runs</text>
+  <text x="340" y="378" font-family="Georgia, 'Times New Roman', serif" font-size="62" fill="#F5F1E8" font-weight="normal" letter-spacing="-1">emerald, we keep a key.</text>
+  <rect x="340" y="412" width="60" height="2" fill="#3A6560"/>
+  <text x="340" y="452" font-family="Georgia, serif" font-size="17" fill="#6A8A85" letter-spacing="3">HARBOUR · TOWER · PLAYA GIGANTE</text>
+  <text x="340" y="498" font-family="Georgia, serif" font-size="15" fill="rgba(245,241,232,0.3)">568+ reviews · Same crew for a decade</text>
+  <text x="1080" y="596" font-family="Georgia, serif" font-size="14" fill="rgba(245,241,232,0.15)" text-anchor="end" letter-spacing="1">shankton.com</text>
+</svg>
