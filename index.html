@@ -104,87 +104,8 @@
       <p class="lead" style="max-width:560px;color:var(--text-muted);">Each home has its own reason to exist. None of them compete with each other — they're chosen, not collected.</p>
     </div>
 
-    <div class="collection-grid">
-
-      <!-- Harbour -->
-      <div class="property-card">
-        <div class="property-card-image">
-          <div class="property-card-image-placeholder" style="background:linear-gradient(160deg,#1A332F 0%,#0d1e1c 100%);min-height:280px;">
-            <span class="eyebrow" style="color:rgba(245,241,232,0.3);">Photo coming</span>
-          </div>
-        </div>
-        <div class="property-card-body">
-          <p class="eyebrow property-card-location">Playa Gigante · Nicaragua</p>
-          <h3 class="property-card-name">Shankton Harbour</h3>
-          <p class="property-card-tagline">The only home in Gigante with its own sea shelf. Tide pools, snorkeling, and reef fishing — from your own platform.</p>
-          <div class="property-card-meta">
-            <div>
-              <div class="property-specs">3 BR · 3.5 BA · Sleeps 8</div>
-              <div class="property-card-rating" style="margin-top:4px;">
-                <span class="star">★</span> 4.87 · 278 reviews
-              </div>
-            </div>
-            <a href="harbour/" class="property-card-link">View <span>→</span></a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Tower -->
-      <div class="property-card">
-        <div class="property-card-image">
-          <div class="property-card-image-placeholder" style="background:linear-gradient(160deg,#152B28 0%,#0a1210 100%);min-height:280px;">
-            <span class="eyebrow" style="color:rgba(245,241,232,0.3);">Photo coming</span>
-          </div>
-        </div>
-        <div class="property-card-body">
-          <p class="eyebrow property-card-location">Playa Gigante · Nicaragua</p>
-          <h3 class="property-card-name">Shankton Tower</h3>
-          <p class="property-card-tagline">Cliff-top Pacific views. Malibu-rugged, four floors up. Infinity pool over the ocean. Private beach. Bunk room for the kids.</p>
-          <div class="property-card-meta">
-            <div>
-              <div class="property-specs">4 BR + bunk · 4 BA · Sleeps 12</div>
-              <div class="property-card-rating" style="margin-top:4px;">
-                <span class="star">★</span> 4.79 · 290 reviews
-              </div>
-            </div>
-            <a href="tower/" class="property-card-link">View <span>→</span></a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Peninsula -->
-      <div class="property-card">
-        <div class="property-card-image">
-          <div class="property-card-image-placeholder" style="background:linear-gradient(160deg,#1f2e2c 0%,#0e1a19 100%);min-height:280px;">
-            <span class="eyebrow" style="color:rgba(245,241,232,0.3);">Photo coming</span>
-          </div>
-        </div>
-        <div class="property-card-body">
-          <p class="eyebrow property-card-location">Belmont Shore · Long Beach</p>
-          <h3 class="property-card-name">Shankton Peninsula</h3>
-          <p class="property-card-tagline">Two private suites between the bay and the Pacific. Roof decks with 360° views. Fifty meters to sand. Walk to 2nd Street.</p>
-          <div class="property-card-meta">
-            <div>
-              <div class="property-specs">2 units · 2 BR each · Sleeps 12</div>
-              <div class="property-card-rating" style="margin-top:4px;">
-                <span class="star">★</span> 4.89 · 351 reviews
-              </div>
-            </div>
-            <a href="peninsula/" class="property-card-link">View <span>→</span></a>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Hideout coming soon -->
-    <div style="margin-top:2px;background:#0f1413;padding:24px 24px;display:flex;align-items:center;justify-content:space-between;gap:24px;">
-      <div style="display:flex;align-items:center;gap:16px;">
-        <span style="font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--sand);font-weight:500;border:1px solid rgba(212,185,140,0.3);padding:4px 10px;white-space:nowrap;">Coming Back Soon</span>
-        <span style="font-size:14px;color:rgba(245,241,232,0.45);">Shankton Hideout — Playa Redonda, Nicaragua. Currently offline.</span>
-      </div>
-      <a href="#newsletter" style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(245,241,232,0.3);white-space:nowrap;transition:color 0.15s;" onmouseover="this.style.color='rgba(245,241,232,0.7)'" onmouseout="this.style.color='rgba(245,241,232,0.3)'">Get notified →</a>
-    </div>
+    <div class="collection-grid" id="collection-grid"></div>
+    <div id="collection-teaser"></div>
 
   </div>
 </section>
@@ -365,5 +286,6 @@
   </div>
 </footer>
 
+<script src="js/properties.js"></script>
 </body>
 </html>

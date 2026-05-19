@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- TODO: Update title, description, canonical, OG tags, and og:image -->
+  <title>Shankton [Name] — [Location]</title>
+  <meta name="description" content="[1–2 sentence description. Lead with the most distinctive thing.]">
+  <link rel="canonical" href="https://www.shankton.com/[slug]/">
+  <meta property="og:title" content="Shankton [Name] — [Location]">
+  <meta property="og:description" content="[Short OG description. Specs + standout feature.]">
+  <meta property="og:url" content="https://www.shankton.com/[slug]/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://www.shankton.com/img/og-[slug].png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    /* TODO: Set the hero background gradient for this property.
+       Use the Shankton palette — emerald darks for Nicaragua, teal for California.
+       Format: linear-gradient(160deg, [light] 0%, [mid] 55%, [dark] 100%) */
+    .property-hero-image { background: linear-gradient(160deg, #1A332F 0%, #0e201d 55%, #08100f 100%); }
+  </style>
+</head>
+<body>
+
+<!-- ── Nav ──────────────────────────────────────────────────────────────── -->
+<!-- TODO: Update region links if adding a new region page -->
+<nav class="nav">
+  <a href="/" class="nav-logo">
+    <svg width="22" height="28" viewBox="0 0 56 72" fill="none">
+      <polygon points="28,0 48,18 48,52 28,72 8,52 8,18" fill="#1A332F"/>
+      <polygon points="28,0 48,18 28,24" fill="#3A6560"/>
+      <polygon points="28,0 8,18 28,24" fill="#2A4A45"/>
+      <polygon points="8,52 28,24 28,72" fill="#3A6560" opacity="0.8"/>
+      <polygon points="28,24 8,18 48,18" fill="#4A7570" opacity="0.6"/>
+    </svg>
+    <div class="nav-logo-text">
+      <span class="nav-logo-name">Shankton</span>
+      <span class="nav-logo-sub">Properties</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#collection">The Collection</a></li>
+    <li><a href="../nicaragua/">Nicaragua</a></li>
+    <li><a href="../california/">California</a></li>
+    <li><a href="/#team">The Team</a></li>
+    <li><a href="#reserve" class="nav-cta">Reserve</a></li>
+  </ul>
+</nav>
+
+<!-- ── Hero ─────────────────────────────────────────────────────────────── -->
+<!-- TODO: Update eyebrow, h1, sub, rating badge, and spec pills -->
+<div class="property-hero">
+  <div class="property-hero-image" style="min-height:calc(92vh - 64px);">
+    <div class="property-hero-overlay"></div>
+  </div>
+  <div class="property-hero-content">
+    <p class="eyebrow">[Location · Region]</p>
+    <h1>Shankton [Name]</h1>
+    <p class="property-hero-sub">[1–2 sentence lead. What makes this place unique.]</p>
+    <div class="property-hero-meta">
+      <div class="rating-badge"><span class="star">★</span> [4.xx] · [N] reviews</div>
+      <span class="spec-pill">[X BR · X.X BA]</span>
+      <span class="spec-pill">Sleeps [N]</span>
+      <span class="spec-pill">[Standout feature]</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── Gallery ──────────────────────────────────────────────────────────── -->
+<!-- TODO: Replace gradient divs with <img> tags when photos are ready.
+     Photo slot labels (main, + 4 supporting shots) -->
+<div class="gallery">
+  <div class="gallery-cell gallery-main">
+    <div class="gallery-cell-bg" style="background:linear-gradient(135deg,#1A332F,#0d1e1c);height:100%;display:flex;align-items:center;justify-content:center;">
+      <span class="eyebrow" style="color:rgba(245,241,232,0.2);">Main photo</span>
+    </div>
+  </div>
+  <div class="gallery-cell">
+    <div class="gallery-cell-bg" style="background:linear-gradient(135deg,#152B28,#0a1210);height:100%;display:flex;align-items:center;justify-content:center;">
+      <span class="eyebrow" style="color:rgba(245,241,232,0.15);font-size:10px;">[Photo 2]</span>
+    </div>
+  </div>
+  <div class="gallery-cell">
+    <div class="gallery-cell-bg" style="background:linear-gradient(135deg,#1f3a36,#0d1e1c);height:100%;display:flex;align-items:center;justify-content:center;">
+      <span class="eyebrow" style="color:rgba(245,241,232,0.15);font-size:10px;">[Photo 3]</span>
+    </div>
+  </div>
+  <div class="gallery-cell">
+    <div class="gallery-cell-bg" style="background:linear-gradient(135deg,#112421,#070f0e);height:100%;display:flex;align-items:center;justify-content:center;">
+      <span class="eyebrow" style="color:rgba(245,241,232,0.15);font-size:10px;">[Photo 4]</span>
+    </div>
+  </div>
+  <div class="gallery-cell">
+    <div class="gallery-cell-bg" style="background:linear-gradient(135deg,#0e1f1d,#050c0b);height:100%;display:flex;align-items:center;justify-content:center;">
+      <span class="eyebrow" style="color:rgba(245,241,232,0.15);font-size:10px;">[Photo 5]</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── Body ─────────────────────────────────────────────────────────────── -->
+<div class="property-body">
+  <div class="property-layout">
+
+    <!-- Left: Content -->
+    <div>
+
+      <!-- TODO: Update section label, headline, and description -->
+      <p class="eyebrow">[Section label — e.g. "The Explorer's Home"]</p>
+      <h2 style="margin-top:12px;margin-bottom:20px;">[Headline.<br>Second line.]</h2>
+      <div class="divider"></div>
+
+      <p style="font-size:16px;line-height:1.75;color:#3a3f3e;margin-top:24px;">[Lead paragraph. What's the defining experience of this property?]</p>
+      <p style="font-size:15px;line-height:1.75;color:#5a5f5e;margin-top:16px;">[Supporting paragraph. Time of day / season / sensory detail.]</p>
+
+      <!-- TODO: Update all spec values -->
+      <div class="specs-grid">
+        <div class="spec-item">
+          <div class="spec-item-label">Bedrooms</div>
+          <div class="spec-item-value">[X bedrooms]</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-item-label">Bathrooms</div>
+          <div class="spec-item-value">[X.X baths]</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-item-label">Guests</div>
+          <div class="spec-item-value">Sleeps [N]</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-item-label">Location</div>
+          <div class="spec-item-value">[Beach / Town]</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-item-label">[Spec 5 label]</div>
+          <div class="spec-item-value">[Value]</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-item-label">[Spec 6 label]</div>
+          <div class="spec-item-value">[Value]</div>
+        </div>
+      </div>
+
+      <!-- TODO: Update amenities list -->
+      <p class="eyebrow" style="margin-top:40px;">What's included</p>
+      <div class="amenities-grid" style="margin-top:20px;">
+        <div class="amenity">[Amenity 1]</div>
+        <div class="amenity">[Amenity 2]</div>
+        <div class="amenity">[Amenity 3]</div>
+        <div class="amenity">Full kitchen</div>
+        <div class="amenity">Air conditioning</div>
+        <div class="amenity">High-speed WiFi</div>
+        <div class="amenity">Washer + dryer</div>
+        <div class="amenity">Self check-in</div>
+        <div class="amenity">CO + smoke alarms</div>
+      </div>
+
+      <!-- TODO: Update area name and 3 area cards -->
+      <p class="eyebrow" style="margin-top:56px;">The area</p>
+      <h3 style="margin-top:12px;margin-bottom:4px;">[Area name, Country]</h3>
+      <div class="divider"></div>
+      <div class="area-grid">
+        <div class="area-card">
+          <div class="area-card-icon">🏄</div>
+          <div class="area-card-title">[Category]</div>
+          <div class="area-card-text">[2–3 sentences about this aspect of the area.]</div>
+        </div>
+        <div class="area-card">
+          <div class="area-card-icon">🚤</div>
+          <div class="area-card-title">Getting here</div>
+          <div class="area-card-text">[How to get here. Nearest airport, drive time, pickup available?]</div>
+        </div>
+        <div class="area-card">
+          <div class="area-card-icon">🍽</div>
+          <div class="area-card-title">Food</div>
+          <div class="area-card-text">[Local food scene + kitchen/chef options.]</div>
+        </div>
+      </div>
+
+      <!-- TODO: Update rating, review count, and 4 guest reviews -->
+      <p class="eyebrow" style="margin-top:56px;">What guests say</p>
+      <div style="display:flex;align-items:center;gap:16px;margin-top:16px;margin-bottom:32px;">
+        <div style="font-family:'Tenor Sans',serif;font-size:40px;color:var(--text);">[4.xx]</div>
+        <div>
+          <div style="color:var(--sand);font-size:18px;letter-spacing:2px;">★★★★★</div>
+          <div style="font-size:13px;color:var(--text-muted);">[N] reviews</div>
+        </div>
+      </div>
+      <div class="reviews-grid">
+        <div class="review-card">
+          <p class="review-card-text">"[Review text.]"</p>
+          <div class="review-card-author">
+            <div class="review-card-avatar">[Initial]</div>
+            <div>
+              <div class="review-card-meta">[Name]</div>
+              <div class="review-card-date">[Month Year]</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card">
+          <p class="review-card-text">"[Review text.]"</p>
+          <div class="review-card-author">
+            <div class="review-card-avatar">[Initial]</div>
+            <div>
+              <div class="review-card-meta">[Name]</div>
+              <div class="review-card-date">[Month Year]</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /left -->
+
+    <!-- Right: Booking card -->
+    <!-- TODO: Update price, specs, booking URL, and host info -->
+    <div id="reserve">
+      <div class="booking-card">
+        <div class="booking-price">From $[X] <span style="font-size:16px;color:var(--text-muted);font-family:'Inter',sans-serif;font-weight:400;">/ night</span></div>
+        <div class="booking-price-sub">[X BR · X.X BA · Sleeps N · Location]</div>
+
+        <div class="booking-form-row">
+          <div class="booking-field">
+            <div class="booking-label">Check in</div>
+            <div class="booking-value">Add date</div>
+          </div>
+          <div class="booking-field">
+            <div class="booking-label">Check out</div>
+            <div class="booking-value">Add date</div>
+          </div>
+        </div>
+        <div class="booking-guests">
+          <div class="booking-label">Guests</div>
+          <div class="booking-value">2 adults</div>
+        </div>
+
+        <!-- TODO: Update href to Airbnb/Booking listing URL -->
+        <a href="#" target="_blank" class="btn btn-primary" style="width:100%;text-align:center;display:block;">Check Availability</a>
+
+        <div class="booking-total">
+          <span class="booking-total-label">Min. stay</span>
+          <span class="booking-total-amount">[N] nights</span>
+        </div>
+        <p class="booking-note">Book direct for the best rate.</p>
+      </div>
+
+      <!-- TODO: Update local host name, initial, role -->
+      <div style="margin-top:24px;padding:24px;background:white;border:1px solid rgba(0,0,0,0.07);">
+        <p class="eyebrow" style="margin-bottom:16px;">Hosted by</p>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:40px;height:40px;border-radius:50%;background:var(--emerald);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;color:var(--bone);flex-shrink:0;">[X]</div>
+            <div>
+              <div style="font-size:14px;font-weight:500;">[Host name]</div>
+              <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--sand);font-weight:500;">[Role · Region]</div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--text-muted);margin-top:16px;line-height:1.6;">[1–2 sentences about what the host can help with.]</p>
+      </div>
+    </div><!-- /right -->
+
+  </div>
+</div>
+
+<!-- ── Hosts ─────────────────────────────────────────────────────────────── -->
+<!-- TODO: Update host bios -->
+<div class="host-strip">
+  <div class="container">
+    <p class="eyebrow">Your hosts</p>
+    <h2 style="color:var(--bone);margin-top:12px;max-width:480px;">The people who make it work.</h2>
+    <div class="hosts-grid">
+      <div class="host-card">
+        <div class="host-avatar">[X]</div>
+        <div>
+          <div class="host-name">[Local host name]</div>
+          <div class="host-role">[Role · Region]</div>
+          <p class="host-bio-text">[2–3 sentences. Local knowledge, years there, what they handle.]</p>
+        </div>
+      </div>
+      <div class="host-card">
+        <div class="host-avatar">C</div>
+        <div>
+          <div class="host-name">Clifton</div>
+          <div class="host-role">Co-Founder</div>
+          <p class="host-bio-text">Co-founded Shankton with Chris nearly a decade ago. Runs the collection across Nicaragua and California. Both coasts, year-round.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── More from the collection ─────────────────────────────────────────── -->
+<!-- TODO: Update "Also in [Region]" and the 2 sibling property cards.
+     Pull specs from js/properties.js to keep consistent. -->
+<div class="more-properties">
+  <div class="container">
+    <p class="eyebrow">More from the collection</p>
+    <h2 style="margin-top:12px;margin-bottom:40px;">Also in [Region]</h2>
+    <div class="more-grid">
+      <!-- Copy a property-card block here for each sibling property -->
+    </div>
+  </div>
+</div>
+
+<!-- ── Footer ────────────────────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none;padding-top:0;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <svg width="18" height="23" viewBox="0 0 56 72" fill="none">
+          <polygon points="28,0 48,18 48,52 28,72 8,52 8,18" fill="#1A332F"/>
+          <polygon points="28,0 48,18 28,24" fill="#3A6560"/>
+          <polygon points="8,52 28,24 28,72" fill="#3A6560" opacity="0.8"/>
+        </svg>
+        <span style="font-size:12px;color:rgba(245,241,232,0.3);">Rare places, pro tips, local hosts. Along an emerald coast.</span>
+      </div>
+      <span class="footer-legal">© 2026 Shankton Properties</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
