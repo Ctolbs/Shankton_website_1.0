@@ -1032,3 +1032,61 @@ section { padding: 80px 0; }
   .newsletter-form { flex-direction: column; }
   .newsletter-btn { padding: 12px; }
 }
+
+/* ── Booking Card Inputs ──────────────────────────────────────────────── */
+.bc-input {
+  width: 100%;
+  background: var(--bone, #f5f0e8);
+  border: 1px solid rgba(0,0,0,0.15);
+  color: var(--ink, #1a1a1a);
+  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+  padding: 9px 11px;
+  transition: border-color 0.15s;
+  -webkit-appearance: none;
+  border-radius: 0;
+  color-scheme: light;
+}
+.bc-input:focus { outline: none; border-color: var(--emerald, #1a4a4d); }
+.bc-input::placeholder { color: rgba(0,0,0,0.35); }
+.bc-input option { background: #fff; }
+.bc-status {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  min-height: 18px;
+  margin: 8px 0 4px;
+}
+.bc-status.checking { color: rgba(0,0,0,0.45); }
+.bc-status.ok { color: var(--emerald, #1a4a4d); }
+.bc-status.no { color: #b94040; }
+.bc-breakdown {
+  background: rgba(26,74,77,0.06);
+  border: 1px solid rgba(26,74,77,0.15);
+  padding: 14px;
+  margin: 8px 0;
+  font-size: 13px;
+}
+.bc-price-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 3px 0;
+  color: rgba(0,0,0,0.6);
+}
+.bc-price-row.total {
+  border-top: 1px solid rgba(0,0,0,0.1);
+  margin-top: 8px;
+  padding-top: 10px;
+  color: var(--ink, #1a1a1a);
+  font-weight: 600;
+  font-size: 14px;
+}
+.bc-contact { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+.bc-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.bc-secure {
+  font-size: 10px;
+  color: rgba(0,0,0,0.38);
+  text-align: center;
+  margin-top: 6px;
+  letter-spacing: 0.06em;
+}

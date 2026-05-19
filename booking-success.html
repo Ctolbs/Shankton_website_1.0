@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Confirmed · Shankton Properties</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #000; --dark: #07181a; --teal: #1a4a4d;
+      --teal-lt: #4a9098; --teal-hl: #7ac0c8; --white: #fff;
+      --muted: rgba(255,255,255,0.48); --border: rgba(74,144,152,0.2);
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--black); color: var(--white); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 24px; }
+    .check { width: 72px; height: 72px; border: 2px solid var(--teal-lt); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 32px; color: var(--teal-lt); font-size: 2rem; }
+    h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 8vw, 4rem); letter-spacing: 0.04em; text-align: center; margin-bottom: 16px; }
+    p { font-size: 14px; color: var(--muted); line-height: 1.8; text-align: center; max-width: 420px; margin-bottom: 12px; font-weight: 300; }
+    .email-note { font-size: 12px; color: var(--teal-lt); letter-spacing: 0.05em; text-align: center; margin-bottom: 40px; }
+    a.btn {
+      display: inline-block; padding: 13px 36px; background: var(--teal-lt); color: var(--black);
+      font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+      text-decoration: none; transition: background 0.15s;
+    }
+    a.btn:hover { background: var(--teal-hl); }
+    .contact { margin-top: 32px; font-size: 12px; color: var(--muted); text-align: center; }
+    .contact a { color: var(--teal-lt); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="check">✓</div>
+  <h1>BOOKING<br>CONFIRMED</h1>
+  <p>Your payment was successful. A booking confirmation will be sent to your email address within a few minutes.</p>
+  <p class="email-note">Check your spam folder if you don't see it within 15 minutes.</p>
+  <a href="/" class="btn">Back to Shankton</a>
+  <div class="contact">
+    Questions? <a href="mailto:contact@shankton.com">contact@shankton.com</a>
+  </div>
+</body>
+</html>
