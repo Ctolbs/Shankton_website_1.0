@@ -41,6 +41,7 @@ const SHANKTON_PROPERTIES = [
     rating: 4.89,
     reviews: 351,
     url: "peninsula/",
+    photo: "images/lgb/rooftop.jpg",
     gradient: "linear-gradient(160deg,#1f2e2c 0%,#0e1a19 100%)",
     status: "active"
   },
