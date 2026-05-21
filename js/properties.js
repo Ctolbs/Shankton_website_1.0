@@ -15,6 +15,7 @@ const SHANKTON_PROPERTIES = [
     rating: 4.87,
     reviews: 278,
     url: "harbour/",
+    photo: "images/nica/harbour/hero.jpg",
     gradient: "linear-gradient(160deg,#1A332F 0%,#0d1e1c 100%)",
     status: "active"
   },
@@ -27,6 +28,7 @@ const SHANKTON_PROPERTIES = [
     rating: 4.79,
     reviews: 290,
     url: "tower/",
+    photo: "images/nica/tower/hero.jpg",
     gradient: "linear-gradient(160deg,#152B28 0%,#0a1210 100%)",
     status: "active"
   },
