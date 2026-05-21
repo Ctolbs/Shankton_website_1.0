@@ -1155,3 +1155,50 @@ section { padding: 80px 0; }
   margin-top: 6px;
   letter-spacing: 0.06em;
 }
+
+/* ── Pro tip tooltip ─────────────────────────────────────────────────────── */
+
+.pro-tip {
+  position: relative;
+  border-bottom: 1px dashed var(--sand);
+  cursor: default;
+  white-space: nowrap;
+}
+
+.pro-tip::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--obsidian);
+  color: var(--sand);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  padding: 10px 14px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+  z-index: 10;
+}
+
+.pro-tip::before {
+  content: '';
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--obsidian);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+  z-index: 10;
+}
+
+.pro-tip:hover::after,
+.pro-tip:hover::before {
+  opacity: 1;
+}
