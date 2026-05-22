@@ -572,6 +572,12 @@ section { padding: 80px 0; }
   display: block;
 }
 
+#avatar-jasmin img {
+  object-position: 72% 15%;
+  transform: scale(1.5);
+  transform-origin: 72% 15%;
+}
+
 .team-name {
   font-family: 'Tenor Sans', serif;
   font-size: 20px;
