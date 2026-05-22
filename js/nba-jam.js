@@ -34,8 +34,8 @@
   let trigBuf = '';
   document.addEventListener('keydown', function(e) {
     if (!overlay) {
-      trigBuf = (trigBuf + e.key).toUpperCase().slice(-10);
-      if (trigBuf.endsWith('JAM')) { trigBuf = ''; launch(); }
+      trigBuf = (trigBuf + e.key).toLowerCase().slice(-12);
+      if (trigBuf.endsWith('cruncherella')) { trigBuf = ''; launch(); }
     }
   });
 
