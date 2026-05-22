@@ -78,7 +78,7 @@ const SHANKTON_PROPERTIES = [
            <span class="eyebrow" style="color:rgba(245,241,232,0.3);">Photo coming</span>
          </div>`;
     return `
-    <div class="property-card">
+    <a href="${p.url}" class="property-card">
       <div class="property-card-image">${img}</div>
       <div class="property-card-body">
         <p class="eyebrow property-card-location">${p.location}</p>
@@ -91,10 +91,10 @@ const SHANKTON_PROPERTIES = [
               <span class="star">★</span> ${p.rating} · ${p.reviews} reviews
             </div>
           </div>
-          <a href="${p.url}" class="property-card-link">View <span>→</span></a>
+          <span class="property-card-link">View <span>→</span></span>
         </div>
       </div>
-    </div>`;
+    </a>`;
   }).join('');
 
   if (teaser && nonActive.length) {
