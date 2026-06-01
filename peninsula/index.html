@@ -468,16 +468,21 @@
         <div class="booking-panel active" id="book-a">
           <div class="booking-price">From $285 <span style="font-size:16px;color:var(--text-muted);font-family:'Inter',sans-serif;font-weight:400;">/ night</span></div>
           <div class="booking-price-sub">2 Kings + sleeper · 2.5 BA · Sleeps 6 · Belmont Shore</div>
-          <div class="booking-form-row">
-            <div class="booking-field">
-              <div class="booking-label">Check in</div>
-              <input type="date" id="a-bc-checkin" class="bc-input">
+          <div class="bc-date-wrap">
+            <div class="booking-form-row bc-date-row" id="a-bc-date-row">
+              <div class="booking-field" id="a-bc-checkin-field">
+                <div class="booking-label">Check in</div>
+                <div class="bc-date-display" id="a-bc-checkin-display">Add date</div>
+              </div>
+              <div class="booking-field" id="a-bc-checkout-field">
+                <div class="booking-label">Check out</div>
+                <div class="bc-date-display" id="a-bc-checkout-display">Add date</div>
+              </div>
             </div>
-            <div class="booking-field">
-              <div class="booking-label">Check out</div>
-              <input type="date" id="a-bc-checkout" class="bc-input">
-            </div>
+            <div class="bc-cal-popup" id="a-bc-cal" style="display:none"></div>
           </div>
+          <input type="hidden" id="a-bc-checkin">
+          <input type="hidden" id="a-bc-checkout">
           <div class="booking-guests">
             <div class="booking-label">Guests</div>
             <select id="a-bc-guests" class="bc-input"></select>
@@ -509,16 +514,21 @@
         <div class="booking-panel" id="book-b">
           <div class="booking-price">From $285 <span style="font-size:16px;color:var(--text-muted);font-family:'Inter',sans-serif;font-weight:400;">/ night</span></div>
           <div class="booking-price-sub">2 Kings + sleeper · 2.5 BA · Sleeps 6 · Belmont Shore</div>
-          <div class="booking-form-row">
-            <div class="booking-field">
-              <div class="booking-label">Check in</div>
-              <input type="date" id="b-bc-checkin" class="bc-input">
+          <div class="bc-date-wrap">
+            <div class="booking-form-row bc-date-row" id="b-bc-date-row">
+              <div class="booking-field" id="b-bc-checkin-field">
+                <div class="booking-label">Check in</div>
+                <div class="bc-date-display" id="b-bc-checkin-display">Add date</div>
+              </div>
+              <div class="booking-field" id="b-bc-checkout-field">
+                <div class="booking-label">Check out</div>
+                <div class="bc-date-display" id="b-bc-checkout-display">Add date</div>
+              </div>
             </div>
-            <div class="booking-field">
-              <div class="booking-label">Check out</div>
-              <input type="date" id="b-bc-checkout" class="bc-input">
-            </div>
+            <div class="bc-cal-popup" id="b-bc-cal" style="display:none"></div>
           </div>
+          <input type="hidden" id="b-bc-checkin">
+          <input type="hidden" id="b-bc-checkout">
           <div class="booking-guests">
             <div class="booking-label">Guests</div>
             <select id="b-bc-guests" class="bc-input"></select>

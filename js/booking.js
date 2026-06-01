@@ -17,12 +17,10 @@
     const pfx = cfg.prefix ? cfg.prefix + '-' : '';
     const $ = id => document.getElementById(pfx + id);
 
-    // Set min date = tomorrow
-    const tomorrow = new Date();
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
-    const minDate = tomorrow.toISOString().split('T')[0];
-    $('bc-checkin').min = minDate;
-    $('bc-checkout').min = minDate;
 
     // Populate guest options
     const guestSel = $('bc-guests');
@@ -34,7 +32,7 @@
       guestSel.appendChild(o);
     }
 
-    // Inject pet fee checkbox if configured
+    // Pet fee checkbox
     if (cfg.petFee) {
       const petDiv = document.createElement('div');
       petDiv.className = 'booking-guests';
@@ -47,62 +45,255 @@
       document.getElementById(pfx + 'bc-pet').addEventListener('change', checkAvail);
     }
 
-    $('bc-checkin').addEventListener('change', () => {
-      const ci = $('bc-checkin').value;
-      if (ci) {
-        const next = new Date(ci);
-        next.setDate(next.getDate() + 1);
-        $('bc-checkout').min = next.toISOString().split('T')[0];
-        if ($('bc-checkout').value && $('bc-checkout').value <= ci) {
-          $('bc-checkout').value = '';
-        }
-      }
-      checkAvail();
-    });
-    $('bc-checkout').addEventListener('change', checkAvail);
+    // ── Calendar state ──────────────────────────────────────────────────────
+    let stage       = null; // null | 'checkin' | 'checkout'
+    let checkinDate = null;
+    let checkoutDate = null;
+    let hoverDate   = null;
+    let viewYear    = tomorrow.getFullYear();
+    let viewMonth   = tomorrow.getMonth();
 
+    function parseLocal(str) {
+      if (!str) return null;
+      const [y, m, d] = str.split('-').map(Number);
+      return new Date(y, m - 1, d);
+    }
+
+    function toValue(d) {
+      if (!d) return '';
+      return d.getFullYear() + '-'
+        + String(d.getMonth() + 1).padStart(2, '0') + '-'
+        + String(d.getDate()).padStart(2, '0');
+    }
+
+    function toDisplay(d) {
+      if (!d) return 'Add date';
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    function openCalendar(startStage) {
+      stage = startStage;
+      if (startStage === 'checkout' && checkinDate) {
+        viewYear  = checkinDate.getFullYear();
+        viewMonth = checkinDate.getMonth();
+      } else if (!checkinDate) {
+        viewYear  = tomorrow.getFullYear();
+        viewMonth = tomorrow.getMonth();
+      }
+      renderCal();
+      $('bc-cal').style.display = 'block';
+      syncHighlight();
+    }
+
+    function closeCalendar() {
+      stage = null;
+      hoverDate = null;
+      $('bc-cal').style.display = 'none';
+      syncHighlight();
+    }
+
+    function syncHighlight() {
+      const ci = $('bc-checkin-field');
+      const co = $('bc-checkout-field');
+      if (ci) ci.classList.toggle('bc-field-active', stage === 'checkin');
+      if (co) co.classList.toggle('bc-field-active', stage === 'checkout');
+    }
+
+    function renderCal() {
+      const cal       = $('bc-cal');
+      const firstDay  = new Date(viewYear, viewMonth, 1);
+      const lastDay   = new Date(viewYear, viewMonth + 1, 0);
+      const startDow  = firstDay.getDay();
+      const DAYS      = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+      const label     = firstDay.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+      // Determine range end for hover preview
+      const rangeEnd  = (stage === 'checkout' && hoverDate) ? hoverDate : checkoutDate;
+
+      let html = `
+        <div class="bc-cal-header">
+          <button class="bc-cal-nav" data-dir="-1">&#8249;</button>
+          <span class="bc-cal-month">${label}</span>
+          <button class="bc-cal-nav" data-dir="1">&#8250;</button>
+        </div>
+        <div class="bc-cal-grid">
+          ${DAYS.map(d => `<span class="bc-cal-dow">${d}</span>`).join('')}`;
+
+      // Empty leading cells
+      for (let i = 0; i < startDow; i++) html += `<span></span>`;
+
+      for (let d = 1; d <= lastDay.getDate(); d++) {
+        const date    = new Date(viewYear, viewMonth, d);
+        const isPast  = date < tomorrow;
+        const isCI    = checkinDate  && date.getTime() === checkinDate.getTime();
+        const isCO    = checkoutDate && date.getTime() === checkoutDate.getTime();
+
+        let inRange = false, isStart = false, isEnd = false;
+        if (checkinDate && rangeEnd && checkinDate.getTime() !== rangeEnd.getTime()) {
+          const s = checkinDate < rangeEnd ? checkinDate : rangeEnd;
+          const e = checkinDate < rangeEnd ? rangeEnd    : checkinDate;
+          isStart = date.getTime() === s.getTime();
+          isEnd   = date.getTime() === e.getTime();
+          inRange = date > s && date < e;
+        }
+
+        let cls = 'bc-cal-day';
+        if (isPast)            cls += ' past';
+        if (!isPast)           cls += ' avail';
+        if (isCI || isStart)   cls += ' sel start';
+        if (isCO || isEnd)     cls += ' sel end';
+        if (inRange)           cls += ' range';
+
+        const attr = !isPast ? ` data-date="${toValue(date)}"` : '';
+        html += `<span class="${cls}"${attr}>${d}</span>`;
+      }
+
+      html += `</div>`;
+      html += `<div class="bc-cal-hint">${stage === 'checkin' ? 'Select check-in date' : 'Select check-out date'}</div>`;
+
+      cal.innerHTML = html;
+
+      // Month navigation
+      cal.querySelectorAll('.bc-cal-nav').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.stopPropagation();
+          viewMonth += parseInt(btn.dataset.dir);
+          if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+          if (viewMonth < 0)  { viewMonth = 11; viewYear--; }
+          renderCal();
+        });
+      });
+
+      // Day interactions
+      cal.querySelectorAll('.bc-cal-day.avail').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          if (stage === 'checkout') {
+            hoverDate = parseLocal(el.dataset.date);
+            renderCal();
+          }
+        });
+
+        el.addEventListener('click', e => {
+          e.stopPropagation();
+          const date = parseLocal(el.dataset.date);
+          if (!date) return;
+
+          if (stage === 'checkin') {
+            checkinDate  = date;
+            checkoutDate = null;
+            hoverDate    = null;
+            $('bc-checkin').value           = toValue(date);
+            $('bc-checkout').value          = '';
+            $('bc-checkin-display').textContent  = toDisplay(date);
+            $('bc-checkout-display').textContent = 'Add date';
+            // Reset availability UI
+            $('bc-status').textContent  = '';
+            $('bc-status').className    = 'bc-status';
+            $('bc-breakdown').style.display = 'none';
+            $('bc-contact').style.display   = 'none';
+            $('bc-btn').style.display       = 'none';
+            $('bc-secure').style.display    = 'none';
+            stage = 'checkout';
+            syncHighlight();
+            renderCal();
+
+          } else if (stage === 'checkout') {
+            if (date <= checkinDate) {
+              // Restart: treat clicked date as new check-in
+              checkinDate  = date;
+              checkoutDate = null;
+              hoverDate    = null;
+              $('bc-checkin').value           = toValue(date);
+              $('bc-checkout').value          = '';
+              $('bc-checkin-display').textContent  = toDisplay(date);
+              $('bc-checkout-display').textContent = 'Add date';
+              renderCal();
+            } else {
+              checkoutDate = date;
+              $('bc-checkout').value               = toValue(date);
+              $('bc-checkout-display').textContent = toDisplay(date);
+              closeCalendar();
+              checkAvail();
+            }
+          }
+        });
+      });
+
+      cal.addEventListener('mouseleave', () => {
+        if (stage === 'checkout' && hoverDate) {
+          hoverDate = null;
+          renderCal();
+        }
+      });
+    }
+
+    // Trigger field clicks
+    $('bc-checkin-field').addEventListener('click', e => {
+      e.stopPropagation();
+      if (stage === 'checkin') { closeCalendar(); return; }
+      openCalendar('checkin');
+    });
+
+    $('bc-checkout-field').addEventListener('click', e => {
+      e.stopPropagation();
+      if (stage === 'checkout') { closeCalendar(); return; }
+      if (!checkinDate) { openCalendar('checkin'); return; }
+      openCalendar('checkout');
+    });
+
+    // Close on outside click
+    document.addEventListener('click', e => {
+      if (stage === null) return;
+      const cal     = $('bc-cal');
+      const dateRow = $('bc-date-row');
+      if (cal && !cal.contains(e.target) && dateRow && !dateRow.contains(e.target)) {
+        closeCalendar();
+      }
+    });
+
+    // ── Availability check ───────────────────────────────────────────────────
     async function checkAvail() {
-      const checkin = $('bc-checkin').value;
+      const checkin  = $('bc-checkin').value;
       const checkout = $('bc-checkout').value;
       if (!checkin || !checkout || checkin >= checkout) return;
 
       const status = $('bc-status');
       status.textContent = 'Checking availability…';
-      status.className = 'bc-status checking';
+      status.className   = 'bc-status checking';
       $('bc-breakdown').style.display = 'none';
-      $('bc-contact').style.display = 'none';
-      $('bc-btn').style.display = 'none';
-      $('bc-secure').style.display = 'none';
+      $('bc-contact').style.display   = 'none';
+      $('bc-btn').style.display       = 'none';
+      $('bc-secure').style.display    = 'none';
 
       try {
         const pricingParam = cfg.pricingPropertyId
           ? `&pricing_id=${cfg.pricingPropertyId}`
           : '';
-        const res = await fetch(
+        const res  = await fetch(
           `/.netlify/functions/check-availability?property_id=${cfg.propertyId}&checkin=${checkin}&checkout=${checkout}${pricingParam}`
         );
         const data = await res.json();
 
         if (!data.available) {
           status.textContent = '✕ ' + (data.reason || 'Not available for those dates');
-          status.className = 'bc-status no';
+          status.className   = 'bc-status no';
           return;
         }
 
-        const fmt = n => '$' + n.toLocaleString('en-US');
-        const avgNightly = Math.round(data.price_dollars / data.nights);
+        const fmt         = n => '$' + n.toLocaleString('en-US');
+        const avgNightly  = Math.round(data.price_dollars / data.nights);
         const cleaningDollars = cfg.cleaningFee / 100;
-        const petCheck = document.getElementById(pfx + 'bc-pet');
-        const petDollars = (petCheck && petCheck.checked) ? cfg.petFee / 100 : 0;
-        const subtotal = data.price_dollars + cleaningDollars + petDollars;
-        const taxDollars = cfg.taxRate ? Math.round(subtotal * cfg.taxRate) / 100
-          : cfg.taxFlat ? cfg.taxFlat / 100
-          : 0;
+        const petCheck    = document.getElementById(pfx + 'bc-pet');
+        const petDollars  = (petCheck && petCheck.checked) ? cfg.petFee / 100 : 0;
+        const subtotal    = data.price_dollars + cleaningDollars + petDollars;
+        const taxDollars  = cfg.taxRate  ? Math.round(subtotal * cfg.taxRate) / 100
+                          : cfg.taxFlat ? cfg.taxFlat / 100
+                          : 0;
         const totalDollars = subtotal + taxDollars;
-        const taxCents = Math.round(taxDollars * 100);
+        const taxCents     = Math.round(taxDollars * 100);
 
         status.textContent = '✓ Available — ' + data.nights + ' night' + (data.nights !== 1 ? 's' : '');
-        status.className = 'bc-status ok';
+        status.className   = 'bc-status ok';
 
         $('bc-breakdown').innerHTML = `
           <div class="bc-price-row"><span>${data.nights} nights (avg ${fmt(avgNightly)}/night)</span><span>${fmt(data.price_dollars)}</span></div>
@@ -112,24 +303,25 @@
           <div class="bc-price-row total"><span>Total</span><span>${fmt(totalDollars)}</span></div>
         `;
         $('bc-breakdown').style.display = 'block';
-        $('bc-contact').style.display = 'flex';
-        $('bc-btn').style.display = 'block';
-        $('bc-secure').style.display = 'block';
-        $('bc-btn').dataset.priceCents = data.price_cents;
-        $('bc-btn').dataset.nights = data.nights;
-        $('bc-btn').dataset.taxCents = taxCents;
+        $('bc-contact').style.display   = 'flex';
+        $('bc-btn').style.display       = 'block';
+        $('bc-secure').style.display    = 'block';
+        $('bc-btn').dataset.priceCents  = data.price_cents;
+        $('bc-btn').dataset.nights      = data.nights;
+        $('bc-btn').dataset.taxCents    = taxCents;
         $('bc-btn').dataset.petFeeCents = Math.round(petDollars * 100);
 
       } catch {
         status.textContent = 'Unable to check. Please try again.';
-        status.className = 'bc-status no';
+        status.className   = 'bc-status no';
       }
     }
 
+    // ── Checkout button ──────────────────────────────────────────────────────
     $('bc-btn').addEventListener('click', async () => {
-      const checkin  = $('bc-checkin').value;
-      const checkout = $('bc-checkout').value;
-      const guests   = parseInt($('bc-guests').value);
+      const checkin   = $('bc-checkin').value;
+      const checkout  = $('bc-checkout').value;
+      const guests    = parseInt($('bc-guests').value);
       const firstName = $('bc-first').value.trim();
       const lastName  = $('bc-last').value.trim();
       const email     = $('bc-email').value.trim();
@@ -144,13 +336,13 @@
 
       const btn = $('bc-btn');
       btn.textContent = 'Redirecting…';
-      btn.disabled = true;
+      btn.disabled    = true;
 
       try {
-        const res = await fetch('/.netlify/functions/create-checkout', {
-          method: 'POST',
+        const res  = await fetch('/.netlify/functions/create-checkout', {
+          method:  'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
+          body:    JSON.stringify({
             property_id:        cfg.propertyId,
             property_name:      cfg.propertyName,
             cancel_path:        cfg.cancelPath || '/',
@@ -162,7 +354,7 @@
             price_cents:        parseInt(btn.dataset.priceCents),
             cleaning_fee_cents: cfg.cleaningFee,
             pet_fee_cents:      parseInt(btn.dataset.petFeeCents || '0'),
-            tax_cents:          parseInt(btn.dataset.taxCents || '0'),
+            tax_cents:          parseInt(btn.dataset.taxCents    || '0'),
           }),
         });
         const data = await res.json();
@@ -173,7 +365,7 @@
         }
       } catch {
         btn.textContent = 'Book Direct →';
-        btn.disabled = false;
+        btn.disabled    = false;
         alert('Something went wrong. Please try again or email contact@shankton.com');
       }
     });

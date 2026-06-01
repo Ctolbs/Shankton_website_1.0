@@ -1194,6 +1194,104 @@ section { padding: 80px 0; }
   min-height: 18px;
   margin: 8px 0 4px;
 }
+/* Date range picker */
+.bc-date-wrap { position: relative; margin-bottom: 0; }
+.bc-date-row  { cursor: pointer; margin-bottom: 0 !important; }
+.booking-field { cursor: pointer; transition: background 0.1s; }
+.booking-field:hover .bc-date-display  { color: var(--emerald); }
+.bc-field-active .bc-date-display       { color: var(--emerald); font-weight: 500; }
+.bc-field-active                        { background: rgba(26,74,77,0.04); }
+.bc-date-display {
+  font-size: 15px;
+  color: var(--text);
+  min-height: 22px;
+  line-height: 1.4;
+}
+
+.bc-cal-popup {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.12);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.13);
+  z-index: 300;
+  padding: 14px 16px 10px;
+  user-select: none;
+}
+
+.bc-cal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.bc-cal-month {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.03em;
+}
+.bc-cal-nav {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--text);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+.bc-cal-nav:hover { background: rgba(0,0,0,0.07); }
+
+.bc-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px 0;
+}
+.bc-cal-dow {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--text-muted);
+  padding: 3px 0 6px;
+  font-weight: 500;
+}
+.bc-cal-day {
+  text-align: center;
+  padding: 7px 0;
+  font-size: 13px;
+  color: var(--text);
+  border-radius: 3px;
+  cursor: default;
+  position: relative;
+}
+.bc-cal-day.avail  { cursor: pointer; }
+.bc-cal-day.avail:hover:not(.sel) { background: rgba(0,0,0,0.06); }
+.bc-cal-day.past   { color: rgba(0,0,0,0.22); }
+.bc-cal-day.range  {
+  background: rgba(26,74,77,0.09);
+  border-radius: 0;
+}
+.bc-cal-day.sel {
+  background: var(--emerald, #1a4a4d);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 3px;
+  z-index: 1;
+}
+.bc-cal-day.range.start { border-radius: 3px 0 0 3px; }
+.bc-cal-day.range.end   { border-radius: 0 3px 3px 0; }
+.bc-cal-hint {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 10px;
+  letter-spacing: 0.4px;
+}
+
 .bc-status.checking { color: rgba(0,0,0,0.45); }
 .bc-status.ok { color: var(--emerald, #1a4a4d); }
 .bc-status.no { color: #b94040; }

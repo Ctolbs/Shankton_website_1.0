@@ -298,16 +298,21 @@
         <div class="booking-price">From $385 <span style="font-size:16px;color:var(--text-muted);font-family:'Inter',sans-serif;font-weight:400;">/ night</span></div>
         <div class="booking-price-sub">4 BR + bunk · 4 BA · Sleeps 12 · Playa Gigante</div>
 
-        <div class="booking-form-row">
-          <div class="booking-field">
-            <div class="booking-label">Check in</div>
-            <input type="date" id="bc-checkin" class="bc-input">
+        <div class="bc-date-wrap">
+          <div class="booking-form-row bc-date-row" id="bc-date-row">
+            <div class="booking-field" id="bc-checkin-field">
+              <div class="booking-label">Check in</div>
+              <div class="bc-date-display" id="bc-checkin-display">Add date</div>
+            </div>
+            <div class="booking-field" id="bc-checkout-field">
+              <div class="booking-label">Check out</div>
+              <div class="bc-date-display" id="bc-checkout-display">Add date</div>
+            </div>
           </div>
-          <div class="booking-field">
-            <div class="booking-label">Check out</div>
-            <input type="date" id="bc-checkout" class="bc-input">
-          </div>
+          <div class="bc-cal-popup" id="bc-cal" style="display:none"></div>
         </div>
+        <input type="hidden" id="bc-checkin">
+        <input type="hidden" id="bc-checkout">
         <div class="booking-guests">
           <div class="booking-label">Guests</div>
           <select id="bc-guests" class="bc-input"></select>
