@@ -631,10 +631,10 @@ section { padding: 80px 0; }
 
 #avatar-nemer img    { object-position: center 38%; transform: scale(1.2);  transform-origin: center 38%; }
 #avatar-jasmin img   { object-position: center 38%; transform: scale(2.5);  transform-origin: center 38%; }
-#avatar-tamara img   { object-position: center 26%; }
-#avatar-daneysis img { object-position: center 28%; }
-#avatar-francisco img { object-position: center 38%; transform: scale(1.2); transform-origin: center 38%; }
-#avatar-danny img    { object-position: center 30%; }
+#avatar-tamara img    { object-position: center 30%; }
+#avatar-daneysis img  { object-position: center 42%; }
+#avatar-francisco img { object-position: center 45%; transform: scale(1.15); transform-origin: center 45%; }
+#avatar-danny img     { object-position: center 50%; }
 
 .team-name {
   font-family: 'Tenor Sans', serif;
