@@ -629,12 +629,12 @@ section { padding: 80px 0; }
   display: block;
 }
 
-#avatar-nemer img    { object-position: center 38%; transform: scale(1.2); transform-origin: center 38%; }
-#avatar-jasmin img   { object-position: center 38%; transform: scale(2.5); transform-origin: center 38%; }
-#avatar-tamara img   { object-position: center 42%; transform: scale(1.2); transform-origin: center 42%; }
-#avatar-daneysis img { object-position: center 32%; transform: scale(1.2); transform-origin: center 32%; }
-#avatar-francisco img { object-position: center 45%; transform: scale(1.3); transform-origin: center 45%; }
-#avatar-danny img    { object-position: center 20%; transform: scale(1.2); transform-origin: center 20%; }
+#avatar-nemer img    { object-position: center 38%; transform: scale(1.2);  transform-origin: center 38%; }
+#avatar-jasmin img   { object-position: center 38%; transform: scale(2.5);  transform-origin: center 38%; }
+#avatar-tamara img   { object-position: center 36%; transform: scale(1.7);  transform-origin: center 36%; }
+#avatar-daneysis img { object-position: center 28%; transform: scale(1.8);  transform-origin: center 28%; }
+#avatar-francisco img { object-position: center 32%; transform: scale(1.9); transform-origin: center 32%; }
+#avatar-danny img    { object-position: center 14%; transform: scale(2.4);  transform-origin: center 14%; }
 
 .team-name {
   font-family: 'Tenor Sans', serif;
