@@ -22,6 +22,7 @@ exports.handler = async (event) => {
 
   const data = await res.json();
   const days = data.data?.days || [];
+  console.log('Hospitable days sample:', JSON.stringify(days[0]));
 
   // Exclude the checkout day — only nights being slept need to be available
   const stayNights = days.filter(d => d.date !== checkout);
@@ -34,7 +35,9 @@ exports.handler = async (event) => {
     };
   }
 
-  const unavailableDay = stayNights.find(d => !d.status.available);
+  // Support both flat (d.available) and nested (d.status.available) API shapes
+  const isAvailable = d => d.status?.available ?? d.available ?? true;
+  const unavailableDay = stayNights.find(d => !isAvailable(d));
   const checkinDay = stayNights[0];
   const minStay = checkinDay?.min_stay || 1;
   const nights = stayNights.length;
