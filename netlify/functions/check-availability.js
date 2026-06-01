@@ -1,7 +1,7 @@
 exports.handler = async (event) => {
   if (event.httpMethod !== 'GET') return { statusCode: 405, body: 'Method not allowed' };
 
-  const { property_id, checkin, checkout } = event.queryStringParameters || {};
+  const { property_id, pricing_id, checkin, checkout } = event.queryStringParameters || {};
   if (!property_id || !checkin || !checkout) {
     return { statusCode: 400, body: JSON.stringify({ error: 'Missing parameters' }) };
   }
@@ -9,11 +9,11 @@ exports.handler = async (event) => {
   const token = process.env.HOSPITABLE_TOKEN;
   if (!token) return { statusCode: 500, body: JSON.stringify({ error: 'Server config error' }) };
 
-  const res = await fetch(
-    `https://public.api.hospitable.com/v2/properties/${property_id}/calendar?start_date=${checkin}&end_date=${checkout}`,
-    { headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' } }
-  );
+  const headers = { Authorization: `Bearer ${token}`, Accept: 'application/json' };
+  const calUrl = id => `https://public.api.hospitable.com/v2/properties/${id}/calendar?start_date=${checkin}&end_date=${checkout}`;
 
+  // Availability calendar — always use the actual property being booked
+  const res = await fetch(calUrl(property_id), { headers });
   if (!res.ok) {
     const err = await res.text();
     console.error('Hospitable calendar error:', err);
@@ -26,6 +26,19 @@ exports.handler = async (event) => {
 
   // Exclude the checkout day — only nights being slept need to be available
   const stayNights = days.filter(d => d.date !== checkout);
+
+  // Pricing calendar — use a separate property when the booking property has
+  // inflated platform rates (e.g. Airbnb markup). pricing_id should point to
+  // the equivalent VRBO/direct listing so guests see the real direct rate.
+  let priceDays = stayNights;
+  if (pricing_id && pricing_id !== property_id) {
+    const priceRes = await fetch(calUrl(pricing_id), { headers });
+    if (priceRes.ok) {
+      const priceData = await priceRes.json();
+      const allPriceDays = priceData.data?.days || [];
+      priceDays = allPriceDays.filter(d => d.date !== checkout);
+    }
+  }
 
   if (stayNights.length === 0) {
     return {
@@ -58,8 +71,9 @@ exports.handler = async (event) => {
     };
   }
 
-  // Sum per-night prices (in cents)
-  const priceCents = stayNights.reduce((sum, d) => sum + d.price.amount, 0);
+  // Sum per-night prices (in cents) — uses priceDays which may come from a
+  // separate direct-rate property (see pricing_id above)
+  const priceCents = priceDays.reduce((sum, d) => sum + d.price.amount, 0);
 
   return {
     statusCode: 200,

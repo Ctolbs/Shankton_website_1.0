@@ -8,7 +8,7 @@ exports.handler = async (event) => {
   catch { return { statusCode: 400, body: JSON.stringify({ error: 'Invalid JSON' }) }; }
 
   const {
-    property_id, property_name, checkin, checkout,
+    property_id, property_name, cancel_path, checkin, checkout,
     guests, first_name, last_name, email, phone,
     nights, price_cents, cleaning_fee_cents,
   } = body;
@@ -20,33 +20,62 @@ exports.handler = async (event) => {
   const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
   const siteUrl = process.env.URL || 'https://www.shankton.com';
 
+  const {
+    pet_fee_cents = 0,
+    tax_cents = 0,
+  } = body;
+
+  const lineItems = [
+    {
+      price_data: {
+        currency: 'usd',
+        product_data: {
+          name: property_name,
+          description: `${nights} night${nights !== 1 ? 's' : ''} · Check-in ${checkin} · Check-out ${checkout} · ${guests} guest${guests > 1 ? 's' : ''}`,
+        },
+        unit_amount: price_cents,
+      },
+      quantity: 1,
+    },
+    {
+      price_data: {
+        currency: 'usd',
+        product_data: { name: 'Cleaning fee' },
+        unit_amount: cleaning_fee_cents,
+      },
+      quantity: 1,
+    },
+  ];
+
+  if (pet_fee_cents > 0) {
+    lineItems.push({
+      price_data: {
+        currency: 'usd',
+        product_data: { name: 'Pet fee' },
+        unit_amount: pet_fee_cents,
+      },
+      quantity: 1,
+    });
+  }
+
+  if (tax_cents > 0) {
+    lineItems.push({
+      price_data: {
+        currency: 'usd',
+        product_data: { name: 'Taxes & fees' },
+        unit_amount: tax_cents,
+      },
+      quantity: 1,
+    });
+  }
+
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
     customer_email: email,
-    line_items: [
-      {
-        price_data: {
-          currency: 'usd',
-          product_data: {
-            name: property_name,
-            description: `${nights} night${nights !== 1 ? 's' : ''} · Check-in ${checkin} · Check-out ${checkout} · ${guests} guest${guests > 1 ? 's' : ''}`,
-          },
-          unit_amount: price_cents,
-        },
-        quantity: 1,
-      },
-      {
-        price_data: {
-          currency: 'usd',
-          product_data: { name: 'Cleaning fee' },
-          unit_amount: cleaning_fee_cents,
-        },
-        quantity: 1,
-      },
-    ],
+    line_items: lineItems,
     mode: 'payment',
     success_url: `${siteUrl}/booking-success.html?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${siteUrl}/#nicaragua`,
+    cancel_url: `${siteUrl}${cancel_path || '/'}`,
     metadata: {
       property_id,
       property_name,

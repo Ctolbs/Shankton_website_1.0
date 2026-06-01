@@ -75,7 +75,7 @@
     <li><a href="nicaragua/">Nicaragua</a></li>
     <li><a href="california/">California</a></li>
     <li><a href="#team">The Team</a></li>
-    <li><a href="#" class="nav-cta">Reserve</a></li>
+    <li><a href="#collection" class="nav-cta">Reserve</a></li>
   </ul>
 </nav>
 
@@ -110,7 +110,7 @@
 <div class="stats-bar">
   <div class="container">
     <div class="stat-item">
-      <div class="stat-number">919<span style="font-size:28px;color:var(--sand);">+</span></div>
+      <div class="stat-number">919<span class="stat-suffix">+</span></div>
       <div class="stat-label">Guest Reviews</div>
     </div>
     <div class="stat-item">
@@ -118,11 +118,11 @@
       <div class="stat-label">Average Rating</div>
     </div>
     <div class="stat-item">
-      <div class="stat-number">87<span style="font-size:28px;color:var(--sand);">%</span></div>
+      <div class="stat-number">87<span class="stat-suffix">%</span></div>
       <div class="stat-label">Five-Star Reviews</div>
     </div>
     <div class="stat-item">
-      <div class="stat-number">20<span style="font-size:28px;color:var(--sand);">+</span></div>
+      <div class="stat-number">20<span class="stat-suffix">+</span></div>
       <div class="stat-label">Years in Nicaragua</div>
     </div>
   </div>
@@ -135,7 +135,7 @@
       <p class="eyebrow">02 · The Collection</p>
       <h2>Three homes. One ocean.</h2>
       <div class="divider"></div>
-      <p class="lead" style="max-width:560px;color:var(--text-muted);">Each home has its own reason to exist. None of them compete with each other — they're chosen, not collected.</p>
+      <p class="section-lead">Each home has its own reason to exist. None of them compete with each other — they're chosen, not collected.</p>
     </div>
 
     <div class="collection-grid" id="collection-grid"></div>
@@ -328,5 +328,13 @@
 
 <script src="js/properties.js"></script>
 <script src="js/nba-jam.js"></script>
+<script>
+  (function () {
+    const nav = document.querySelector('.nav');
+    window.addEventListener('scroll', function () {
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    }, { passive: true });
+  })();
+</script>
 </body>
 </html>

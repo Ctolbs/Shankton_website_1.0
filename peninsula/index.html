@@ -464,56 +464,86 @@
           <button class="booking-unit-btn" data-book-unit="whole">Both</button>
         </div>
 
-        <!-- Unit A booking -->
+        <!-- Unit A booking — Airbnb side -->
         <div class="booking-panel active" id="book-a">
           <div class="booking-price">From $285 <span style="font-size:16px;color:var(--text-muted);font-family:'Inter',sans-serif;font-weight:400;">/ night</span></div>
-          <div class="booking-price-sub">2 BR · 2.5 BA · Sleeps 6 · Belmont Shore</div>
+          <div class="booking-price-sub">2 Kings + sleeper · 2.5 BA · Sleeps 6 · Belmont Shore</div>
           <div class="booking-form-row">
             <div class="booking-field">
               <div class="booking-label">Check in</div>
-              <div class="booking-value">Add date</div>
+              <input type="date" id="a-bc-checkin" class="bc-input">
             </div>
             <div class="booking-field">
               <div class="booking-label">Check out</div>
-              <div class="booking-value">Add date</div>
+              <input type="date" id="a-bc-checkout" class="bc-input">
             </div>
           </div>
           <div class="booking-guests">
             <div class="booking-label">Guests</div>
-            <div class="booking-value">2 adults</div>
+            <select id="a-bc-guests" class="bc-input"></select>
           </div>
-          <a href="https://www.airbnb.com/rooms/search?q=shankton+peninsula+unit+a+long+beach" target="_blank" class="btn btn-primary" style="width:100%;text-align:center;display:block;">Check Availability</a>
+          <div id="a-bc-status" class="bc-status"></div>
+          <div id="a-bc-breakdown" class="bc-breakdown" style="display:none"></div>
+          <div id="a-bc-contact" class="bc-contact" style="display:none">
+            <div class="bc-form-row">
+              <input type="text" id="a-bc-first" class="bc-input" placeholder="First name">
+              <input type="text" id="a-bc-last" class="bc-input" placeholder="Last name">
+            </div>
+            <input type="email" id="a-bc-email" class="bc-input" placeholder="Email address">
+            <input type="tel" id="a-bc-phone" class="bc-input" placeholder="Phone (optional)">
+          </div>
+          <button id="a-bc-btn" class="btn btn-primary" style="width:100%;display:none;border:none;cursor:pointer;margin-top:8px;">Book Direct →</button>
+          <div class="bc-secure" id="a-bc-secure" style="display:none">🔒 Secured by Stripe · No platform fees</div>
           <div class="booking-total">
             <span class="booking-total-label">Min. stay</span>
             <span class="booking-total-amount">1 night</span>
           </div>
-          <p class="booking-note">Book direct for the best rate. Available on Airbnb.</p>
+          <p class="booking-note">Book direct for the best rate. No Airbnb fees.</p>
+          <div class="booking-airbnb">
+            <svg width="14" height="14" viewBox="0 0 32 32" fill="none"><path d="M16 1C7.7 1 1 7.7 1 16s6.7 15 15 15 15-6.7 15-15S24.3 1 16 1z" fill="#FF5A5F"/></svg>
+            Also available on Airbnb
+          </div>
         </div>
 
-        <!-- Unit B booking -->
+        <!-- Unit B booking — VRBO / Booking.com side -->
         <div class="booking-panel" id="book-b">
-          <div class="booking-price">From $325 <span style="font-size:16px;color:var(--text-muted);font-family:'Inter',sans-serif;font-weight:400;">/ night</span></div>
-          <div class="booking-price-sub">2 BR · 2.5 BA · Sleeps 6 · Belmont Shore</div>
+          <div class="booking-price">From $285 <span style="font-size:16px;color:var(--text-muted);font-family:'Inter',sans-serif;font-weight:400;">/ night</span></div>
+          <div class="booking-price-sub">2 Kings + sleeper · 2.5 BA · Sleeps 6 · Belmont Shore</div>
           <div class="booking-form-row">
             <div class="booking-field">
               <div class="booking-label">Check in</div>
-              <div class="booking-value">Add date</div>
+              <input type="date" id="b-bc-checkin" class="bc-input">
             </div>
             <div class="booking-field">
               <div class="booking-label">Check out</div>
-              <div class="booking-value">Add date</div>
+              <input type="date" id="b-bc-checkout" class="bc-input">
             </div>
           </div>
           <div class="booking-guests">
             <div class="booking-label">Guests</div>
-            <div class="booking-value">2 adults</div>
+            <select id="b-bc-guests" class="bc-input"></select>
           </div>
-          <a href="https://www.booking.com/searchresults.html?ss=shankton+peninsula+long+beach" target="_blank" class="btn btn-primary" style="width:100%;text-align:center;display:block;">Check Availability</a>
+          <div id="b-bc-status" class="bc-status"></div>
+          <div id="b-bc-breakdown" class="bc-breakdown" style="display:none"></div>
+          <div id="b-bc-contact" class="bc-contact" style="display:none">
+            <div class="bc-form-row">
+              <input type="text" id="b-bc-first" class="bc-input" placeholder="First name">
+              <input type="text" id="b-bc-last" class="bc-input" placeholder="Last name">
+            </div>
+            <input type="email" id="b-bc-email" class="bc-input" placeholder="Email address">
+            <input type="tel" id="b-bc-phone" class="bc-input" placeholder="Phone (optional)">
+          </div>
+          <button id="b-bc-btn" class="btn btn-primary" style="width:100%;display:none;border:none;cursor:pointer;margin-top:8px;">Book Direct →</button>
+          <div class="bc-secure" id="b-bc-secure" style="display:none">🔒 Secured by Stripe · No platform fees</div>
           <div class="booking-total">
             <span class="booking-total-label">Min. stay</span>
             <span class="booking-total-amount">1 night</span>
           </div>
-          <p class="booking-note">Book direct for the best rate. Available on Booking.com and Airbnb.</p>
+          <p class="booking-note">Book direct for the best rate. No platform fees.</p>
+          <div class="booking-airbnb">
+            <svg width="12" height="12" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="4" fill="#003580"/><text x="4" y="22" font-size="14" font-weight="700" fill="white" font-family="sans-serif">V</text></svg>
+            Also on VRBO &amp; Booking.com
+          </div>
         </div>
 
         <!-- Whole building booking -->
@@ -694,6 +724,32 @@
   });
 </script>
 
+<script>
+  window.BOOKING_CONFIGS = [
+    {
+      prefix:            'a',
+      propertyId:        'c4a7f5ea-4ad5-4051-91c0-e72573fc21ba',
+      pricingPropertyId: 'd2840288-b09e-49e9-8f97-a69f6b34f6d4',
+      propertyName:      'Shankton Peninsula · Unit A',
+      maxGuests:         6,
+      cleaningFee:       19900,
+      petFee:            10000,
+      taxRate:           13.02,   // Long Beach TOT (required — remit to city)
+      cancelPath:        '/peninsula/',
+    },
+    {
+      prefix:       'b',
+      propertyId:   'd2840288-b09e-49e9-8f97-a69f6b34f6d4',
+      propertyName: 'Shankton Peninsula · Unit B',
+      maxGuests:    6,
+      cleaningFee:  19900,
+      petFee:       10000,
+      taxRate:      13.02,
+      cancelPath:   '/peninsula/',
+    },
+  ];
+</script>
+<script src="../js/booking.js"></script>
 <script src="../js/nba-jam.js"></script>
 </body>
 </html>

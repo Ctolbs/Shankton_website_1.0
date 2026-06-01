@@ -37,7 +37,7 @@ const SHANKTON_PROPERTIES = [
     name: "Shankton Peninsula",
     location: "Belmont Shore · Long Beach",
     tagline: "Two private suites between the bay and the Pacific. Roof decks with 360° views. Fifty meters to sand. Walk to 2nd Street.",
-    specs: "2 units · 2 BR each · Sleeps 12",
+    specs: "2 units · 2 Kings + sleeper · Sleeps 12",
     rating: 4.89,
     reviews: 351,
     url: "peninsula/",
