@@ -20,11 +20,15 @@ exports.handler = async (event) => {
   }
 
   const session = stripeEvent.data.object;
-  const { property_id, property_name, checkin, checkout, guests, first_name, last_name, email, phone, nights } = session.metadata;
+  const {
+    property_id, property_name,
+    checkin, checkout, guests,
+    first_name, last_name, email, phone, nights,
+    price_cents, cleaning_fee_cents, pet_fee_cents, tax_cents,
+  } = session.metadata;
 
   console.log(`Booking paid: ${email} · ${property_name} · ${checkin}→${checkout}`);
 
-  // Create reservation in Hospitable
   const res = await fetch('https://public.api.hospitable.com/v2/reservations', {
     method: 'POST',
     headers: {
@@ -34,20 +38,24 @@ exports.handler = async (event) => {
     },
     body: JSON.stringify({
       property_id,
-      checkin,
-      checkout,
-      adults: parseInt(guests, 10),
-      channel: 'direct',
-      channel_reservation_id: session.id,
+      check_in:  checkin,
+      check_out: checkout,
+      guests:    { adults: parseInt(guests, 10) },
+      language:  'en',
+      channel:   'direct',
+      reservation_code: session.id,
       guest: {
         first_name,
         last_name,
         email,
         phone: phone || undefined,
       },
-      money: {
-        accommodation_fare: session.amount_total / 100,
-        currency: 'USD',
+      financials: {
+        currency:          'USD',
+        accommodation:     parseInt(price_cents        || '0', 10),
+        cleaning_fee:      parseInt(cleaning_fee_cents || '0', 10),
+        pet_fee:           parseInt(pet_fee_cents      || '0', 10),
+        pass_through_taxes: parseInt(tax_cents         || '0', 10),
       },
     }),
   });
@@ -55,7 +63,6 @@ exports.handler = async (event) => {
   const result = await res.json();
 
   if (!res.ok) {
-    // Payment succeeded but reservation creation failed — log clearly for manual follow-up
     console.error('HOSPITABLE RESERVATION FAILED — manual action required');
     console.error('Stripe session:', session.id);
     console.error('Guest:', email, first_name, last_name);
