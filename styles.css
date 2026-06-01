@@ -633,7 +633,7 @@ section { padding: 80px 0; }
 #avatar-jasmin img   { object-position: center 38%; transform: scale(2.5);  transform-origin: center 38%; }
 #avatar-tamara img    { object-position: center 23%; }
 #avatar-daneysis img  { object-position: center 32%; }
-#avatar-francisco img { object-position: center 75%; }
+#avatar-francisco img { object-position: center 32%; }
 #avatar-danny img     { object-position: center 50%; }
 
 .team-name {
