@@ -29,38 +29,45 @@ exports.handler = async (event) => {
 
   console.log(`Booking paid: ${email} · ${property_name} · ${checkin}→${checkout}`);
 
-  const res = await fetch('https://public.api.hospitable.com/v2/reservations', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${process.env.HOSPITABLE_TOKEN}`,
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    body: JSON.stringify({
-      property_id,
-      check_in:  checkin,
-      check_out: checkout,
-      guests:    { adults: parseInt(guests, 10) },
-      language:  'en',
-      channel:   'direct',
-      reservation_code: session.id,
-      guest: {
-        first_name,
-        last_name,
-        email,
-        phone: phone || undefined,
+  let res, result;
+  try {
+    res = await fetch('https://public.api.hospitable.com/v2/reservations', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${process.env.HOSPITABLE_TOKEN}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
-      financials: {
-        currency:          'USD',
-        accommodation:     parseInt(price_cents        || '0', 10),
-        cleaning_fee:      parseInt(cleaning_fee_cents || '0', 10),
-        pet_fee:           parseInt(pet_fee_cents      || '0', 10),
-        pass_through_taxes: parseInt(tax_cents         || '0', 10),
-      },
-    }),
-  });
-
-  const result = await res.json();
+      body: JSON.stringify({
+        property_id,
+        check_in:  checkin,
+        check_out: checkout,
+        guests:    { adults: parseInt(guests, 10) },
+        language:  'en',
+        channel:   'direct',
+        reservation_code: session.id,
+        guest: {
+          first_name,
+          last_name,
+          email,
+          phone: phone || undefined,
+        },
+        financials: {
+          currency:           'USD',
+          accommodation:      parseInt(price_cents        || '0', 10),
+          cleaning_fee:       parseInt(cleaning_fee_cents || '0', 10),
+          pet_fee:            parseInt(pet_fee_cents      || '0', 10),
+          pass_through_taxes: parseInt(tax_cents          || '0', 10),
+        },
+      }),
+    });
+    result = await res.json();
+  } catch (err) {
+    console.error('HOSPITABLE FETCH FAILED — manual action required');
+    console.error('Stripe session:', session.id, 'Guest:', email, 'Dates:', checkin, '→', checkout);
+    console.error('Network error:', err.message);
+    return { statusCode: 200, body: 'OK' };
+  }
 
   if (!res.ok) {
     console.error('HOSPITABLE RESERVATION FAILED — manual action required');
