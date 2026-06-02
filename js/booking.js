@@ -107,7 +107,6 @@
       const DAYS      = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
       const label     = firstDay.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
-      // Determine range end for hover preview
       const rangeEnd  = (stage === 'checkout' && hoverDate) ? hoverDate : checkoutDate;
 
       let html = `
@@ -119,7 +118,6 @@
         <div class="bc-cal-grid">
           ${DAYS.map(d => `<span class="bc-cal-dow">${d}</span>`).join('')}`;
 
-      // Empty leading cells
       for (let i = 0; i < startDow; i++) html += `<span></span>`;
 
       for (let d = 1; d <= lastDay.getDate(); d++) {
@@ -152,71 +150,78 @@
       html += `<div class="bc-cal-hint">${stage === 'checkin' ? 'Select check-in date' : 'Select check-out date'}</div>`;
 
       cal.innerHTML = html;
+    }
 
-      // Month navigation
-      cal.querySelectorAll('.bc-cal-nav').forEach(btn => {
-        btn.addEventListener('click', e => {
-          e.stopPropagation();
-          viewMonth += parseInt(btn.dataset.dir);
+    // ── Calendar event delegation (bound once, works across re-renders) ───────
+    (function bindCalEvents() {
+      const cal = $('bc-cal');
+
+      cal.addEventListener('click', e => {
+        e.stopPropagation();
+
+        const nav = e.target.closest('.bc-cal-nav');
+        if (nav) {
+          viewMonth += parseInt(nav.dataset.dir);
           if (viewMonth > 11) { viewMonth = 0; viewYear++; }
           if (viewMonth < 0)  { viewMonth = 11; viewYear--; }
           renderCal();
-        });
-      });
+          return;
+        }
 
-      // Day interactions
-      cal.querySelectorAll('.bc-cal-day.avail').forEach(el => {
-        el.addEventListener('mouseenter', () => {
-          if (stage === 'checkout') {
-            hoverDate = parseLocal(el.dataset.date);
-            renderCal();
-          }
-        });
+        const day = e.target.closest('.bc-cal-day.avail');
+        if (!day) return;
+        const date = parseLocal(day.dataset.date);
+        if (!date) return;
 
-        el.addEventListener('click', e => {
-          e.stopPropagation();
-          const date = parseLocal(el.dataset.date);
-          if (!date) return;
+        if (stage === 'checkin') {
+          checkinDate  = date;
+          checkoutDate = null;
+          hoverDate    = null;
+          $('bc-checkin').value                = toValue(date);
+          $('bc-checkout').value               = '';
+          $('bc-checkin-display').textContent  = toDisplay(date);
+          $('bc-checkout-display').textContent = 'Add date';
+          $('bc-status').textContent           = '';
+          $('bc-status').className             = 'bc-status';
+          $('bc-breakdown').style.display      = 'none';
+          $('bc-contact').style.display        = 'none';
+          $('bc-btn').style.display            = 'none';
+          $('bc-secure').style.display         = 'none';
+          stage = 'checkout';
+          syncHighlight();
+          renderCal();
 
-          if (stage === 'checkin') {
+        } else if (stage === 'checkout') {
+          if (date <= checkinDate) {
             checkinDate  = date;
             checkoutDate = null;
             hoverDate    = null;
-            $('bc-checkin').value           = toValue(date);
-            $('bc-checkout').value          = '';
+            $('bc-checkin').value                = toValue(date);
+            $('bc-checkout').value               = '';
             $('bc-checkin-display').textContent  = toDisplay(date);
             $('bc-checkout-display').textContent = 'Add date';
-            // Reset availability UI
-            $('bc-status').textContent  = '';
-            $('bc-status').className    = 'bc-status';
-            $('bc-breakdown').style.display = 'none';
-            $('bc-contact').style.display   = 'none';
-            $('bc-btn').style.display       = 'none';
-            $('bc-secure').style.display    = 'none';
-            stage = 'checkout';
-            syncHighlight();
             renderCal();
-
-          } else if (stage === 'checkout') {
-            if (date <= checkinDate) {
-              // Restart: treat clicked date as new check-in
-              checkinDate  = date;
-              checkoutDate = null;
-              hoverDate    = null;
-              $('bc-checkin').value           = toValue(date);
-              $('bc-checkout').value          = '';
-              $('bc-checkin-display').textContent  = toDisplay(date);
-              $('bc-checkout-display').textContent = 'Add date';
-              renderCal();
-            } else {
-              checkoutDate = date;
-              $('bc-checkout').value               = toValue(date);
-              $('bc-checkout-display').textContent = toDisplay(date);
-              closeCalendar();
-              checkAvail();
-            }
+          } else {
+            checkoutDate = date;
+            $('bc-checkout').value               = toValue(date);
+            $('bc-checkout-display').textContent = toDisplay(date);
+            closeCalendar();
+            checkAvail();
           }
-        });
+        }
+      });
+
+      // mouseover bubbles, so we can delegate from cal
+      cal.addEventListener('mouseover', e => {
+        if (stage !== 'checkout') return;
+        const day = e.target.closest('.bc-cal-day.avail');
+        if (!day) return;
+        const date = parseLocal(day.dataset.date);
+        if (!date) return;
+        if (!hoverDate || hoverDate.getTime() !== date.getTime()) {
+          hoverDate = date;
+          renderCal();
+        }
       });
 
       cal.addEventListener('mouseleave', () => {
@@ -225,7 +230,7 @@
           renderCal();
         }
       });
-    }
+    }());
 
     // Trigger field clicks
     $('bc-checkin-field').addEventListener('click', e => {
