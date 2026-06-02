@@ -1157,6 +1157,9 @@ section { padding: 80px 0; }
   .nav { padding: 0 20px; }
   .nav-links { display: none; }
   .hero { padding: 100px 24px 64px; }
+  /* Larger touch targets for calendar on mobile */
+  .bc-cal-day { padding: 11px 0; }
+  .bc-cal-nav { padding: 6px 12px; }
   .hero-actions { flex-direction: column; width: 100%; }
   .hero-actions .btn { width: 100%; text-align: center; }
   .team-grid { grid-template-columns: 1fr; }

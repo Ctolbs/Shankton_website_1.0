@@ -2,8 +2,12 @@ exports.handler = async (event) => {
   if (event.httpMethod !== 'GET') return { statusCode: 405, body: 'Method not allowed' };
 
   const { property_id, pricing_id, checkin, checkout } = event.queryStringParameters || {};
+  const dateRe = /^\d{4}-\d{2}-\d{2}$/;
   if (!property_id || !checkin || !checkout) {
     return { statusCode: 400, body: JSON.stringify({ error: 'Missing parameters' }) };
+  }
+  if (!dateRe.test(checkin) || !dateRe.test(checkout) || checkin >= checkout) {
+    return { statusCode: 400, body: JSON.stringify({ error: 'Invalid dates' }) };
   }
 
   const token = process.env.HOSPITABLE_TOKEN;
