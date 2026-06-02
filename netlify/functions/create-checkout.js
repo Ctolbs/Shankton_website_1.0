@@ -106,7 +106,6 @@ exports.handler = async (event) => {
 
   try {
     const session = await stripe.checkout.sessions.create({
-      automatic_payment_methods: { enabled: true },
       customer_email: email,
       line_items: lineItems,
       mode: 'payment',
