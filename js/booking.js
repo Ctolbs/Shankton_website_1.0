@@ -291,7 +291,7 @@
         const petCheck    = document.getElementById(pfx + 'bc-pet');
         const petDollars  = (petCheck && petCheck.checked) ? cfg.petFee / 100 : 0;
         const subtotal    = data.price_dollars + cleaningDollars + petDollars;
-        const taxDollars  = cfg.taxRate  ? Math.round(subtotal * cfg.taxRate) / 100
+        const taxDollars  = cfg.taxRate  ? Math.round(subtotal * cfg.taxRate / 100 * 100) / 100
                           : cfg.taxFlat ? cfg.taxFlat / 100
                           : 0;
         const totalDollars = subtotal + taxDollars;
@@ -374,5 +374,24 @@
         alert('Something went wrong. Please try again or email contact@shankton.com');
       }
     });
+
+    // ── Live floor price ─────────────────────────────────────────────────────
+    // Fetch the minimum available nightly rate for the next 45 days from
+    // Hospitable and update the "From $X / night" headline. Cached 1hr at CDN.
+    (async function updateFloorPrice() {
+      try {
+        const res  = await fetch(`/.netlify/functions/get-floor-price?property_id=${cfg.propertyId}`);
+        const data = await res.json();
+        if (!data.floor_dollars) return;
+        const priceEl = document.querySelector('.booking-price');
+        if (!priceEl) return;
+        const sub = priceEl.querySelector('span');
+        priceEl.childNodes[0].textContent = 'From $' + Math.round(data.floor_dollars).toLocaleString('en-US') + ' ';
+        if (!sub) priceEl.appendChild(Object.assign(document.createElement('span'), {
+          style: 'font-size:16px;color:var(--text-muted);font-family:\'Inter\',sans-serif;font-weight:400;',
+          textContent: '/ night',
+        }));
+      } catch { /* fail silently — static fallback stays visible */ }
+    }());
   }
 })();
