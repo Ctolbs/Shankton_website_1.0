@@ -18,6 +18,9 @@ exports.handler = async (event) => {
     return { statusCode: 400, body: JSON.stringify({ error: 'Missing required fields' }) };
   }
 
+  // Prevent open redirect — cancel_path must be a relative path on this site
+  const safeCancelPath = (cancel_path && /^\/[^/]/.test(cancel_path)) ? cancel_path : '/';
+
   // Reject unknown properties
   const cfg = PROPERTIES[property_id];
   if (!cfg) {
@@ -108,7 +111,7 @@ exports.handler = async (event) => {
       line_items: lineItems,
       mode: 'payment',
       success_url: `${siteUrl}/booking-success.html?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url:  `${siteUrl}${cancel_path || '/'}`,
+      cancel_url:  `${siteUrl}${safeCancelPath}`,
       metadata: {
         property_id,
         property_name:      cfg.name,
