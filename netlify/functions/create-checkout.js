@@ -53,7 +53,7 @@ exports.handler = async (event) => {
   const cleaningCents = cfg.cleaningFee;
   const petCents      = (clientPetFee > 0 && cfg.petFee) ? cfg.petFee : 0;
   const subtotalCents = priceCents + cleaningCents + petCents;
-  const taxCents      = cfg.taxRate ? Math.round(subtotalCents * cfg.taxRate) / 100 : 0;
+  const taxCents      = cfg.taxRate ? Math.round(subtotalCents * cfg.taxRate / 100) : 0;
 
   const stripe  = Stripe(process.env.STRIPE_SECRET_KEY);
   const siteUrl = process.env.URL || 'https://www.shankton.com';
