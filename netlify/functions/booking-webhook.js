@@ -45,7 +45,7 @@ exports.handler = async (event) => {
         guests:    { adults: parseInt(guests, 10) },
         language:  'en',
         channel:   'direct',
-        reservation_code: session.id,
+        reservation_code: session.id.slice(0, 50),
         guest: {
           first_name,
           last_name,
