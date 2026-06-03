@@ -872,6 +872,90 @@ section { padding: 80px 0; }
   margin: 20px 0;
 }
 
+/* ── Property Management Inquiry ────────────────────────────────────────── */
+
+.section-manage {
+  background: var(--obsidian);
+  padding: 100px 0;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.manage-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.manage-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.manage-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.manage-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.manage-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(245,241,232,0.35);
+}
+
+.manage-input,
+.manage-textarea {
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px solid rgba(245,241,232,0.15);
+  padding: 10px 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  color: var(--bone);
+  outline: none;
+  border-radius: 0;
+  width: 100%;
+  transition: border-color 0.15s;
+  -webkit-appearance: none;
+}
+.manage-input::placeholder,
+.manage-textarea::placeholder { color: rgba(245,241,232,0.25); }
+.manage-input:focus,
+.manage-textarea:focus { border-bottom-color: var(--sand); }
+
+.manage-textarea {
+  resize: vertical;
+  min-height: 96px;
+  line-height: 1.6;
+}
+
+.manage-btn {
+  align-self: flex-start;
+  background: var(--emerald);
+  color: var(--bone);
+  border: none;
+  padding: 14px 32px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+.manage-btn:hover { background: var(--tide); transform: translateY(-1px); }
+.manage-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
 /* ── Property detail pages ───────────────────────────────────────────────── */
 
 /* Hero */
@@ -1262,6 +1346,9 @@ section { padding: 80px 0; }
   .newsletter-btn { padding: 14px; width: 100%; }
   .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
   .property-hero { min-height: 70vh; }
+  .manage-grid { grid-template-columns: 1fr; gap: 40px; }
+  .manage-form-row { grid-template-columns: 1fr; gap: 20px; }
+  .manage-btn { width: 100%; text-align: center; }
 }
 
 /* ── Booking Card Inputs ──────────────────────────────────────────────── */

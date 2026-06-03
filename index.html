@@ -257,6 +257,50 @@
   </div>
 </section>
 
+<!-- ── Property Management Inquiry ───────────────────────────────────────── -->
+<section class="section-manage" id="manage">
+  <div class="container">
+    <div class="manage-grid">
+      <div class="manage-copy">
+        <p class="eyebrow">Property Management</p>
+        <h2 style="color:var(--bone);margin-top:16px;">We keep the<br>collection small<br>on purpose.</h2>
+        <div class="divider"></div>
+        <p style="color:rgba(245,241,232,0.55);font-size:15px;line-height:1.75;max-width:380px;">People ask us to manage their homes along the Pacific. We take a few. If yours is isolated, well-built, and on a coast worth flying to — introduce yourself.</p>
+        <p style="color:rgba(245,241,232,0.3);font-size:13px;margin-top:24px;letter-spacing:0.5px;">Nicaragua · California · Pacific coast.</p>
+      </div>
+      <div class="manage-form-wrap">
+        <form class="manage-form" name="manage-inquiry" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="manage-inquiry">
+          <input type="text" name="bot-field" style="display:none" tabindex="-1" autocomplete="off">
+          <div class="manage-form-row">
+            <div class="manage-field">
+              <label class="manage-label">Your name</label>
+              <input type="text" name="name" class="manage-input" placeholder="First and last" required>
+            </div>
+            <div class="manage-field">
+              <label class="manage-label">Email</label>
+              <input type="email" name="email" class="manage-input" placeholder="you@example.com" required>
+            </div>
+          </div>
+          <div class="manage-field">
+            <label class="manage-label">Property location</label>
+            <input type="text" name="location" class="manage-input" placeholder="Where is it? Nicaragua, California, Baja…">
+          </div>
+          <div class="manage-field">
+            <label class="manage-label">About the property</label>
+            <textarea name="message" class="manage-textarea" placeholder="Bedrooms, access, what makes it special…" rows="4"></textarea>
+          </div>
+          <button type="submit" class="manage-btn">Send Introduction →</button>
+        </form>
+        <div class="manage-success" style="display:none;">
+          <p style="font-family:'Tenor Sans',serif;font-size:22px;color:var(--bone);margin-bottom:12px;">Got it.</p>
+          <p style="color:rgba(245,241,232,0.5);font-size:15px;line-height:1.7;">We'll review and be in touch if it's a fit. Properties that match the Shankton standard are rare — that's the point.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── Newsletter ────────────────────────────────────────────────────────── -->
 <section class="section-newsletter" id="newsletter">
   <div class="container-sm">
@@ -318,6 +362,7 @@
         <ul class="footer-links">
           <li><a href="#team">Our Story</a></li>
           <li><a href="#newsletter">The Journal</a></li>
+          <li><a href="#manage">List Your Property</a></li>
           <li><a href="mailto:contact@shankton.com">Contact</a></li>
         </ul>
       </div>
@@ -340,5 +385,30 @@
   })();
 </script>
 <script src="js/nav.js"></script>
+<script>
+  (function () {
+    const form = document.querySelector('.manage-form');
+    if (!form) return;
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const btn = form.querySelector('.manage-btn');
+      btn.textContent = 'Sending…';
+      btn.disabled = true;
+      try {
+        await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(new FormData(form)).toString(),
+        });
+        form.style.display = 'none';
+        document.querySelector('.manage-success').style.display = 'block';
+      } catch {
+        btn.textContent = 'Send Introduction →';
+        btn.disabled = false;
+        alert('Something went wrong. Please email contact@shankton.com');
+      }
+    });
+  }());
+</script>
 </body>
 </html>
