@@ -1368,6 +1368,15 @@ section { padding: 80px 0; }
 .bc-input:focus { outline: none; border-color: var(--emerald, #1a4a4d); }
 .bc-input::placeholder { color: rgba(0,0,0,0.35); }
 .bc-input option { background: #fff; }
+.bc-cancel-note {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(0,0,0,0.07);
+}
+.bc-cancel-note a { color: var(--tide); }
+
 .bc-status {
   font-size: 12px;
   font-weight: 500;

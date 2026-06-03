@@ -307,10 +307,13 @@
     <p class="eyebrow" style="text-align:center;">The Journal</p>
     <h2 style="color:var(--bone);margin-top:16px;text-align:center;">Surf reports. Chef profiles.<br>When to visit.</h2>
     <p style="color:rgba(245,241,232,0.45);text-align:center;margin-top:16px;font-size:15px;">Shankton's field notes from the Pacific coast. No noise — just the things worth knowing before you arrive.</p>
-    <form class="newsletter-form" onsubmit="return false;">
-      <input type="email" class="newsletter-input" placeholder="Your email">
+    <form class="newsletter-form" name="newsletter" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="newsletter">
+      <input type="text" name="bot-field" style="display:none" tabindex="-1" autocomplete="off">
+      <input type="email" name="email" class="newsletter-input" placeholder="Your email" required>
       <button class="newsletter-btn" type="submit">Subscribe</button>
     </form>
+    <p class="newsletter-success" style="display:none;color:var(--sand);font-size:14px;margin-top:24px;">You're in. We'll be in touch when something's worth saying.</p>
     <p class="newsletter-note">No spam. One email when something's worth saying.</p>
   </div>
 </section>
@@ -383,6 +386,28 @@
       nav.classList.toggle('scrolled', window.scrollY > 20);
     }, { passive: true });
   })();
+  (function () {
+    const form = document.querySelector('.newsletter-form');
+    if (!form) return;
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const btn = form.querySelector('.newsletter-btn');
+      btn.textContent = '…';
+      btn.disabled = true;
+      try {
+        await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(new FormData(form)).toString(),
+        });
+        form.style.display = 'none';
+        document.querySelector('.newsletter-success').style.display = 'block';
+      } catch {
+        btn.textContent = 'Subscribe';
+        btn.disabled = false;
+      }
+    });
+  }());
 </script>
 <script src="js/nav.js"></script>
 <script>

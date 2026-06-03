@@ -306,6 +306,7 @@
           ${petDollars ? `<div class="bc-price-row"><span>Pet fee</span><span>${fmt(petDollars)}</span></div>` : ''}
           ${taxDollars ? `<div class="bc-price-row"><span>${cfg.taxLabel || 'Taxes &amp; fees'}</span><span>${fmt(taxDollars)}</span></div><p class="bc-tax-note">Collected and remitted per local law</p>` : ''}
           <div class="bc-price-row total"><span>Total</span><span>${fmt(totalDollars)}</span></div>
+          <p class="bc-cancel-note">Cancellations &amp; changes: <a href="mailto:contact@shankton.com">contact@shankton.com</a></p>
         `;
         $('bc-breakdown').style.display = 'block';
         $('bc-contact').style.display   = 'flex';
