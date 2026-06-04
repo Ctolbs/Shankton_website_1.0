@@ -42,8 +42,12 @@
   cells.forEach((cell, i) => {
     cell.style.cursor = 'pointer';
     cell.setAttribute('role', 'button');
-    cell.setAttribute('aria-label', 'View photo ' + (i + 1));
+    cell.setAttribute('tabindex', '0');
+    cell.setAttribute('aria-label', 'View photo ' + (i + 1) + ' of ' + images.length);
     cell.addEventListener('click', () => show(i));
+    cell.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); show(i); }
+    });
   });
 
   lb.querySelector('.glb-close').addEventListener('click', close);

@@ -1079,6 +1079,27 @@ section { padding: 80px 0; }
 }
 .gallery-cell:hover::after { background: rgba(0,0,0,0.12); }
 
+/* "View all" overlay on last visible desktop cell (5th child = 4th gallery-cell after main) */
+.gallery-cell:nth-child(5)::before {
+  content: 'View all photos';
+  position: absolute;
+  inset: 0;
+  background: rgba(11,15,14,0.48);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--bone);
+  z-index: 1;
+  pointer-events: none;
+  transition: background 0.2s;
+}
+.gallery-cell:nth-child(5):hover::before { background: rgba(11,15,14,0.32); }
+
 /* ── Gallery Lightbox ────────────────────────────────────────────────────── */
 .glb {
   position: fixed;
@@ -1289,6 +1310,8 @@ section { padding: 80px 0; }
     border-right: 2px solid var(--obsidian);
   }
   .gallery-cell:last-child { border-right: none; }
+  /* Hide the desktop "View all" overlay on mobile */
+  .gallery-cell:nth-child(5)::before { display: none; }
   .specs-grid { grid-template-columns: 1fr 1fr; }
   .amenities-grid { grid-template-columns: 1fr; }
 
@@ -1617,13 +1640,20 @@ section { padding: 80px 0; }
   padding: 0;
 }
 
+/* ── Focus styles ────────────────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid var(--sand);
+  outline-offset: 3px;
+}
+
 /* ── Pro tip tooltip ─────────────────────────────────────────────────────── */
 
 .pro-tip {
   position: relative;
   border-bottom: 1px dashed var(--sand);
   cursor: default;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .pro-tip::after {
@@ -1638,7 +1668,9 @@ section { padding: 80px 0; }
   letter-spacing: 0.04em;
   line-height: 1.5;
   padding: 10px 14px;
-  white-space: nowrap;
+  white-space: normal;
+  max-width: min(300px, 80vw);
+  width: max-content;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.18s ease;
@@ -1660,6 +1692,8 @@ section { padding: 80px 0; }
 }
 
 .pro-tip:hover::after,
-.pro-tip:hover::before {
+.pro-tip:hover::before,
+.pro-tip.tip-active::after,
+.pro-tip.tip-active::before {
   opacity: 1;
 }

@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0B0F0E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="image" href="/images/nica/harbour/hero.jpg">
   <title>Shankton Harbour — Playa Gigante, Nicaragua</title>
   <meta name="description" content="The only home in Gigante with its own sea shelf. Tide pools, snorkeling, and reef fishing — from your own platform. 3 BR · 3.5 BA · Sleeps 8.">
   <link rel="canonical" href="https://www.shankton.com/harbour/">
@@ -28,7 +32,7 @@
         "name": "Shankton Harbour",
         "description": "The only home in Gigante with its own sea shelf. Tide pools, snorkeling, and reef fishing from your own platform. 3 bedrooms, 3.5 baths, sleeps 8. Private pool and private beach.",
         "url": "https://www.shankton.com/harbour/",
-        "image": "https://www.shankton.com/img/og-harbour.png",
+        "image": "https://www.shankton.com/img/og-harbour.jpg",
         "address": {
           "@type": "PostalAddress",
           "addressLocality": "Playa Gigante",
@@ -417,9 +421,9 @@
     <p class="eyebrow">More from the collection</p>
     <h2 style="margin-top:12px;margin-bottom:40px;">Also in Nicaragua</h2>
     <div class="more-grid">
-      <div class="property-card">
+      <a href="../tower/" class="property-card">
         <div class="property-card-image">
-          <img src="../images/nica/tower/hero.jpg" alt="Shankton Tower" style="width:100%;min-height:200px;object-fit:cover;display:block;">
+          <img src="../images/nica/tower/hero.jpg" alt="Shankton Tower" style="width:100%;min-height:200px;object-fit:cover;display:block;" loading="lazy">
         </div>
         <div class="property-card-body">
           <p class="eyebrow property-card-location">Playa Gigante · Nicaragua</p>
@@ -427,13 +431,13 @@
           <p class="property-card-tagline">Cliff-top Pacific views. Infinity pool. Private beach. Bunk room for the kids. Sleeps 12.</p>
           <div class="property-card-meta">
             <div class="property-specs">4 BR + bunk · 4 BA · Sleeps 12</div>
-            <a href="../tower/" class="property-card-link">View <span>→</span></a>
+            <span class="property-card-link">View <span>→</span></span>
           </div>
         </div>
-      </div>
-      <div class="property-card">
+      </a>
+      <a href="../peninsula/" class="property-card">
         <div class="property-card-image">
-          <img src="../images/lgb/rooftop.jpg" alt="Shankton Peninsula" style="width:100%;min-height:200px;object-fit:cover;display:block;">
+          <img src="../images/lgb/rooftop.jpg" alt="Shankton Peninsula" style="width:100%;min-height:200px;object-fit:cover;display:block;" loading="lazy">
         </div>
         <div class="property-card-body">
           <p class="eyebrow property-card-location">Belmont Shore · Long Beach, CA</p>
@@ -441,10 +445,10 @@
           <p class="property-card-tagline">Two private suites. Roof decks. 360° views. Fifty meters to sand.</p>
           <div class="property-card-meta">
             <div class="property-specs">2 units · Sleeps 6 each</div>
-            <a href="../peninsula/" class="property-card-link">View <span>→</span></a>
+            <span class="property-card-link">View <span>→</span></span>
           </div>
         </div>
-      </div>
+      </a>
     </div>
   </div>
 </div>
@@ -482,5 +486,14 @@
 <script src="../js/gallery.js"></script>
 <script src="../js/booking.js"></script>
 <script src="../js/nba-jam.js"></script>
+<script>
+  // Pro-tip tap support for touch devices
+  document.querySelectorAll('.pro-tip').forEach(function(el) {
+    el.addEventListener('click', function(e) { e.stopPropagation(); el.classList.toggle('tip-active'); });
+  });
+  document.addEventListener('click', function() {
+    document.querySelectorAll('.pro-tip.tip-active').forEach(function(el) { el.classList.remove('tip-active'); });
+  });
+</script>
 </body>
 </html>

@@ -73,7 +73,7 @@ const SHANKTON_PROPERTIES = [
 
   grid.innerHTML = active.map(p => {
     const img = p.photo
-      ? `<img src="${p.photo}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;">`
+      ? `<img src="${p.photo}" alt="${p.name}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">`
       : `<div class="property-card-image-placeholder" style="background:${p.gradient};min-height:280px;">
            <span class="eyebrow" style="color:rgba(245,241,232,0.3);">Photo coming</span>
          </div>`;
