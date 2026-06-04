@@ -1269,8 +1269,26 @@ section { padding: 80px 0; }
 @media (max-width: 600px) {
   .property-hero-content { padding: 32px 24px 36px; }
   .property-layout { padding: 32px 16px; }
-  .gallery { grid-template-columns: 1fr; grid-template-rows: auto; }
-  .gallery-main { grid-column: span 1; }
+  .gallery {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 0;
+    scrollbar-width: none;
+    grid-template-columns: unset;
+    grid-template-rows: unset;
+  }
+  .gallery::-webkit-scrollbar { display: none; }
+  .gallery-cell, .gallery-main {
+    flex: 0 0 88vw;
+    height: 260px;
+    scroll-snap-align: center;
+    grid-row: unset;
+    grid-column: unset;
+    border-right: 2px solid var(--obsidian);
+  }
+  .gallery-cell:last-child { border-right: none; }
   .specs-grid { grid-template-columns: 1fr 1fr; }
   .amenities-grid { grid-template-columns: 1fr; }
 
