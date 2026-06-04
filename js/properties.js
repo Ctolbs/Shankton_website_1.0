@@ -91,7 +91,7 @@ const SHANKTON_PROPERTIES = [
               <span class="star">★</span> ${p.rating} · ${p.reviews} reviews
             </div>
           </div>
-          <span class="property-card-link">View <span>→</span></span>
+          <span class="property-card-link">Photos &amp; book <span>→</span></span>
         </div>
       </div>
     </a>`;
