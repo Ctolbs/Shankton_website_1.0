@@ -29,12 +29,19 @@
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "LodgingBusiness",
+        "@type": ["LodgingBusiness", "VacationRental"],
         "@id": "https://www.shankton.com/peninsula/#property",
         "name": "Shankton Peninsula",
-        "description": "Two identical suites between Alamitos Bay and the Pacific in Belmont Shore, Long Beach. Private rooftop decks with 360-degree views. 50 meters to sand. 2 king beds plus queen sleeper, sleeps 6 per unit.",
+        "alternateName": "Shankton Peninsula — Belmont Shore, Long Beach",
+        "description": "Two private suites on the Belmont Shore Peninsula, set between Alamitos Bay and the Pacific Ocean in Long Beach, California. Each unit has two Thuma king bedrooms, a queen sleeper, private rooftop deck with 360-degree views, and dedicated parking — 50 meters to the sand. Book one suite for up to 6 guests or the whole building for groups of 12. Self check-in, high-speed WiFi, washer and dryer in each unit.",
         "url": "https://www.shankton.com/peninsula/",
-        "image": "https://www.shankton.com/img/og-peninsula.jpg",
+        "image": [
+          "https://www.shankton.com/images/lgb/rooftop.jpg",
+          "https://www.shankton.com/images/lgb/living.jpg",
+          "https://www.shankton.com/images/lgb/living2.jpg",
+          "https://www.shankton.com/images/lgb/bedroom.jpg",
+          "https://www.shankton.com/images/lgb/kitchen.jpg"
+        ],
         "address": {
           "@type": "PostalAddress",
           "streetAddress": "45 62nd Pl",
@@ -49,18 +56,62 @@
           "longitude": "-118.1227622"
         },
         "hasMap": "https://maps.app.goo.gl/rJcFSk7bm2Ybe7mA7",
-        "amenityFeature": [
-          { "@type": "LocationFeatureSpecification", "name": "Private rooftop deck", "value": true },
-          { "@type": "LocationFeatureSpecification", "name": "Air conditioning", "value": true },
-          { "@type": "LocationFeatureSpecification", "name": "WiFi", "value": true },
-          { "@type": "LocationFeatureSpecification", "name": "Washer and dryer", "value": true },
-          { "@type": "LocationFeatureSpecification", "name": "Dedicated parking", "value": true },
-          { "@type": "LocationFeatureSpecification", "name": "50m to beach", "value": true }
-        ],
-        "numberOfRooms": 2,
+        "telephone": "+18017598509",
+        "numberOfRooms": 4,
+        "occupancy": { "@type": "QuantitativeValue", "value": 12 },
+        "floorSize": { "@type": "QuantitativeValue", "value": 2800, "unitCode": "FTK" },
+        "petsAllowed": false,
+        "smokingAllowed": false,
         "checkinTime": "15:00",
         "checkoutTime": "11:00",
         "priceRange": "$$$",
+        "starRating": { "@type": "Rating", "ratingValue": "5" },
+        "amenityFeature": [
+          { "@type": "LocationFeatureSpecification", "name": "Private rooftop deck", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "360-degree bay and ocean views", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "50 meters to Alamitos Bay beach", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Air conditioning", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "High-speed WiFi", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Full kitchen", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Washer and dryer", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Smart TV", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Private entrance", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Self check-in", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "2 dedicated parking spaces per unit", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Beach chairs and umbrella", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Carbon monoxide detector", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Smoke detector", "value": true }
+        ],
+        "containsPlace": [
+          {
+            "@type": "Accommodation",
+            "name": "Unit A — ground floor suite",
+            "occupancy": { "@type": "QuantitativeValue", "value": 6 },
+            "floorSize": { "@type": "QuantitativeValue", "value": 1400, "unitCode": "FTK" },
+            "amenityFeature": [
+              { "@type": "LocationFeatureSpecification", "name": "2 Thuma king bedrooms", "value": true },
+              { "@type": "LocationFeatureSpecification", "name": "Queen sleeper sofa", "value": true },
+              { "@type": "LocationFeatureSpecification", "name": "2.5 bathrooms", "value": true },
+              { "@type": "LocationFeatureSpecification", "name": "Private rooftop deck", "value": true },
+              { "@type": "LocationFeatureSpecification", "name": "Private entrance", "value": true },
+              { "@type": "LocationFeatureSpecification", "name": "2 parking spaces", "value": true }
+            ]
+          },
+          {
+            "@type": "Accommodation",
+            "name": "Unit B — upper floor suite",
+            "occupancy": { "@type": "QuantitativeValue", "value": 6 },
+            "floorSize": { "@type": "QuantitativeValue", "value": 1400, "unitCode": "FTK" },
+            "amenityFeature": [
+              { "@type": "LocationFeatureSpecification", "name": "2 Thuma king bedrooms", "value": true },
+              { "@type": "LocationFeatureSpecification", "name": "Queen sleeper sofa", "value": true },
+              { "@type": "LocationFeatureSpecification", "name": "2.5 bathrooms", "value": true },
+              { "@type": "LocationFeatureSpecification", "name": "Private rooftop deck with bay views", "value": true },
+              { "@type": "LocationFeatureSpecification", "name": "Private entrance", "value": true },
+              { "@type": "LocationFeatureSpecification", "name": "2 parking spaces", "value": true }
+            ]
+          }
+        ],
         "aggregateRating": {
           "@type": "AggregateRating",
           "ratingValue": "4.89",
@@ -70,11 +121,14 @@
         },
         "offers": {
           "@type": "Offer",
+          "url": "https://www.shankton.com/peninsula/",
+          "availability": "https://schema.org/InStock",
           "priceSpecification": {
             "@type": "UnitPriceSpecification",
             "price": "285",
             "priceCurrency": "USD",
-            "unitText": "night"
+            "unitText": "night",
+            "referenceQuantity": { "@type": "QuantitativeValue", "value": "1", "unitCode": "DAY" }
           }
         }
       },
@@ -420,6 +474,7 @@
 
       <div class="reviews-grid">
         <div class="review-card">
+          <div style="color:var(--sand);font-size:13px;letter-spacing:2px;margin-bottom:12px;">★★★★★</div>
           <p class="review-card-text">"We had the upper unit and the roof deck was the real star. Every morning with coffee, watching the bay wake up. Jasmin was responsive and thoughtful — stocked the kitchen before we arrived."</p>
           <div class="review-card-author">
             <div class="review-card-avatar">L</div>
@@ -430,6 +485,7 @@
           </div>
         </div>
         <div class="review-card">
+          <div style="color:var(--sand);font-size:13px;letter-spacing:2px;margin-bottom:12px;">★★★★★</div>
           <p class="review-card-text">"Location is unbeatable. You walk out the front door and you're basically on the beach. The beds were the nicest I've slept in at any rental — Thuma frames, real mattresses. Perfect for a family of four."</p>
           <div class="review-card-author">
             <div class="review-card-avatar">K</div>
@@ -440,6 +496,7 @@
           </div>
         </div>
         <div class="review-card">
+          <div style="color:var(--sand);font-size:13px;letter-spacing:2px;margin-bottom:12px;">★★★★★</div>
           <p class="review-card-text">"We booked the whole building for a family reunion — 11 people across both units. Having two kitchens and two decks made all the difference. Jasmin handled everything like clockwork."</p>
           <div class="review-card-author">
             <div class="review-card-avatar">N</div>
@@ -450,6 +507,7 @@
           </div>
         </div>
         <div class="review-card">
+          <div style="color:var(--sand);font-size:13px;letter-spacing:2px;margin-bottom:12px;">★★★★★</div>
           <p class="review-card-text">"Best Airbnb stay I've had in three years. The roof deck views are 360° — you can literally see the bay AND the ocean at the same time. Walked to 2nd Street for dinner every night."</p>
           <div class="review-card-author">
             <div class="review-card-avatar">B</div>
@@ -459,6 +517,47 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="faq-section">
+        <p class="eyebrow">Common questions</p>
+        <details class="faq-item">
+          <summary>What's the cancellation policy?</summary>
+          <div class="faq-answer">Full refund for cancellations made at least 14 days before check-in. 50% refund for cancellations 7–14 days before check-in. No refund within 7 days of check-in. All cancellations must be made in writing to contact@shankton.com.</div>
+        </details>
+        <details class="faq-item">
+          <summary>What time is check-in and check-out?</summary>
+          <div class="faq-answer">Check-in is at 3:00 PM. Check-out is at 11:00 AM. Early check-in and late check-out may be available depending on adjacent bookings — reach out to Jasmin in advance.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Where do I park?</summary>
+          <div class="faq-answer">Each unit has 2 dedicated off-street parking spaces included. No street parking required. Check-in instructions will include the specific spaces for your unit.</div>
+        </details>
+        <details class="faq-item">
+          <summary>How far is the beach?</summary>
+          <div class="faq-answer">50 meters to Alamitos Bay beach. The Pacific beach at the tip of the Peninsula is a 10-minute walk. Beach chairs and umbrella are provided in each unit.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Can I book both units together?</summary>
+          <div class="faq-answer">Yes — whole-building bookings sleep 12 across both units with two full kitchens, two rooftop decks, and two entrances. Email Jasmin at contact@shankton.com for whole-building availability and pricing.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Can I bring a pet?</summary>
+          <div class="faq-answer">Pets are not permitted at Shankton Peninsula.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Is there a minimum stay?</summary>
+          <div class="faq-answer">Minimum stay is 1 night. A 2-night minimum applies on some holiday weekends.</div>
+        </details>
+        <details class="faq-item">
+          <summary>What's included in the cleaning fee?</summary>
+          <div class="faq-answer">The cleaning fee covers a full clean before your arrival and after check-out. Each unit has an in-unit washer and dryer for use during your stay.</div>
+        </details>
+        <details class="faq-item">
+          <summary>What's the Long Beach TOT tax?</summary>
+          <div class="faq-answer">Long Beach charges a Transient Occupancy Tax (TOT) of 13.02% on short-term rentals. This is collected at checkout and remitted to the city — it's a government tax, not a Shankton fee.</div>
+        </details>
       </div>
 
     </div><!-- /left -->
@@ -512,7 +611,11 @@
             <span class="booking-total-label">Min. stay</span>
             <span class="booking-total-amount">1 night</span>
           </div>
-          <p class="booking-note">Book direct for the best rate. No Airbnb fees.</p>
+          <div class="booking-total" style="border-top:none;padding-top:0;margin-top:-4px;">
+            <span class="booking-total-label" style="color:var(--emerald);">Free cancellation</span>
+            <span class="booking-total-amount" style="font-size:12px;color:var(--text-muted);">before 14 days</span>
+          </div>
+          <p class="booking-note">Best rate guaranteed — no Airbnb fees or service charges.</p>
           <div class="booking-airbnb">
             <svg width="14" height="14" viewBox="0 0 32 32" fill="none"><path d="M16 1C7.7 1 1 7.7 1 16s6.7 15 15 15 15-6.7 15-15S24.3 1 16 1z" fill="#FF5A5F"/></svg>
             Also available on Airbnb
@@ -558,7 +661,11 @@
             <span class="booking-total-label">Min. stay</span>
             <span class="booking-total-amount">1 night</span>
           </div>
-          <p class="booking-note">Book direct for the best rate. No platform fees.</p>
+          <div class="booking-total" style="border-top:none;padding-top:0;margin-top:-4px;">
+            <span class="booking-total-label" style="color:var(--emerald);">Free cancellation</span>
+            <span class="booking-total-amount" style="font-size:12px;color:var(--text-muted);">before 14 days</span>
+          </div>
+          <p class="booking-note">Best rate guaranteed — no platform fees or service charges.</p>
           <div class="booking-airbnb">
             <svg width="12" height="12" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="4" fill="#003580"/><text x="4" y="22" font-size="14" font-weight="700" fill="white" font-family="sans-serif">V</text></svg>
             Also on VRBO &amp; Booking.com
@@ -768,9 +875,27 @@
     },
   ];
 </script>
+<div class="mob-book-bar" id="mob-book-bar" hidden>
+  <div class="mob-book-bar-price">
+    <div class="mob-book-bar-amount">From $285</div>
+    <div class="mob-book-bar-sub">/ night · Sleeps 6</div>
+  </div>
+  <a href="#reserve" class="btn btn-primary" style="white-space:nowrap;padding:12px 24px;font-size:13px;">Check availability</a>
+</div>
+
 <script src="../js/nav.js"></script>
 <script src="../js/gallery.js"></script>
 <script src="../js/booking.js"></script>
 <script src="../js/nba-jam.js"></script>
+<script>
+  (function() {
+    var reserve = document.getElementById('reserve');
+    var bar = document.getElementById('mob-book-bar');
+    if (!reserve || !bar || !window.IntersectionObserver) return;
+    new IntersectionObserver(function(entries) {
+      bar.hidden = entries[0].isIntersecting;
+    }).observe(reserve);
+  }());
+</script>
 </body>
 </html>

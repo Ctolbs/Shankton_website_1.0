@@ -1697,3 +1697,105 @@ section { padding: 80px 0; }
 .pro-tip.tip-active::before {
   opacity: 1;
 }
+
+/* ── Mobile sticky booking bar ──────────────────────────────────────────── */
+.mob-book-bar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  background: white;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  padding: 12px 20px;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.08);
+  gap: 16px;
+}
+
+.mob-book-bar-price {
+  display: flex;
+  flex-direction: column;
+}
+
+.mob-book-bar-amount {
+  font-family: 'Tenor Sans', serif;
+  font-size: 18px;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.mob-book-bar-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 960px) {
+  .mob-book-bar { display: flex; }
+}
+
+/* ── FAQ accordion ───────────────────────────────────────────────────────── */
+.faq-section {
+  margin-top: 56px;
+}
+
+.faq-section .eyebrow {
+  margin-bottom: 20px;
+}
+
+.faq-item {
+  border-top: 1px solid rgba(0,0,0,0.08);
+}
+
+.faq-item:last-child {
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.faq-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 0;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  list-style: none;
+  gap: 16px;
+  user-select: none;
+}
+
+.faq-item summary::-webkit-details-marker { display: none; }
+
+.faq-item summary::after {
+  content: '+';
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.faq-item[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.faq-item[open] summary {
+  color: var(--emerald);
+}
+
+.faq-answer {
+  padding: 0 0 20px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-muted);
+  max-width: 600px;
+}
+
+@media (max-width: 960px) {
+  .mob-book-bar { display: flex; }
+}
+

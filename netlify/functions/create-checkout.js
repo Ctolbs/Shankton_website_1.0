@@ -109,7 +109,7 @@ exports.handler = async (event) => {
       customer_email: email,
       line_items: lineItems,
       mode: 'payment',
-      success_url: `${siteUrl}/booking-success.html?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${siteUrl}/booking-success.html?session_id={CHECKOUT_SESSION_ID}&property=${encodeURIComponent(cfg.name)}&checkin=${checkin}&checkout=${checkout}&nights=${nightCount}&guests=${guests}`,
       cancel_url:  `${siteUrl}${safeCancelPath}`,
       metadata: {
         property_id,

@@ -5,67 +5,257 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Booking Confirmed · Shankton Properties</title>
+  <meta name="robots" content="noindex">
   <link rel="stylesheet" href="/styles.css">
   <style>
-    .success-page {
+    body { background: var(--bone); }
+
+    .confirm-wrap {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       padding: 120px 24px 80px;
-      text-align: center;
-      background: var(--bone);
     }
-    .success-icon {
-      width: 64px;
-      height: 64px;
+
+    .confirm-card {
+      background: white;
+      border: 1px solid rgba(0,0,0,0.07);
+      max-width: 520px;
+      width: 100%;
+      padding: 48px 48px 40px;
+    }
+
+    .confirm-icon {
+      width: 56px;
+      height: 56px;
       border-radius: 50%;
       background: var(--emerald);
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 32px;
       color: var(--bone);
-      font-size: 24px;
+      font-size: 22px;
+      margin-bottom: 28px;
     }
-    .success-eyebrow {
+
+    .confirm-eyebrow {
       font-family: 'Inter', sans-serif;
       font-size: 11px;
       font-weight: 500;
       letter-spacing: 4px;
       text-transform: uppercase;
       color: var(--sand);
-      margin-bottom: 16px;
-    }
-    .success-page h1 {
-      color: var(--text);
-      margin-bottom: 20px;
-      max-width: 480px;
-    }
-    .success-body {
-      font-size: 17px;
-      line-height: 1.7;
-      color: var(--text-muted);
-      max-width: 400px;
       margin-bottom: 8px;
     }
-    .success-note {
+
+    .confirm-code {
+      font-family: 'Inter', monospace;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    .confirm-property {
+      font-family: 'Tenor Sans', serif;
+      font-size: 28px;
+      color: var(--text);
+      margin-bottom: 4px;
+      line-height: 1.2;
+    }
+
+    .confirm-location {
       font-size: 13px;
       color: var(--text-muted);
-      margin-bottom: 40px;
-      opacity: 0.7;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 28px;
     }
-    .success-contact {
+
+    .confirm-dates {
+      display: flex;
+      gap: 0;
+      margin-bottom: 28px;
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .confirm-date-block {
+      flex: 1;
+      padding: 16px 20px;
+    }
+
+    .confirm-date-block + .confirm-date-block {
+      border-left: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .confirm-date-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .confirm-date-value {
+      font-family: 'Tenor Sans', serif;
+      font-size: 17px;
+      color: var(--text);
+    }
+
+    .confirm-date-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .confirm-divider {
+      height: 1px;
+      background: rgba(0,0,0,0.07);
+      margin: 28px 0;
+    }
+
+    .confirm-steps-title {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .confirm-steps { display: flex; flex-direction: column; gap: 16px; }
+
+    .confirm-step {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .confirm-step-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .confirm-step-dot.done {
+      background: var(--emerald);
+      color: var(--bone);
+    }
+
+    .confirm-step-dot.pending {
+      background: rgba(0,0,0,0.06);
+      color: var(--text-muted);
+    }
+
+    .confirm-step-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 3px;
+    }
+
+    .confirm-step-body {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .confirm-contact {
+      margin-top: 28px;
+      padding: 20px;
+      background: rgba(212,185,140,0.08);
+      border-left: 3px solid var(--sand);
+    }
+
+    .confirm-contact-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--sand);
+      margin-bottom: 12px;
+    }
+
+    .confirm-contact-name {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .confirm-contact-role {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    .confirm-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .btn-whatsapp {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #25D366;
+      color: white;
+      padding: 12px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .btn-whatsapp:hover { background: #1ebe5d; }
+
+    .btn-email-contact {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid rgba(0,0,0,0.15);
+      color: var(--text);
+      padding: 12px 20px;
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .confirm-footer {
       margin-top: 32px;
-      font-size: 13px;
-      color: var(--text-muted);
-      padding-top: 24px;
-      border-top: 1px solid rgba(0,0,0,0.08);
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
     }
-    .success-contact a {
+
+    .confirm-footer a {
+      font-size: 13px;
       color: var(--tide);
       font-weight: 500;
+      text-decoration: none;
+    }
+
+    .confirm-footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .confirm-card { padding: 32px 24px; }
+      .confirm-property { font-size: 22px; }
     }
   </style>
 </head>
@@ -73,43 +263,171 @@
 
 <nav class="nav">
   <a href="/" class="nav-logo">
-    <svg width="28" height="36" viewBox="0 0 56 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="22" height="28" viewBox="0 0 56 72" fill="none">
       <polygon points="28,0 48,18 48,52 28,72 8,52 8,18" fill="#1A332F"/>
       <polygon points="28,0 48,18 28,24" fill="#3A6560"/>
-      <polygon points="28,0 8,18 28,24" fill="#2A4A45"/>
-      <polygon points="8,18 28,24 8,52" fill="#1A332F"/>
-      <polygon points="48,18 28,24 48,52" fill="#152B28"/>
       <polygon points="8,52 28,24 28,72" fill="#3A6560" opacity="0.8"/>
-      <polygon points="48,52 28,24 28,72" fill="#1A332F" opacity="0.9"/>
-      <polygon points="28,24 8,18 48,18" fill="#4A7570" opacity="0.6"/>
     </svg>
     <div class="nav-logo-text">
       <span class="nav-logo-name">Shankton</span>
       <span class="nav-logo-sub">Properties</span>
     </div>
   </a>
-  <ul class="nav-links">
-    <li><a href="/#collection">The Collection</a></li>
-    <li><a href="/nicaragua/">Nicaragua</a></li>
-    <li><a href="/california/">California</a></li>
-    <li><a href="/#team">The Team</a></li>
-    <li><a href="/#collection" class="nav-cta">Reserve</a></li>
-  </ul>
-  <button class="nav-hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
 
-<div class="success-page">
-  <div class="success-icon">✓</div>
-  <div class="success-eyebrow">Booking Confirmed</div>
-  <h1>You're all set.</h1>
-  <p class="success-body">Your payment was successful. A confirmation will arrive in your inbox within a few minutes.</p>
-  <p class="success-note">Check your spam folder if you don't see it within 15 minutes.</p>
-  <a href="/" class="btn btn-primary">Back to Shankton</a>
-  <div class="success-contact">
-    Questions? <a href="mailto:contact@shankton.com">contact@shankton.com</a>
+<div class="confirm-wrap">
+  <div class="confirm-card">
+    <div class="confirm-icon">✓</div>
+    <div class="confirm-eyebrow">Booking Confirmed</div>
+    <div class="confirm-code" id="conf-code"></div>
+    <div class="confirm-property" id="conf-property">Shankton Properties</div>
+    <div class="confirm-location" id="conf-location"></div>
+
+    <div class="confirm-dates">
+      <div class="confirm-date-block">
+        <div class="confirm-date-label">Check in</div>
+        <div class="confirm-date-value" id="conf-checkin">—</div>
+        <div class="confirm-date-sub">3:00 PM</div>
+      </div>
+      <div class="confirm-date-block">
+        <div class="confirm-date-label">Check out</div>
+        <div class="confirm-date-value" id="conf-checkout">—</div>
+        <div class="confirm-date-sub">11:00 AM</div>
+      </div>
+      <div class="confirm-date-block" style="flex:0.7;">
+        <div class="confirm-date-label">Nights</div>
+        <div class="confirm-date-value" id="conf-nights">—</div>
+        <div class="confirm-date-sub" id="conf-guests"></div>
+      </div>
+    </div>
+
+    <div class="confirm-divider"></div>
+
+    <div class="confirm-steps-title">What happens next</div>
+    <div class="confirm-steps">
+      <div class="confirm-step">
+        <div class="confirm-step-dot done">✓</div>
+        <div>
+          <div class="confirm-step-title">Payment secured</div>
+          <div class="confirm-step-body">Stripe sent a receipt to your email.</div>
+        </div>
+      </div>
+      <div class="confirm-step">
+        <div class="confirm-step-dot done">✓</div>
+        <div>
+          <div class="confirm-step-title">Confirmation email</div>
+          <div class="confirm-step-body">Booking details on their way to your inbox. Check spam if nothing in 15 minutes.</div>
+        </div>
+      </div>
+      <div class="confirm-step">
+        <div class="confirm-step-dot pending">3</div>
+        <div>
+          <div class="confirm-step-title">Before you arrive</div>
+          <div class="confirm-step-body" id="conf-step3">Your host will send check-in instructions 48 hours before arrival.</div>
+        </div>
+      </div>
+      <div class="confirm-step">
+        <div class="confirm-step-dot pending">4</div>
+        <div>
+          <div class="confirm-step-title">Day of check-in</div>
+          <div class="confirm-step-body" id="conf-step4">Self check-in at 3:00 PM. Your host is available if you need anything.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="confirm-contact" id="conf-contact-block">
+      <div class="confirm-contact-label">Your host</div>
+      <div class="confirm-contact-name" id="conf-host-name"></div>
+      <div class="confirm-contact-role" id="conf-host-role"></div>
+      <div class="confirm-btns" id="conf-host-btns"></div>
+    </div>
+
+    <div class="confirm-footer">
+      <a href="/" id="conf-back-property">← Back to property</a>
+      <a href="/">Back to Shankton</a>
+    </div>
   </div>
 </div>
 
 <script src="/js/nav.js"></script>
+<script>
+(function () {
+  const p = new URLSearchParams(window.location.search);
+  const sessionId = p.get('session_id') || '';
+  const property  = p.get('property')   || '';
+  const checkin   = p.get('checkin')    || '';
+  const checkout  = p.get('checkout')   || '';
+  const nights    = p.get('nights')     || '';
+  const guests    = p.get('guests')     || '';
+
+  // Confirmation code from session_id — last 8 chars, uppercase
+  const rawCode = sessionId.replace(/^cs_(live|test)_/, '').slice(-8).toUpperCase();
+  document.getElementById('conf-code').textContent = rawCode ? 'SHK-' + rawCode : '';
+
+  // Property name and location
+  document.getElementById('conf-property').textContent = property || 'Shankton Properties';
+
+  const isNica = /tower|harbour/i.test(property);
+  const isPenin = /peninsula/i.test(property);
+  document.getElementById('conf-location').textContent =
+    isNica  ? 'Playa Gigante · Nicaragua' :
+    isPenin ? 'Belmont Shore · Long Beach, CA' : '';
+
+  // Dates
+  function fmtDate(iso) {
+    if (!iso) return '—';
+    const [y, m, d] = iso.split('-').map(Number);
+    return new Date(y, m - 1, d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+  document.getElementById('conf-checkin').textContent  = fmtDate(checkin);
+  document.getElementById('conf-checkout').textContent = fmtDate(checkout);
+  document.getElementById('conf-nights').textContent   = nights || '—';
+  document.getElementById('conf-guests').textContent   = guests ? guests + (guests === '1' ? ' guest' : ' guests') : '';
+
+  // Step copy — property specific
+  if (isNica) {
+    document.getElementById('conf-step3').textContent =
+      'Nemer will send check-in instructions 48 hours before arrival. He\'ll also coordinate your airport transfer if you need one.';
+    document.getElementById('conf-step4').textContent =
+      'Self check-in at 3:00 PM. Nemer is on-site and available on WhatsApp for anything you need.';
+  } else if (isPenin) {
+    document.getElementById('conf-step3').textContent =
+      'Jasmin will send check-in instructions 48 hours before arrival, including door code and parking details.';
+    document.getElementById('conf-step4').textContent =
+      'Self check-in at 3:00 PM. Jasmin is available by email and phone if anything comes up.';
+  }
+
+  // Host contact block
+  const nameEl  = document.getElementById('conf-host-name');
+  const roleEl  = document.getElementById('conf-host-role');
+  const btnsEl  = document.getElementById('conf-host-btns');
+
+  if (isNica) {
+    nameEl.textContent = 'Nemer Alberto';
+    roleEl.textContent = 'General Manager · Nicaragua';
+    const waText = encodeURIComponent('Hi Nemer, I just booked ' + property + ' and wanted to introduce myself.');
+    btnsEl.innerHTML = `
+      <a class="btn-whatsapp" href="https://wa.me/50558112744?text=${waText}" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp Nemer
+      </a>
+      <a class="btn-email-contact" href="mailto:contact@shankton.com">contact@shankton.com</a>`;
+  } else if (isPenin) {
+    nameEl.textContent = 'Jasmin';
+    roleEl.textContent = 'Host · Long Beach, CA';
+    btnsEl.innerHTML = `
+      <a class="btn-email-contact" href="mailto:contact@shankton.com?subject=My%20booking%20—%20${encodeURIComponent(property)}">Email Jasmin</a>`;
+  } else {
+    document.getElementById('conf-contact-block').style.display = 'none';
+  }
+
+  // Back link
+  const backLink = document.getElementById('conf-back-property');
+  if (isNica && /tower/i.test(property)) backLink.href = '/tower/';
+  else if (isNica) backLink.href = '/harbour/';
+  else if (isPenin) backLink.href = '/peninsula/';
+  else backLink.style.display = 'none';
+})();
+</script>
 </body>
 </html>

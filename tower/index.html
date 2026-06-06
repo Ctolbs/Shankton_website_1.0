@@ -29,14 +29,25 @@
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "LodgingBusiness",
+        "@type": ["LodgingBusiness", "VacationRental"],
         "@id": "https://www.shankton.com/tower/#property",
         "name": "Shankton Tower",
-        "description": "Cliff-top Pacific views from four floors up. Infinity pool over the ocean, private beach, bunk room for the crew. 4 bedrooms plus bunk, 4 baths, sleeps 12.",
+        "alternateName": "Shankton Tower — Playa Gigante, Nicaragua",
+        "description": "Four-story cliff-top retreat perched above the Pacific Ocean at Playa Gigante, Nicaragua. Infinity pool at the cliff edge, private beach, and unobstructed ocean views from every floor. Four bedrooms plus rooftop bunk room, four bathrooms, sleeps 12. Gated community, on-site caretaker, private chef available on request. Positioned above one of Central America's top surf breaks at Redonda Bay.",
         "url": "https://www.shankton.com/tower/",
-        "image": "https://www.shankton.com/img/og-tower.jpg",
+        "image": [
+          "https://www.shankton.com/images/nica/tower/hero.jpg",
+          "https://www.shankton.com/images/nica/tower/ocean-view.jpg",
+          "https://www.shankton.com/images/nica/pool.jpg",
+          "https://www.shankton.com/images/nica/tower/deck.jpg",
+          "https://www.shankton.com/images/nica/tower/bedroom.png",
+          "https://www.shankton.com/images/nica/tower/kitchen.jpg",
+          "https://www.shankton.com/images/nica/tower-sunset.jpg",
+          "https://www.shankton.com/images/nica/shared/beach.jpg"
+        ],
         "address": {
           "@type": "PostalAddress",
+          "streetAddress": "1 Redonda Bay",
           "addressLocality": "Playa Gigante",
           "addressRegion": "Rivas",
           "addressCountry": "NI"
@@ -46,19 +57,90 @@
           "latitude": "11.3793675",
           "longitude": "-86.0294341"
         },
-        "hasMap": "https://maps.app.goo.gl/zrSqqeDE4EUiqrzz9",
-        "amenityFeature": [
-          { "@type": "LocationFeatureSpecification", "name": "Infinity pool", "value": true },
-          { "@type": "LocationFeatureSpecification", "name": "Private beach", "value": true },
-          { "@type": "LocationFeatureSpecification", "name": "Air conditioning", "value": true },
-          { "@type": "LocationFeatureSpecification", "name": "WiFi", "value": true },
-          { "@type": "LocationFeatureSpecification", "name": "Full kitchen", "value": true },
-          { "@type": "LocationFeatureSpecification", "name": "Ocean views", "value": true }
-        ],
-        "numberOfRooms": 4,
+        "hasMap": "https://maps.app.goo.gl/wLr5cjo54pF6MQnZ7",
+        "telephone": "+50558112744",
+        "numberOfRooms": 5,
+        "occupancy": { "@type": "QuantitativeValue", "value": 12 },
+        "floorSize": { "@type": "QuantitativeValue", "value": 4200, "unitCode": "FTK" },
+        "petsAllowed": false,
+        "smokingAllowed": false,
         "checkinTime": "15:00",
         "checkoutTime": "11:00",
         "priceRange": "$$$$",
+        "starRating": { "@type": "Rating", "ratingValue": "5" },
+        "amenityFeature": [
+          { "@type": "LocationFeatureSpecification", "name": "Infinity pool", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Private beach", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Ocean view", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Cliff-top terrace", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Air conditioning", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "WiFi", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Full kitchen", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Outdoor dining", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Beach equipment", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Gated community", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Self check-in", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "On-site caretaker", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Private chef available", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Airport transfer available", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Filtered drinking water", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Carbon monoxide detector", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Smoke detector", "value": true }
+        ],
+        "containsPlace": [
+          {
+            "@type": "Accommodation",
+            "name": "King suite — second floor",
+            "occupancy": { "@type": "QuantitativeValue", "value": 2 },
+            "amenityFeature": [
+              { "@type": "LocationFeatureSpecification", "name": "King bed", "value": true },
+              { "@type": "LocationFeatureSpecification", "name": "Air conditioning", "value": true },
+              { "@type": "LocationFeatureSpecification", "name": "Ocean view", "value": true },
+              { "@type": "LocationFeatureSpecification", "name": "En-suite bathroom", "value": true }
+            ]
+          },
+          {
+            "@type": "Accommodation",
+            "name": "King suite — third floor",
+            "occupancy": { "@type": "QuantitativeValue", "value": 2 },
+            "amenityFeature": [
+              { "@type": "LocationFeatureSpecification", "name": "King bed", "value": true },
+              { "@type": "LocationFeatureSpecification", "name": "Air conditioning", "value": true },
+              { "@type": "LocationFeatureSpecification", "name": "Ocean view", "value": true },
+              { "@type": "LocationFeatureSpecification", "name": "En-suite bathroom", "value": true }
+            ]
+          },
+          {
+            "@type": "Accommodation",
+            "name": "Queen bedroom — ground floor",
+            "occupancy": { "@type": "QuantitativeValue", "value": 2 },
+            "amenityFeature": [
+              { "@type": "LocationFeatureSpecification", "name": "Queen bed", "value": true },
+              { "@type": "LocationFeatureSpecification", "name": "Air conditioning", "value": true },
+              { "@type": "LocationFeatureSpecification", "name": "En-suite bathroom", "value": true }
+            ]
+          },
+          {
+            "@type": "Accommodation",
+            "name": "Queen bedroom — ground floor",
+            "occupancy": { "@type": "QuantitativeValue", "value": 2 },
+            "amenityFeature": [
+              { "@type": "LocationFeatureSpecification", "name": "Queen bed", "value": true },
+              { "@type": "LocationFeatureSpecification", "name": "Air conditioning", "value": true },
+              { "@type": "LocationFeatureSpecification", "name": "En-suite bathroom", "value": true }
+            ]
+          },
+          {
+            "@type": "Accommodation",
+            "name": "Bunk room — rooftop floor",
+            "occupancy": { "@type": "QuantitativeValue", "value": 4 },
+            "amenityFeature": [
+              { "@type": "LocationFeatureSpecification", "name": "Bunk beds", "value": true },
+              { "@type": "LocationFeatureSpecification", "name": "Ceiling fans", "value": true },
+              { "@type": "LocationFeatureSpecification", "name": "Panoramic Pacific views", "value": true }
+            ]
+          }
+        ],
         "aggregateRating": {
           "@type": "AggregateRating",
           "ratingValue": "4.79",
@@ -68,11 +150,14 @@
         },
         "offers": {
           "@type": "Offer",
+          "url": "https://www.shankton.com/tower/",
+          "availability": "https://schema.org/InStock",
           "priceSpecification": {
             "@type": "UnitPriceSpecification",
             "price": "385",
             "priceCurrency": "USD",
-            "unitText": "night"
+            "unitText": "night",
+            "referenceQuantity": { "@type": "QuantitativeValue", "value": "1", "unitCode": "DAY" }
           }
         }
       },
@@ -270,6 +355,7 @@
 
       <div class="reviews-grid">
         <div class="review-card">
+          <div style="color:var(--sand);font-size:13px;letter-spacing:2px;margin-bottom:12px;">★★★★★</div>
           <p class="review-card-text">"The infinity pool at sunset is something I've never experienced anywhere else. You're literally sitting at the edge of the cliff watching the sun drop into the Pacific. We'll be back."</p>
           <div class="review-card-author">
             <div class="review-card-avatar">R</div>
@@ -280,6 +366,7 @@
           </div>
         </div>
         <div class="review-card">
+          <div style="color:var(--sand);font-size:13px;letter-spacing:2px;margin-bottom:12px;">★★★★★</div>
           <p class="review-card-text">"We had 10 adults and 4 kids. Everyone fit perfectly. The bunk room was a hit with the little ones. Nemer had everything ready when we arrived — kitchen stocked, pool clean, beds made."</p>
           <div class="review-card-author">
             <div class="review-card-avatar">T</div>
@@ -290,6 +377,7 @@
           </div>
         </div>
         <div class="review-card">
+          <div style="color:var(--sand);font-size:13px;letter-spacing:2px;margin-bottom:12px;">★★★★★</div>
           <p class="review-card-text">"Best group house I've ever rented. The cliff views are breathtaking — different at every hour of the day. Nemer arranged a private chef for our last three nights and it was incredible."</p>
           <div class="review-card-author">
             <div class="review-card-avatar">A</div>
@@ -300,6 +388,7 @@
           </div>
         </div>
         <div class="review-card">
+          <div style="color:var(--sand);font-size:13px;letter-spacing:2px;margin-bottom:12px;">★★★★<span style="opacity:0.3;">★</span></div>
           <p class="review-card-text">"Four floors and every single one has a reason to be there. The roof is for sunsets. The pool level is for everything else. The kitchen is serious. Four stars only because the bunk room was warm — totally expected in Nicaragua."</p>
           <div class="review-card-author">
             <div class="review-card-avatar">D</div>
@@ -309,6 +398,47 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="faq-section">
+        <p class="eyebrow">Common questions</p>
+        <details class="faq-item">
+          <summary>What's the cancellation policy?</summary>
+          <div class="faq-answer">Full refund for cancellations made at least 14 days before check-in. 50% refund for cancellations 7–14 days before check-in. No refund within 7 days of check-in. All cancellations must be made in writing to contact@shankton.com.</div>
+        </details>
+        <details class="faq-item">
+          <summary>What time is check-in and check-out?</summary>
+          <div class="faq-answer">Check-in is at 3:00 PM. Check-out is at 11:00 AM. Early check-in and late check-out may be available depending on the schedule — ask Nemer in advance.</div>
+        </details>
+        <details class="faq-item">
+          <summary>How do I get to Playa Gigante?</summary>
+          <div class="faq-answer">Fly into Managua (MGA). Danny handles airport pickups directly — he'll stop at Colonia in Rivas on the way so you arrive with groceries. The drive is about 3 hours. You can also take a shuttle from Managua to San Juan del Sur and then a 35-minute boat to Gigante. Ask us to arrange either option when you book.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Is the water safe to drink?</summary>
+          <div class="faq-answer">We provide filtered spring water in 5-gallon jugs. Tap water is not for drinking. More jugs available on request — we keep the kitchen stocked before arrival.</div>
+        </details>
+        <details class="faq-item">
+          <summary>How reliable is the WiFi?</summary>
+          <div class="faq-answer">WiFi is available and we work to keep it reliable. Nicaragua has occasional power outages — the property has backup for the essentials. If you're planning to work remotely, let us know and we'll make sure everything is set.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Can I hire a private chef?</summary>
+          <div class="faq-answer">Yes. Nemer arranges private chefs who cook at the property. This is one of the most popular add-ons — the outdoor dining area at Tower is built for it. Book through Nemer directly after reserving.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Can I bring a pet?</summary>
+          <div class="faq-answer">Pets are not permitted at Shankton Tower.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Is there a minimum stay?</summary>
+          <div class="faq-answer">Minimum stay is 1 night. For high season (November–March) we recommend at least 4–5 nights to make the most of the journey from Managua.</div>
+        </details>
+        <details class="faq-item">
+          <summary>What's included in the cleaning fee?</summary>
+          <div class="faq-answer">The cleaning fee covers a full clean before your arrival and after check-out. Daily housekeeping is available as an add-on — ask Nemer.</div>
+        </details>
       </div>
 
     </div><!-- /left -->
@@ -358,7 +488,11 @@
           <span class="booking-total-label">Min. stay</span>
           <span class="booking-total-amount">1 night</span>
         </div>
-        <p class="booking-note">Book direct for the best rate. No Airbnb fees.</p>
+        <div class="booking-total" style="border-top:none;padding-top:0;margin-top:-4px;">
+          <span class="booking-total-label" style="color:var(--emerald);">Free cancellation</span>
+          <span class="booking-total-amount" style="font-size:12px;color:var(--text-muted);">before 14 days</span>
+        </div>
+        <p class="booking-note">Best rate guaranteed — no Airbnb fees or service charges.</p>
 
         <div class="booking-airbnb">
           <svg width="14" height="14" viewBox="0 0 32 32" fill="none"><path d="M16 1C7.7 1 1 7.7 1 16s6.7 15 15 15 15-6.7 15-15S24.3 1 16 1z" fill="#FF5A5F"/></svg>
@@ -386,6 +520,10 @@
           </div>
         </div>
         <p style="font-size:13px;color:var(--text-muted);margin-top:16px;line-height:1.6;">Need a chef, a boat, a board, or a crew? Text Nemer. He's been doing this for twenty years.</p>
+        <a href="https://wa.me/50558112744?text=Hi%20Nemer%2C%20I%27m%20interested%20in%20Shankton%20Tower%20and%20have%20a%20few%20questions." target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;background:#25D366;color:white;padding:11px 16px;font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp Nemer
+        </a>
       </div>
     </div><!-- /right -->
 
@@ -485,6 +623,14 @@
     cancelPath:   '/tower/',
   };
 </script>
+<div class="mob-book-bar" id="mob-book-bar" hidden>
+  <div class="mob-book-bar-price">
+    <div class="mob-book-bar-amount">From $385</div>
+    <div class="mob-book-bar-sub">/ night · Sleeps 12</div>
+  </div>
+  <a href="#reserve" class="btn btn-primary" style="white-space:nowrap;padding:12px 24px;font-size:13px;">Check availability</a>
+</div>
+
 <script src="../js/nav.js"></script>
 <script src="../js/gallery.js"></script>
 <script src="../js/booking.js"></script>
@@ -496,6 +642,16 @@
   document.addEventListener('click', function() {
     document.querySelectorAll('.pro-tip.tip-active').forEach(function(el) { el.classList.remove('tip-active'); });
   });
+
+  // Mobile sticky bar — show when #reserve is out of view
+  (function() {
+    var reserve = document.getElementById('reserve');
+    var bar = document.getElementById('mob-book-bar');
+    if (!reserve || !bar || !window.IntersectionObserver) return;
+    new IntersectionObserver(function(entries) {
+      bar.hidden = entries[0].isIntersecting;
+    }).observe(reserve);
+  }());
 </script>
 </body>
 </html>
