@@ -1196,7 +1196,8 @@ section { padding: 80px 0; }
 .booking-total-label { font-size: 14px; font-weight: 500; }
 .booking-total-amount { font-size: 16px; font-weight: 500; }
 .booking-note { font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 12px; line-height: 1.5; }
-.booking-airbnb { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(0,0,0,0.06); font-size: 12px; color: var(--text-muted); }
+.booking-airbnb { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(0,0,0,0.06); font-size: 12px; color: var(--text-muted); text-decoration: none; }
+.booking-airbnb:hover { color: var(--text-primary); }
 
 /* Specs grid */
 .specs-grid {
