@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Shankton Logo Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #000;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh;
+    }
+  </style>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 520" width="700" height="728">
+  <!--
+    ══════════════════════════════════════════════════════════
+    POINTED CRYSTAL GEM  — low-poly 3D, flat fills, high contrast
+    Outer silhouette (8 pts):
+      T   top         (250,  88)
+      UL  upper-left  (153, 170)
+      UR  upper-right (347, 170)
+      ML  mid-left    (133, 258)
+      MR  mid-right   (367, 258)
+      LL  lower-left  (163, 355)
+      LR  lower-right (337, 355)
+      B   bottom      (250, 415)
+
+    Inner facet dividers:
+      ITPC  (250, 220)  cap ridge bottom, centre
+      ITPL  (178, 242)  cap bottom, left
+      ITPR  (322, 242)  cap bottom, right
+      IML   (166, 258)  inner mid-left
+      IMR   (334, 258)  inner mid-right
+
+    Mid-body horizontal girdle cut (y ≈ 308):
+      GML   (165, 308)  interpolated on left front edge
+      GMR   (336, 308)  interpolated on right front edge
+    ══════════════════════════════════════════════════════════
+  -->
+
+  <!-- ── Top cap — LEFT sub-face (brightest, light-source side) ── -->
+  <polygon points="250,88 153,170 178,242 250,220"
+           fill="#b8dae6"/>
+
+  <!-- ── Top cap — RIGHT sub-face (slightly darker, angled away) ── -->
+  <polygon points="250,88 250,220 322,242 347,170"
+           fill="#88c0cc"/>
+
+  <!-- ── Left face — medium gray-teal ── -->
+  <polygon points="153,170 133,258 166,258 178,242"
+           fill="#36697a"/>
+
+  <!-- ── Right face — brighter teal, catch-light ── -->
+  <polygon points="347,170 322,242 334,258 367,258"
+           fill="#3e8a98"/>
+
+  <!-- ── Upper body — slightly less dark, picks up cap reflection ── -->
+  <polygon points="178,242 250,220 322,242 334,258 336,308 165,308 166,258"
+           fill="#102630"/>
+
+  <!-- ── Lower body — darkest, deepest shadow ── -->
+  <polygon points="165,308 336,308 337,355 250,415 163,355"
+           fill="#07161e"/>
+
+  <!-- ── Lower-left — deep shadow sliver ── -->
+  <polygon points="133,258 163,355 166,258"
+           fill="#193c48"/>
+
+  <!-- ── Lower-right — slight warm reflection ── -->
+  <polygon points="367,258 334,258 337,355"
+           fill="#2c6272"/>
+
+  <!-- ── Specular highlight — bright catch at the very tip ── -->
+  <polygon points="250,88 241,103 250,99 259,103"
+           fill="#eef6fa" opacity="0.82"/>
+
+  <!-- ── Edge lines — crisp facet definition ── -->
+  <!-- Cap ridge (bright crease) -->
+  <line x1="250" y1="88"  x2="250" y2="220" stroke="#cce8f0" stroke-width="1"   opacity="0.7"/>
+  <!-- Top outer edges -->
+  <line x1="250" y1="88"  x2="153" y2="170" stroke="#aad4de" stroke-width="0.8" opacity="0.55"/>
+  <line x1="250" y1="88"  x2="347" y2="170" stroke="#aad4de" stroke-width="0.8" opacity="0.38"/>
+  <!-- Cap bottom creases -->
+  <line x1="178" y1="242" x2="250" y2="220" stroke="#c0e2ea" stroke-width="0.8" opacity="0.65"/>
+  <line x1="250" y1="220" x2="322" y2="242" stroke="#c0e2ea" stroke-width="0.8" opacity="0.55"/>
+  <!-- Side creases upper -->
+  <line x1="178" y1="242" x2="166" y2="258" stroke="#0a2430" stroke-width="0.7" opacity="0.7"/>
+  <line x1="322" y1="242" x2="334" y2="258" stroke="#0a2430" stroke-width="0.7" opacity="0.7"/>
+  <!-- Mid-body girdle crease (horizontal facet line) -->
+  <line x1="165" y1="308" x2="336" y2="308" stroke="#1e4050" stroke-width="0.7" opacity="0.65"/>
+  <!-- Side creases lower -->
+  <line x1="166" y1="258" x2="163" y2="355" stroke="#0a2430" stroke-width="0.6" opacity="0.45"/>
+  <line x1="334" y1="258" x2="337" y2="355" stroke="#0a2430" stroke-width="0.6" opacity="0.45"/>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       WORDMARK
+       ══════════════════════════════════════════════════════════ -->
+
+  <text x="250" y="306"
+        font-family="'Barlow Condensed', 'Arial Narrow', Impact, sans-serif"
+        font-weight="800"
+        font-size="104"
+        fill="#ffffff"
+        text-anchor="middle"
+        letter-spacing="1">SHANKTON</text>
+
+  <text x="250" y="344"
+        font-family="'Barlow Condensed', 'Arial Narrow', Impact, sans-serif"
+        font-weight="400"
+        font-size="24"
+        fill="#ffffff"
+        text-anchor="middle"
+        letter-spacing="14">PROPERTIES</text>
+</svg>
+
+</body>
+</html>

@@ -1,0 +1,161 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="800" height="800">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;800&amp;display=swap');
+    </style>
+
+    <!-- Top cap: cool ice-teal, lit from above-left -->
+    <linearGradient id="g-cap" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0%"   stop-color="#c2dde4"/>
+      <stop offset="100%" stop-color="#7ab4be"/>
+    </linearGradient>
+
+    <!-- Upper-left sub-face of cap (brighter, light source side) -->
+    <linearGradient id="g-cap-l" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"   stop-color="#a4ccd6"/>
+      <stop offset="100%" stop-color="#6aaab4"/>
+    </linearGradient>
+
+    <!-- Left face: medium gray-teal -->
+    <linearGradient id="g-left" x1="0" y1="0.4" x2="1" y2="0.6">
+      <stop offset="0%"   stop-color="#286070"/>
+      <stop offset="100%" stop-color="#3a7a86"/>
+    </linearGradient>
+
+    <!-- Right face: slightly brighter, catch-light -->
+    <linearGradient id="g-right" x1="1" y1="0.4" x2="0" y2="0.6">
+      <stop offset="0%"   stop-color="#2c6878"/>
+      <stop offset="100%" stop-color="#429098"/>
+    </linearGradient>
+
+    <!-- Front body: the darkest face, facing the viewer -->
+    <linearGradient id="g-body" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%"   stop-color="#102830"/>
+      <stop offset="50%"  stop-color="#0c2028"/>
+      <stop offset="100%" stop-color="#081820"/>
+    </linearGradient>
+
+    <!-- Lower left: deep shadow -->
+    <linearGradient id="g-ll" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#1a4858"/>
+      <stop offset="100%" stop-color="#112e3a"/>
+    </linearGradient>
+
+    <!-- Lower right: slight warm reflection bouncing up -->
+    <linearGradient id="g-lr" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#1c4858"/>
+      <stop offset="100%" stop-color="#2e6e7c"/>
+    </linearGradient>
+
+    <!-- Ambient glow behind gem -->
+    <filter id="glow" x="-30%" y="-25%" width="160%" height="150%">
+      <feGaussianBlur stdDeviation="14" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Black background -->
+  <rect width="500" height="500" fill="#000"/>
+
+  <!-- Ambient teal halo behind gem -->
+  <ellipse cx="250" cy="252" rx="130" ry="168"
+           fill="#1a5868" opacity="0.14" filter="url(#glow)"/>
+
+  <!--
+    ══════════════════════════════════════════════════════
+    POINTED CRYSTAL GEM  —  matching original composition
+    Width 284 px, Height 340 px, centered at (250, 250)
+
+    OUTER SILHOUETTE:
+      T   top point        (250,  80)
+      UL  upper-left       (160, 150)
+      UR  upper-right      (340, 150)
+      WL  widest left      (108, 260)
+      WR  widest right     (392, 260)
+      LL  lower-left       (160, 365)
+      LR  lower-right      (340, 365)
+      B   bottom point     (250, 420)
+
+    INNER FACET DIVIDERS:
+      ITPL  (215, 225)  inner top-plane left
+      ITPC  (250, 205)  inner top-plane centre (ridge)
+      ITPR  (285, 225)  inner top-plane right
+      IML   (165, 260)  inner mid left
+      IMR   (335, 260)  inner mid right
+    ══════════════════════════════════════════════════════
+  -->
+
+  <!-- ── FACET 1: Top Cap right sub-face (medium bright) ── -->
+  <polygon points="250,80 340,150 285,225 250,205"
+           fill="url(#g-cap)"/>
+
+  <!-- ── FACET 2: Top Cap left sub-face (brightest — light source) ── -->
+  <polygon points="250,80 250,205 215,225 160,150"
+           fill="url(#g-cap-l)"/>
+
+  <!-- Specular sheen: bright streak across the cap ridge -->
+  <polygon points="235,80 265,80 258,108 242,108"
+           fill="#e2f4f8" opacity="0.38"/>
+  <!-- Secondary glint on left cap face -->
+  <polygon points="250,80 200,118 210,138 250,102"
+           fill="#d0eef4" opacity="0.22"/>
+
+  <!-- ── FACET 3: Left face ── -->
+  <polygon points="160,150 108,260 165,260 215,225"
+           fill="url(#g-left)"/>
+
+  <!-- ── FACET 4: Right face ── -->
+  <polygon points="340,150 285,225 335,260 392,260"
+           fill="url(#g-right)"/>
+
+  <!-- ── FACET 5: Front body (darkest — faces viewer) ── -->
+  <polygon points="215,225 250,205 285,225 335,260 340,365 250,420 160,365 165,260"
+           fill="url(#g-body)"/>
+
+  <!-- ── FACET 6: Lower-left shadow ── -->
+  <polygon points="108,260 160,365 165,260"
+           fill="url(#g-ll)"/>
+
+  <!-- ── FACET 7: Lower-right reflection ── -->
+  <polygon points="392,260 335,260 340,365"
+           fill="url(#g-lr)"/>
+
+  <!-- ── FACET EDGE LINES (give the gem crisp definition) ── -->
+  <!-- Cap ridge (bright crease) -->
+  <line x1="250" y1="80"  x2="250" y2="205" stroke="#d8eef4" stroke-width="0.9" opacity="0.6"/>
+  <!-- Top outer edges -->
+  <line x1="250" y1="80"  x2="160" y2="150" stroke="#b0d4dc" stroke-width="0.7" opacity="0.55"/>
+  <line x1="250" y1="80"  x2="340" y2="150" stroke="#b0d4dc" stroke-width="0.7" opacity="0.35"/>
+  <!-- Cap bottom crease -->
+  <line x1="215" y1="225" x2="250" y2="205" stroke="#c8e8f0" stroke-width="0.7" opacity="0.55"/>
+  <line x1="250" y1="205" x2="285" y2="225" stroke="#c8e8f0" stroke-width="0.7" opacity="0.55"/>
+  <!-- Side creases (upper) -->
+  <line x1="215" y1="225" x2="165" y2="260" stroke="#0e2e3c" stroke-width="0.7" opacity="0.7"/>
+  <line x1="285" y1="225" x2="335" y2="260" stroke="#0e2e3c" stroke-width="0.7" opacity="0.7"/>
+  <!-- Side creases (lower) -->
+  <line x1="165" y1="260" x2="160" y2="365" stroke="#0e2e3c" stroke-width="0.6" opacity="0.5"/>
+  <line x1="335" y1="260" x2="340" y2="365" stroke="#0e2e3c" stroke-width="0.6" opacity="0.5"/>
+
+
+  <!-- ══════════════════════════════════════════════════════
+       WORDMARK — overlapping gem body, matching original layout
+       ══════════════════════════════════════════════════════ -->
+
+  <!-- SHANKTON: large bold condensed, sits over the gem mid-body -->
+  <text x="250" y="300"
+        font-family="'Barlow Condensed', 'Arial Narrow', Impact, sans-serif"
+        font-weight="800"
+        font-size="108"
+        fill="#ffffff"
+        text-anchor="middle"
+        letter-spacing="1">SHANKTON</text>
+
+  <!-- PROPERTIES: same font, lighter, wide tracking -->
+  <text x="250" y="338"
+        font-family="'Barlow Condensed', 'Arial Narrow', Impact, sans-serif"
+        font-weight="400"
+        font-size="25"
+        fill="#ffffff"
+        text-anchor="middle"
+        letter-spacing="15">PROPERTIES</text>
+</svg>
