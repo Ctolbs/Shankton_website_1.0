@@ -489,7 +489,28 @@
   </div>
 </footer>
 
+<div class="mob-book-bar" id="mob-book-bar" hidden>
+  <div class="mob-book-bar-price">
+    <div class="mob-book-bar-amount">Harbour &amp; Tower</div>
+    <div class="mob-book-bar-sub">Playa Gigante, Nicaragua</div>
+  </div>
+  <div style="display:flex;gap:8px;flex-shrink:0;">
+    <a href="../harbour/" class="btn btn-primary" style="white-space:nowrap;padding:12px 16px;font-size:13px;">Harbour</a>
+    <a href="../tower/" class="btn btn-outline" style="white-space:nowrap;padding:12px 16px;font-size:13px;">Tower</a>
+  </div>
+</div>
+
 <script src="../js/nav.js"></script>
 <script src="../js/nba-jam.js"></script>
+<script>
+  (function() {
+    var hero = document.querySelector('.region-hero');
+    var bar  = document.getElementById('mob-book-bar');
+    if (!hero || !bar || !window.IntersectionObserver) return;
+    new IntersectionObserver(function(entries) {
+      bar.hidden = entries[0].isIntersecting;
+    }).observe(hero);
+  }());
+</script>
 </body>
 </html>

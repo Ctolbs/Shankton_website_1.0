@@ -474,7 +474,25 @@
   </div>
 </footer>
 
+<div class="mob-book-bar" id="mob-book-bar" hidden>
+  <div class="mob-book-bar-price">
+    <div class="mob-book-bar-amount">Shankton Peninsula</div>
+    <div class="mob-book-bar-sub">2 suites · Belmont Shore</div>
+  </div>
+  <a href="../peninsula/" class="btn btn-primary" style="white-space:nowrap;padding:12px 24px;font-size:13px;">Check availability</a>
+</div>
+
 <script src="../js/nav.js"></script>
 <script src="../js/nba-jam.js"></script>
+<script>
+  (function() {
+    var hero = document.querySelector('.region-hero');
+    var bar  = document.getElementById('mob-book-bar');
+    if (!hero || !bar || !window.IntersectionObserver) return;
+    new IntersectionObserver(function(entries) {
+      bar.hidden = entries[0].isIntersecting;
+    }).observe(hero);
+  }());
+</script>
 </body>
 </html>
