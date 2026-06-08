@@ -13,6 +13,12 @@
 
   configs.forEach(initCard);
 
+  // Scroll to booking panel when arriving from hero widget with URL params
+  if (new URLSearchParams(window.location.search).get('checkin')) {
+    const reserveEl = document.getElementById('reserve');
+    if (reserveEl) reserveEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
   function initCard(cfg) {
     const pfx = cfg.prefix ? cfg.prefix + '-' : '';
     const $ = id => document.getElementById(pfx + id);
