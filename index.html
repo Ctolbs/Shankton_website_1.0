@@ -114,6 +114,32 @@
     <a href="#collection" class="btn btn-primary">View the Collection</a>
     <a href="#team" class="btn btn-outline">Our Team</a>
   </div>
+
+  <!-- Hero booking widget -->
+  <div class="hero-booking-widget">
+    <div class="hbw-props">
+      <button class="hbw-prop-btn active" data-url="harbour/" data-max="8">Harbour</button>
+      <button class="hbw-prop-btn" data-url="tower/" data-max="12">Tower</button>
+      <button class="hbw-prop-btn" data-url="peninsula/" data-max="6">Peninsula A</button>
+      <button class="hbw-prop-btn" data-url="peninsula/" data-max="6">Peninsula B</button>
+    </div>
+    <div class="hbw-fields">
+      <div class="hbw-field">
+        <div class="hbw-label">Check in</div>
+        <input type="date" class="hbw-input" id="hbw-checkin">
+      </div>
+      <div class="hbw-field">
+        <div class="hbw-label">Check out</div>
+        <input type="date" class="hbw-input" id="hbw-checkout">
+      </div>
+      <div class="hbw-field">
+        <div class="hbw-label">Guests</div>
+        <select class="hbw-input" id="hbw-guests"></select>
+      </div>
+      <button class="hbw-cta" id="hbw-cta">Check Availability →</button>
+    </div>
+  </div>
+
   <div class="hero-scroll">
     <div class="scroll-line"></div>
     <span>Scroll</span>
@@ -421,6 +447,63 @@
   }());
 </script>
 <script src="js/nav.js"></script>
+<script>
+  // Hero booking widget
+  (function () {
+    var propBtns  = Array.from(document.querySelectorAll('.hbw-prop-btn'));
+    var guestSel  = document.getElementById('hbw-guests');
+    var ctaBtn    = document.getElementById('hbw-cta');
+    var checkinEl = document.getElementById('hbw-checkin');
+    var checkoutEl= document.getElementById('hbw-checkout');
+
+    var active = propBtns[0];
+
+    function setMaxGuests(max) {
+      guestSel.innerHTML = '';
+      for (var i = 1; i <= max; i++) {
+        var o = document.createElement('option');
+        o.value = i;
+        o.textContent = i + ' guest' + (i > 1 ? 's' : '');
+        if (i === 2) o.selected = true;
+        guestSel.appendChild(o);
+      }
+    }
+
+    setMaxGuests(parseInt(active.dataset.max) || 8);
+
+    propBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        propBtns.forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        active = btn;
+        setMaxGuests(parseInt(btn.dataset.max) || 8);
+      });
+    });
+
+    // Set min dates
+    var today = new Date();
+    var fmt = function (d) { return d.toISOString().slice(0, 10); };
+    checkinEl.min = fmt(today);
+    checkinEl.addEventListener('change', function () {
+      if (!checkoutEl.value || checkoutEl.value <= checkinEl.value) {
+        var d = new Date(checkinEl.value);
+        d.setDate(d.getDate() + 1);
+        checkoutEl.value = fmt(d);
+      }
+      checkoutEl.min = checkinEl.value;
+    });
+
+    ctaBtn.addEventListener('click', function () {
+      var url = active.dataset.url || 'harbour/';
+      var params = [];
+      if (checkinEl.value)  params.push('checkin='  + checkinEl.value);
+      if (checkoutEl.value) params.push('checkout=' + checkoutEl.value);
+      if (guestSel.value)   params.push('guests='   + guestSel.value);
+      if (params.length) url += '?' + params.join('&');
+      window.location.href = url;
+    });
+  }());
+</script>
 <script>
   (function () {
     const form = document.querySelector('.manage-form');

@@ -45,10 +45,26 @@
       document.getElementById(pfx + 'bc-pet').addEventListener('change', checkAvail);
     }
 
+    // Pre-fill from URL params (e.g. from home page hero widget)
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlCheckin  = urlParams.get('checkin');
+    const urlCheckout = urlParams.get('checkout');
+    const urlGuests   = urlParams.get('guests');
+    if (urlGuests && guestSel) {
+      const opt = Array.from(guestSel.options).find(o => o.value === urlGuests);
+      if (opt) opt.selected = true;
+    }
+
+    function parseUrlDate(str) {
+      if (!str) return null;
+      const [y, m, d] = str.split('-').map(Number);
+      return (y && m && d) ? new Date(y, m - 1, d) : null;
+    }
+
     // ── Calendar state ──────────────────────────────────────────────────────
     let stage       = null; // null | 'checkin' | 'checkout'
-    let checkinDate = null;
-    let checkoutDate = null;
+    let checkinDate = parseUrlDate(urlCheckin);
+    let checkoutDate= parseUrlDate(urlCheckout);
     let hoverDate   = null;
     let viewYear    = tomorrow.getFullYear();
     let viewMonth   = tomorrow.getMonth();
@@ -375,6 +391,17 @@
         alert('Something went wrong. Please try again or email contact@shankton.com');
       }
     });
+
+    // Apply pre-filled dates from URL params to the display
+    if (checkinDate) {
+      $('bc-checkin').value               = toValue(checkinDate);
+      $('bc-checkin-display').textContent = toDisplay(checkinDate);
+    }
+    if (checkoutDate) {
+      $('bc-checkout').value               = toValue(checkoutDate);
+      $('bc-checkout-display').textContent = toDisplay(checkoutDate);
+    }
+    if (checkinDate && checkoutDate) checkAvail();
 
     // ── Live floor price ─────────────────────────────────────────────────────
     // Fetch the minimum available nightly rate for the next 45 days from
