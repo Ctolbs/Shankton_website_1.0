@@ -1,4 +1,4 @@
-const MCP_URL = 'https://mcp.hospitable.com/mcp';
+const API = 'https://public.api.hospitable.com/v2';
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'GET') return { statusCode: 405, body: 'Method not allowed' };
@@ -6,34 +6,31 @@ exports.handler = async (event) => {
   const { property_id } = event.queryStringParameters || {};
   if (!property_id) return { statusCode: 400, body: JSON.stringify({ error: 'Missing property_id' }) };
 
-  const token = process.env.HOSPITABLE_MCP_TOKEN;
+  const token = process.env.HOSPITABLE_TOKEN;
   if (!token) return { statusCode: 500, body: JSON.stringify({ error: 'Server config error' }) };
 
   try {
-    const res = await fetch(MCP_URL, {
-      method: 'POST',
-      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        jsonrpc: '2.0', id: 1, method: 'tools/call',
-        params: { name: 'get-property-reviews', arguments: { uuid: property_id, per_page: 20, include: 'guest' } },
-      }),
+    const res = await fetch(`${API}/properties/${property_id}/reviews?per_page=20&include=guest`, {
+      headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' },
     });
 
-    const d = await res.json();
-    if (!d.result) throw new Error('MCP error: ' + JSON.stringify(d.error || d));
-    const raw = JSON.parse(d.result.content[0].text).data || [];
+    if (!res.ok) {
+      const txt = await res.text();
+      throw new Error(`API ${res.status}: ${txt.slice(0, 200)}`);
+    }
 
-    const reviews = raw
+    const { data: raw } = await res.json();
+
+    const reviews = (raw || [])
       .filter(r => r.public.rating === 5 && r.public.review && r.public.review.length >= 60 && r.guest?.first_name)
       .slice(0, 4)
       .map(r => {
         const dt = new Date(r.reviewed_at);
-        const month = dt.toLocaleString('en-US', { month: 'long' });
         const lastName = r.guest.last_name;
         return {
           text:    r.public.review,
           author:  `${r.guest.first_name}${lastName ? ' ' + lastName[0] + '.' : ''}`,
-          date:    `${month} ${dt.getFullYear()}`,
+          date:    dt.toLocaleString('en-US', { month: 'long' }) + ' ' + dt.getFullYear(),
           initial: r.guest.first_name[0].toUpperCase(),
         };
       });
