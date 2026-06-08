@@ -180,7 +180,7 @@ async function sendConfirmationEmail(d) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'Shankton Properties <confirm@shankton.com>',
+        from: 'Shankton Properties <contact@shankton.com>',
         to: `${d.first_name} ${d.last_name} <${d.email}>`,
         reply_to: 'contact@shankton.com',
         subject: `Booking confirmed · ${d.property_name} · ${fmtDate(d.checkin)}`,
