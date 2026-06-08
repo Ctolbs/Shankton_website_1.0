@@ -20,6 +20,7 @@ exports.handler = async (event) => {
     });
 
     const d = await res.json();
+    if (!d.result) throw new Error('MCP error: ' + JSON.stringify(d.error || d));
     const raw = JSON.parse(d.result.content[0].text).data || [];
 
     const reviews = raw
