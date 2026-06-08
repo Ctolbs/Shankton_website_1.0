@@ -44,6 +44,6 @@ exports.handler = async (event) => {
     };
   } catch (err) {
     console.error('get-reviews error:', err.message);
-    return { statusCode: 502, body: JSON.stringify({ error: 'Could not fetch reviews' }) };
+    return { statusCode: 502, body: JSON.stringify({ error: err.message }) };
   }
 };
