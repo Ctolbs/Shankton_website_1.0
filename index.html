@@ -120,8 +120,8 @@
     <div class="hbw-props">
       <button class="hbw-prop-btn active" data-url="harbour/" data-max="8">Harbour</button>
       <button class="hbw-prop-btn" data-url="tower/" data-max="12">Tower</button>
-      <button class="hbw-prop-btn" data-url="peninsula/" data-max="6">Peninsula A</button>
-      <button class="hbw-prop-btn" data-url="peninsula/" data-max="6">Peninsula B</button>
+      <button class="hbw-prop-btn" data-url="peninsula/" data-unit="a" data-max="6">Peninsula A</button>
+      <button class="hbw-prop-btn" data-url="peninsula/" data-unit="b" data-max="6">Peninsula B</button>
     </div>
     <div class="hbw-fields">
       <div class="hbw-field">
@@ -496,9 +496,10 @@
     ctaBtn.addEventListener('click', function () {
       var url = active.dataset.url || 'harbour/';
       var params = [];
-      if (checkinEl.value)  params.push('checkin='  + checkinEl.value);
-      if (checkoutEl.value) params.push('checkout=' + checkoutEl.value);
-      if (guestSel.value)   params.push('guests='   + guestSel.value);
+      if (checkinEl.value)        params.push('checkin='  + checkinEl.value);
+      if (checkoutEl.value)       params.push('checkout=' + checkoutEl.value);
+      if (guestSel.value)         params.push('guests='   + guestSel.value);
+      if (active.dataset.unit)    params.push('unit='     + active.dataset.unit);
       if (params.length) url += '?' + params.join('&');
       window.location.href = url;
     });
