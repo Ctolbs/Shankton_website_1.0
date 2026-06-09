@@ -51,6 +51,17 @@
       document.getElementById(pfx + 'bc-pet').addEventListener('change', checkAvail);
     }
 
+    // T&C checkbox — injected after bc-contact, shown alongside bc-btn
+    const termsDiv = document.createElement('div');
+    termsDiv.id = pfx + 'bc-terms';
+    termsDiv.style.cssText = 'display:none;margin:10px 0 0;';
+    termsDiv.innerHTML = `
+      <label style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--text-muted);cursor:pointer;line-height:1.5;">
+        <input type="checkbox" id="${pfx}bc-terms-check" style="margin-top:2px;flex-shrink:0;accent-color:var(--emerald);">
+        <span>I agree to the <a href="/terms.html" target="_blank" style="color:var(--emerald);text-decoration:underline;">cancellation policy &amp; terms</a></span>
+      </label>`;
+    $('bc-contact').insertAdjacentElement('afterend', termsDiv);
+
     // Pre-fill from URL params (e.g. from home page hero widget)
     const urlParams = new URLSearchParams(window.location.search);
     const urlCheckin  = urlParams.get('checkin');
@@ -209,6 +220,7 @@
           $('bc-contact').style.display        = 'none';
           $('bc-btn').style.display            = 'none';
           $('bc-secure').style.display         = 'none';
+          $('bc-terms').style.display          = 'none';
           stage = 'checkout';
           syncHighlight();
           renderCal();
@@ -291,6 +303,7 @@
       $('bc-contact').style.display   = 'none';
       $('bc-btn').style.display       = 'none';
       $('bc-secure').style.display    = 'none';
+      $('bc-terms').style.display     = 'none';
 
       try {
         const pricingParam = cfg.pricingPropertyId
@@ -334,6 +347,7 @@
         $('bc-contact').style.display   = 'flex';
         $('bc-btn').style.display       = 'block';
         $('bc-secure').style.display    = 'block';
+        $('bc-terms').style.display     = 'block';
         $('bc-btn').dataset.priceCents  = data.price_cents;
         $('bc-btn').dataset.nights      = data.nights;
         $('bc-btn').dataset.taxCents    = taxCents;
@@ -359,6 +373,12 @@
         if (!firstName) $('bc-first').style.borderColor = '#b94040';
         if (!lastName)  $('bc-last').style.borderColor  = '#b94040';
         if (!email)     $('bc-email').style.borderColor = '#b94040';
+        return;
+      }
+
+      const termsCheck = document.getElementById(pfx + 'bc-terms-check');
+      if (termsCheck && !termsCheck.checked) {
+        termsCheck.closest('label').style.color = '#b94040';
         return;
       }
 

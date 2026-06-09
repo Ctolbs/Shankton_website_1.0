@@ -82,7 +82,7 @@ exports.handler = async (event) => {
 
   // Send guest confirmation email via Resend
   await sendConfirmationEmail({ first_name, last_name, email, property_name, checkin, checkout, nights, guests,
-    price_cents, cleaning_fee_cents, pet_fee_cents, tax_cents });
+    price_cents, cleaning_fee_cents, pet_fee_cents, tax_cents, session_id: session.id });
 
   return { statusCode: 200, body: 'OK' };
 };
@@ -92,79 +92,149 @@ async function sendConfirmationEmail(d) {
   if (!resendKey) { console.warn('RESEND_API_KEY not set — skipping confirmation email'); return; }
 
   const fmt = cents => '$' + (parseInt(cents || '0', 10) / 100).toFixed(2);
-  const fmtDate = s => {
+
+  const dateParts = s => {
     const [y, m, day] = s.split('-');
-    return new Date(y, m - 1, day).toLocaleDateString('en-US', { weekday: 'short', month: 'long', day: 'numeric', year: 'numeric' });
+    const dt = new Date(parseInt(y), parseInt(m) - 1, parseInt(day));
+    return {
+      weekday: dt.toLocaleDateString('en-US', { weekday: 'short' }),
+      month:   dt.toLocaleDateString('en-US', { month: 'short' }),
+      day:     parseInt(day),
+      year:    y,
+    };
   };
 
-  const petRow = parseInt(d.pet_fee_cents || '0') > 0
-    ? `<tr><td style="padding:6px 0;color:#555;">Pet fee</td><td style="padding:6px 0;text-align:right;">${fmt(d.pet_fee_cents)}</td></tr>`
-    : '';
-  const taxRow = parseInt(d.tax_cents || '0') > 0
-    ? `<tr><td style="padding:6px 0;color:#555;">Taxes &amp; fees</td><td style="padding:6px 0;text-align:right;">${fmt(d.tax_cents)}</td></tr>`
-    : '';
+  const fmtSubjectDate = s => {
+    const [y, m, day] = s.split('-');
+    return new Date(parseInt(y), parseInt(m) - 1, parseInt(day))
+      .toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  };
+
+  const ci  = dateParts(d.checkin);
+  const co  = dateParts(d.checkout);
+  const ref = 'SH-' + (d.session_id || '').replace(/^cs_(test_|live_)/, '').slice(0, 8).toUpperCase();
   const total = parseInt(d.price_cents||0) + parseInt(d.cleaning_fee_cents||0) + parseInt(d.pet_fee_cents||0) + parseInt(d.tax_cents||0);
 
-  const html = `<!DOCTYPE html>
-<html><body style="margin:0;padding:0;background:#f5f1e8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-<table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:40px 16px;">
-<table width="560" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:4px;overflow:hidden;max-width:560px;width:100%;">
+  const petRow = parseInt(d.pet_fee_cents || '0') > 0
+    ? `<tr><td style="padding:9px 0;color:#666;font-size:14px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Pet fee</td><td align="right" style="padding:9px 0;font-size:14px;color:#333;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${fmt(d.pet_fee_cents)}</td></tr>`
+    : '';
+  const taxRow = parseInt(d.tax_cents || '0') > 0
+    ? `<tr><td style="padding:9px 0;color:#666;font-size:14px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Taxes &amp; fees</td><td align="right" style="padding:9px 0;font-size:14px;color:#333;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${fmt(d.tax_cents)}</td></tr>`
+    : '';
 
-  <tr><td style="background:#1A332F;padding:32px 40px;">
-    <p style="margin:0;color:rgba(245,241,232,0.6);font-size:11px;letter-spacing:3px;text-transform:uppercase;">Shankton Properties</p>
-    <h1 style="margin:12px 0 0;color:#f5f1e8;font-size:26px;font-weight:600;">You're confirmed.</h1>
+  const html = `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#edeae2;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#edeae2;">
+<tr><td align="center" style="padding:36px 16px 48px;">
+<table width="560" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;width:100%;">
+
+  <tr><td style="background:#1A332F;border-radius:6px 6px 0 0;padding:36px 40px;">
+    <a href="https://www.shankton.com" style="display:block;margin-bottom:24px;text-decoration:none;">
+      <img src="https://www.shankton.com/logo-preview.svg" alt="Shankton Properties" width="120" style="display:block;width:120px;height:auto;">
+    </a>
+    <h1 style="margin:0 0 6px;color:#f5f1e8;font-size:28px;font-weight:700;letter-spacing:-0.5px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${d.property_name}</h1>
+    <p style="margin:0 0 20px;color:rgba(245,241,232,0.7);font-size:16px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Your booking is confirmed.</p>
+    <p style="margin:0;font-size:11px;letter-spacing:1.5px;color:rgba(245,241,232,0.45);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Booking ref: ${ref}</p>
   </td></tr>
 
-  <tr><td style="padding:32px 40px 0;">
-    <p style="margin:0 0 24px;font-size:16px;color:#333;line-height:1.6;">Hi ${d.first_name}, your booking is confirmed. Here's everything you need.</p>
+  <tr><td style="background:#ffffff;padding:32px 40px 0;">
+    <p style="margin:0 0 28px;font-size:16px;color:#444;line-height:1.7;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Hi ${d.first_name}, we're looking forward to hosting you. Here are your details.</p>
 
-    <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e8e4dc;border-radius:4px;overflow:hidden;margin-bottom:28px;">
-      <tr><td style="background:#f5f1e8;padding:16px 20px;">
-        <p style="margin:0;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#888;">Your stay</p>
-        <p style="margin:8px 0 0;font-size:20px;font-weight:600;color:#1A332F;">${d.property_name}</p>
-      </td></tr>
-      <tr><td style="padding:16px 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0">
-          <tr>
-            <td style="width:50%;padding-bottom:12px;">
-              <p style="margin:0;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#999;">Check-in</p>
-              <p style="margin:4px 0 0;font-size:15px;font-weight:600;color:#222;">${fmtDate(d.checkin)}</p>
-            </td>
-            <td style="width:50%;padding-bottom:12px;">
-              <p style="margin:0;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#999;">Check-out</p>
-              <p style="margin:4px 0 0;font-size:15px;font-weight:600;color:#222;">${fmtDate(d.checkout)}</p>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <p style="margin:0;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#999;">Guests</p>
-              <p style="margin:4px 0 0;font-size:15px;color:#222;">${d.guests} guest${parseInt(d.guests) !== 1 ? 's' : ''}</p>
-            </td>
-            <td>
-              <p style="margin:0;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#999;">Duration</p>
-              <p style="margin:4px 0 0;font-size:15px;color:#222;">${d.nights} night${parseInt(d.nights) !== 1 ? 's' : ''}</p>
-            </td>
-          </tr>
-        </table>
-      </td></tr>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;">
+      <tr>
+        <td width="47%" style="background:#f5f1e8;border-radius:4px;padding:22px 20px 18px;border-top:3px solid #1A332F;">
+          <p style="margin:0 0 8px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#999;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Check-in</p>
+          <p style="margin:0;font-size:36px;font-weight:800;color:#1A332F;line-height:1;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${ci.day}</p>
+          <p style="margin:6px 0 0;font-size:13px;color:#666;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${ci.weekday} · ${ci.month} ${ci.year}</p>
+          <p style="margin:4px 0 0;font-size:12px;color:#aaa;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">After 4:00 PM</p>
+        </td>
+        <td width="6%" align="center" style="color:#ccc;font-size:18px;vertical-align:middle;">→</td>
+        <td width="47%" style="background:#f5f1e8;border-radius:4px;padding:22px 20px 18px;border-top:3px solid #c8c4bc;">
+          <p style="margin:0 0 8px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#999;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Check-out</p>
+          <p style="margin:0;font-size:36px;font-weight:800;color:#444;line-height:1;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${co.day}</p>
+          <p style="margin:6px 0 0;font-size:13px;color:#666;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${co.weekday} · ${co.month} ${co.year}</p>
+          <p style="margin:4px 0 0;font-size:12px;color:#aaa;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Before 11:00 AM</p>
+        </td>
+      </tr>
     </table>
 
-    <p style="margin:0 0 12px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#999;">Payment summary</p>
-    <table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #e8e4dc;margin-bottom:28px;">
-      <tr><td style="padding:6px 0;color:#555;">Accommodation (${d.nights} night${parseInt(d.nights)!==1?'s':''})</td><td style="padding:6px 0;text-align:right;">${fmt(d.price_cents)}</td></tr>
-      <tr><td style="padding:6px 0;color:#555;">Cleaning fee</td><td style="padding:6px 0;text-align:right;">${fmt(d.cleaning_fee_cents)}</td></tr>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #e8e4dc;border-radius:4px;margin-bottom:32px;">
+      <tr>
+        <td align="center" style="padding:16px 12px;border-right:1px solid #e8e4dc;">
+          <p style="margin:0 0 3px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#bbb;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Guests</p>
+          <p style="margin:0;font-size:20px;font-weight:700;color:#1A332F;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${d.guests}</p>
+        </td>
+        <td align="center" style="padding:16px 12px;border-right:1px solid #e8e4dc;">
+          <p style="margin:0 0 3px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#bbb;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Nights</p>
+          <p style="margin:0;font-size:20px;font-weight:700;color:#1A332F;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${d.nights}</p>
+        </td>
+        <td align="center" style="padding:16px 12px;">
+          <p style="margin:0 0 3px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#bbb;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Check-in time</p>
+          <p style="margin:0;font-size:20px;font-weight:700;color:#1A332F;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">4:00 PM</p>
+        </td>
+      </tr>
+    </table>
+
+    <p style="margin:0 0 10px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#aaa;font-weight:600;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Payment summary</p>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid #e8e4dc;">
+      <tr><td style="padding:9px 0;color:#666;font-size:14px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Accommodation (${d.nights} night${parseInt(d.nights)!==1?'s':''})</td><td align="right" style="padding:9px 0;font-size:14px;color:#333;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${fmt(d.price_cents)}</td></tr>
+      <tr><td style="padding:9px 0;color:#666;font-size:14px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Cleaning fee</td><td align="right" style="padding:9px 0;font-size:14px;color:#333;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${fmt(d.cleaning_fee_cents)}</td></tr>
       ${petRow}
       ${taxRow}
-      <tr style="border-top:1px solid #e8e4dc;"><td style="padding:12px 0 6px;font-weight:700;color:#1A332F;">Total charged</td><td style="padding:12px 0 6px;text-align:right;font-weight:700;color:#1A332F;">${fmt(total)}</td></tr>
+      <tr><td style="padding:14px 0 32px;border-top:2px solid #1A332F;font-weight:700;color:#1A332F;font-size:16px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Total charged</td><td align="right" style="padding:14px 0 32px;border-top:2px solid #1A332F;font-weight:700;color:#1A332F;font-size:16px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${fmt(total)}</td></tr>
     </table>
-
-    <p style="margin:0 0 28px;font-size:14px;color:#666;line-height:1.7;">You'll receive check-in instructions closer to your arrival date. In the meantime, reply to this email or write to <a href="mailto:contact@shankton.com" style="color:#2A6E5E;">contact@shankton.com</a> with any questions.</p>
   </td></tr>
 
-  <tr><td style="padding:0 40px 32px;">
-    <p style="margin:24px 0 0;padding-top:24px;border-top:1px solid #e8e4dc;font-size:12px;color:#aaa;line-height:1.6;">
-      Shankton Properties · <a href="https://www.shankton.com" style="color:#aaa;">shankton.com</a><br>
-      To cancel or modify your reservation, email <a href="mailto:contact@shankton.com" style="color:#aaa;">contact@shankton.com</a>.
+  <tr><td style="background:#ffffff;padding:0 40px 32px;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #e8e4dc;border-radius:4px;">
+      <tr><td style="padding:20px 24px;">
+        <p style="margin:0 0 6px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#aaa;font-weight:600;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Cancellation policy</p>
+        <p style="margin:0;font-size:14px;color:#444;line-height:1.7;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Cancel at least <strong>14 days before check-in</strong> for a full refund. Cancellations made within 14 days of check-in are non-refundable. To cancel, email <a href="mailto:contact@shankton.com" style="color:#1A332F;text-decoration:none;">contact@shankton.com</a>.</p>
+      </td></tr>
+    </table>
+  </td></tr>
+
+  <tr><td style="background:#1A332F;padding:32px 40px;">
+    <p style="margin:0 0 28px;font-size:10px;letter-spacing:3.5px;text-transform:uppercase;color:rgba(245,241,232,0.4);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">What happens next</p>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td valign="top" width="48" style="padding-right:16px;padding-bottom:22px;">
+          <table cellpadding="0" cellspacing="0" border="0"><tr><td style="width:32px;height:32px;background:rgba(255,255,255,0.1);border-radius:50%;text-align:center;vertical-align:middle;font-size:12px;font-weight:700;color:#f5f1e8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:32px;">1</td></tr></table>
+        </td>
+        <td valign="top" style="padding-bottom:22px;">
+          <p style="margin:0 0 3px;font-size:14px;font-weight:600;color:#f5f1e8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">48 hours before arrival</p>
+          <p style="margin:0;font-size:13px;color:rgba(245,241,232,0.6);line-height:1.6;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">You'll receive a separate email at this address with your door code, WiFi password, parking details, and full check-in instructions. Check your spam folder if you don't see it.</p>
+        </td>
+      </tr>
+      <tr>
+        <td valign="top" width="48" style="padding-right:16px;padding-bottom:22px;">
+          <table cellpadding="0" cellspacing="0" border="0"><tr><td style="width:32px;height:32px;background:rgba(255,255,255,0.1);border-radius:50%;text-align:center;vertical-align:middle;font-size:12px;font-weight:700;color:#f5f1e8;font-family:'Helvetice Neue',Helvetica,Arial,sans-serif;line-height:32px;">2</td></tr></table>
+        </td>
+        <td valign="top" style="padding-bottom:22px;">
+          <p style="margin:0 0 3px;font-size:14px;font-weight:600;color:#f5f1e8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Self check-in from 4:00 PM</p>
+          <p style="margin:0;font-size:13px;color:rgba(245,241,232,0.6);line-height:1.6;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">No need to meet anyone — arrive at your own pace.</p>
+        </td>
+      </tr>
+      <tr>
+        <td valign="top" width="48" style="padding-right:16px;">
+          <table cellpadding="0" cellspacing="0" border="0"><tr><td style="width:32px;height:32px;background:rgba(255,255,255,0.1);border-radius:50%;text-align:center;vertical-align:middle;font-size:12px;font-weight:700;color:#f5f1e8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:32px;">3</td></tr></table>
+        </td>
+        <td valign="top">
+          <p style="margin:0 0 3px;font-size:14px;font-weight:600;color:#f5f1e8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Enjoy your stay</p>
+          <p style="margin:0;font-size:13px;color:rgba(245,241,232,0.6);line-height:1.6;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">We're available 24/7 — reply to this email or write to <a href="mailto:contact@shankton.com" style="color:rgba(245,241,232,0.75);text-decoration:none;">contact@shankton.com</a>.</p>
+        </td>
+      </tr>
+    </table>
+  </td></tr>
+
+  <tr><td style="background:#f0ede5;border-radius:0 0 6px 6px;padding:24px 40px;">
+    <p style="margin:0;font-size:12px;color:#aaa;line-height:2;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+      Shankton Properties · <a href="https://www.shankton.com" style="color:#aaa;text-decoration:none;">shankton.com</a> · <a href="https://www.shankton.com/terms.html" style="color:#aaa;text-decoration:none;">Terms &amp; Conditions</a><br>
+      Questions? Email <a href="mailto:contact@shankton.com" style="color:#888;text-decoration:none;">contact@shankton.com</a> — we respond promptly.<br>
+      Nicaragua: Nemer <a href="https://wa.me/50558112744" style="color:#888;text-decoration:none;">+505 5811 2744</a> (WhatsApp) &nbsp;·&nbsp; California: Jasmin <a href="tel:+17147376193" style="color:#888;text-decoration:none;">+1 714 737 6193</a> &nbsp;·&nbsp; Emergency: Clifton <a href="tel:+18017598509" style="color:#888;text-decoration:none;">+1 801 759 8509</a><br>
+      To cancel, email us at least 14 days before check-in for a full refund.
     </p>
   </td></tr>
 
@@ -183,7 +253,7 @@ async function sendConfirmationEmail(d) {
         from: 'Shankton Properties <contact@shankton.com>',
         to: `${d.first_name} ${d.last_name} <${d.email}>`,
         reply_to: 'contact@shankton.com',
-        subject: `Booking confirmed · ${d.property_name} · ${fmtDate(d.checkin)}`,
+        subject: `Booking confirmed · ${d.property_name} · ${fmtSubjectDate(d.checkin)}`,
         html,
       }),
     });
