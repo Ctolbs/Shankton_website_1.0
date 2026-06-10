@@ -115,6 +115,9 @@ async function sendConfirmationEmail(d) {
   const ref = 'SH-' + (d.session_id || '').replace(/^cs_(test_|live_)/, '').slice(0, 8).toUpperCase();
   const total = parseInt(d.price_cents||0) + parseInt(d.cleaning_fee_cents||0) + parseInt(d.pet_fee_cents||0) + parseInt(d.tax_cents||0);
 
+  const cleaningRow = parseInt(d.cleaning_fee_cents || '0') > 0
+    ? `<tr><td style="padding:9px 0;color:#666;font-size:14px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Cleaning fee</td><td align="right" style="padding:9px 0;font-size:14px;color:#333;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${fmt(d.cleaning_fee_cents)}</td></tr>`
+    : '';
   const petRow = parseInt(d.pet_fee_cents || '0') > 0
     ? `<tr><td style="padding:9px 0;color:#666;font-size:14px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Pet fee</td><td align="right" style="padding:9px 0;font-size:14px;color:#333;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${fmt(d.pet_fee_cents)}</td></tr>`
     : '';
@@ -180,7 +183,7 @@ async function sendConfirmationEmail(d) {
     <p style="margin:0 0 10px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#aaa;font-weight:600;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Payment summary</p>
     <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid #e8e4dc;">
       <tr><td style="padding:9px 0;color:#666;font-size:14px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Accommodation (${d.nights} night${parseInt(d.nights)!==1?'s':''})</td><td align="right" style="padding:9px 0;font-size:14px;color:#333;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${fmt(d.price_cents)}</td></tr>
-      <tr><td style="padding:9px 0;color:#666;font-size:14px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Cleaning fee</td><td align="right" style="padding:9px 0;font-size:14px;color:#333;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${fmt(d.cleaning_fee_cents)}</td></tr>
+      ${cleaningRow}
       ${petRow}
       ${taxRow}
       <tr><td style="padding:14px 0 32px;border-top:2px solid #1A332F;font-weight:700;color:#1A332F;font-size:16px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Total charged</td><td align="right" style="padding:14px 0 32px;border-top:2px solid #1A332F;font-weight:700;color:#1A332F;font-size:16px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${fmt(total)}</td></tr>

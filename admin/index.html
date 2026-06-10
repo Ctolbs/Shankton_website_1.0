@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin · Shankton Properties</title>
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --emerald: #1A332F;
+      --emerald-light: #2a4a44;
+      --sand: #edeae2;
+      --sand-light: #f5f1e8;
+      --text: #1a1a1a;
+      --text-muted: #888;
+      --border: #d8d4cc;
+      --red: #b94040;
+      --green-success: #2d6a4f;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--sand);
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      color: var(--text);
+    }
+
+    /* ── Auth Gate ──────────────────────────────────────── */
+    #auth-gate {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .auth-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    .auth-card img {
+      display: block;
+      width: 100px;
+      margin-bottom: 28px;
+    }
+
+    .auth-card h1 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--emerald);
+      margin-bottom: 6px;
+    }
+
+    .auth-card p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+    }
+
+    /* ── Admin Panel ────────────────────────────────────── */
+    #admin-panel {
+      display: none;
+      padding: 32px 24px;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .page-header img { width: 80px; }
+
+    .page-header-text h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--emerald);
+    }
+
+    .page-header-text p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* ── Form ──────────────────────────────────────────── */
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 32px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+
+    .card-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-row.three { grid-template-columns: 1fr 1fr 1fr; }
+    .form-row.full  { grid-template-columns: 1fr; }
+
+    .field { display: flex; flex-direction: column; gap: 6px; }
+
+    label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    label .req { color: var(--red); }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--text);
+      background: #fff;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--emerald);
+    }
+
+    input[type="number"] { -moz-appearance: textfield; }
+    input[type="number"]::-webkit-inner-spin-button { display: none; }
+
+    textarea { resize: vertical; min-height: 72px; line-height: 1.5; }
+
+    .amount-wrap { position: relative; }
+    .amount-wrap span {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    .amount-wrap input { padding-left: 24px; }
+
+    .hint {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: -4px;
+    }
+
+    /* ── Buttons ──────────────────────────────────────── */
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: var(--emerald);
+      color: #f5f1e8;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s, opacity 0.15s;
+    }
+
+    .btn:hover { background: var(--emerald-light); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-auth {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background: var(--emerald);
+      color: #f5f1e8;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+    .btn-auth:hover { background: var(--emerald-light); }
+
+    /* ── Error / Success messages ─────────────────────── */
+    .msg {
+      display: none;
+      padding: 12px 16px;
+      border-radius: 4px;
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+    .msg.error   { background: #fdf0f0; color: var(--red); border: 1px solid #f5c6c6; }
+    .msg.success { background: #eef7f1; color: var(--green-success); border: 1px solid #b7dfc9; }
+
+    /* ── Result panel ─────────────────────────────────── */
+    #result-panel {
+      display: none;
+      background: #fff;
+      border-radius: 8px;
+      padding: 28px 32px;
+      margin-top: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      border-left: 4px solid var(--emerald);
+    }
+
+    #result-panel h2 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--emerald);
+      margin-bottom: 4px;
+    }
+
+    #result-panel p.sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .url-box {
+      display: flex;
+      gap: 10px;
+      align-items: stretch;
+      margin-bottom: 16px;
+    }
+
+    .url-box input {
+      flex: 1;
+      font-size: 12px;
+      padding: 10px;
+      background: var(--sand-light);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-copy {
+      padding: 0 16px;
+      background: var(--emerald);
+      color: #f5f1e8;
+      border: none;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      font-family: inherit;
+    }
+    .btn-copy:hover { background: var(--emerald-light); }
+    .btn-copy.copied { background: var(--green-success); }
+
+    .wa-section {
+      background: var(--sand);
+      border-radius: 4px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+    }
+
+    .wa-section p.label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .wa-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #25D366;
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 16px;
+      border-radius: 4px;
+      margin-right: 8px;
+      margin-bottom: 6px;
+    }
+    .wa-link:hover { background: #1aad55; }
+
+    .btn-new {
+      display: inline-block;
+      font-size: 13px;
+      color: var(--emerald);
+      text-decoration: underline;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+      padding: 0;
+    }
+
+    /* ── Auth error ───────────────────────────────────── */
+    #auth-error {
+      display: none;
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--red);
+      text-align: center;
+    }
+
+    /* ── Responsive ──────────────────────────────────── */
+    @media (max-width: 560px) {
+      .form-row, .form-row.three { grid-template-columns: 1fr; }
+      .card { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Auth Gate ─────────────────────────────────────── -->
+<div id="auth-gate">
+  <div class="auth-card">
+    <img src="/logo-preview.svg" alt="Shankton Properties">
+    <h1>Admin access</h1>
+    <p>Enter your password to continue.</p>
+    <input type="password" id="pw-input" placeholder="Password" autocomplete="current-password"
+           style="margin-bottom:14px;"
+           onkeydown="if(event.key==='Enter')checkAuth()">
+    <button class="btn-auth" onclick="checkAuth()">Continue →</button>
+    <p id="auth-error">Incorrect password. Try again.</p>
+  </div>
+</div>
+
+<!-- ── Admin Panel ────────────────────────────────────── -->
+<div id="admin-panel">
+
+  <div class="page-header">
+    <img src="/logo-preview.svg" alt="Shankton Properties">
+    <div class="page-header-text">
+      <h1>Send payment link</h1>
+      <p>For direct and manual bookings — bypasses the booking widget.</p>
+    </div>
+  </div>
+
+  <div id="form-msg" class="msg error"></div>
+
+  <form id="booking-form" onsubmit="handleSubmit(event)">
+
+    <!-- Property & Dates -->
+    <div class="card">
+      <p class="card-title">Booking details</p>
+
+      <div class="form-row full" style="margin-bottom:16px;">
+        <div class="field">
+          <label>Property <span class="req">*</span></label>
+          <select id="property_id" required>
+            <option value="">— Select property —</option>
+            <option value="c14d1f89-cbac-499c-a4aa-f2b0e8f2278e">Shankton Harbour</option>
+            <option value="9c4ac1ba-6bc9-40b6-9f8e-0d6d18ea39e5">Shankton Tower</option>
+            <option value="c4a7f5ea-4ad5-4051-91c0-e72573fc21ba">Shankton Peninsula · Unit A</option>
+            <option value="d2840288-b09e-49e9-8f97-a69f6b34f6d4">Shankton Peninsula · Unit B</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row" style="margin-bottom:16px;">
+        <div class="field">
+          <label>Check-in <span class="req">*</span></label>
+          <input type="date" id="checkin" required>
+        </div>
+        <div class="field">
+          <label>Check-out <span class="req">*</span></label>
+          <input type="date" id="checkout" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="field">
+          <label>Guests <span class="req">*</span></label>
+          <input type="number" id="guests" min="1" max="20" placeholder="2" required>
+        </div>
+        <div class="field">
+          <label>Total amount <span class="req">*</span></label>
+          <div class="amount-wrap">
+            <span>$</span>
+            <input type="number" id="amount" min="1" step="0.01" placeholder="850.00" required>
+          </div>
+          <p class="hint">All-in total — includes cleaning, tax, everything.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Guest info -->
+    <div class="card">
+      <p class="card-title">Guest information</p>
+
+      <div class="form-row" style="margin-bottom:16px;">
+        <div class="field">
+          <label>First name <span class="req">*</span></label>
+          <input type="text" id="first_name" placeholder="Maria" required>
+        </div>
+        <div class="field">
+          <label>Last name <span class="req">*</span></label>
+          <input type="text" id="last_name" placeholder="Garcia" required>
+        </div>
+      </div>
+
+      <div class="form-row" style="margin-bottom:16px;">
+        <div class="field">
+          <label>Email <span class="req">*</span></label>
+          <input type="email" id="email" placeholder="guest@email.com" required>
+        </div>
+        <div class="field">
+          <label>Phone <small style="text-transform:none;letter-spacing:0;font-weight:400;">(optional)</small></label>
+          <input type="tel" id="phone" placeholder="+1 555 000 0000">
+        </div>
+      </div>
+
+      <div class="form-row full">
+        <div class="field">
+          <label>Note to guest <small style="text-transform:none;letter-spacing:0;font-weight:400;">(optional — shown in email)</small></label>
+          <textarea id="note" placeholder="Hi Maria! Great chatting with you — here's the payment link for your stay at Shankton Harbour in June."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn" type="submit" id="submit-btn">Send payment link →</button>
+
+  </form>
+
+  <!-- Result -->
+  <div id="result-panel">
+    <h2>Payment link sent</h2>
+    <p class="sub" id="result-sub"></p>
+
+    <div class="url-box">
+      <input type="text" id="result-url" readonly>
+      <button class="btn-copy" id="copy-btn" onclick="copyUrl()">Copy</button>
+    </div>
+
+    <div class="wa-section">
+      <p class="label">WhatsApp backup — Nemer (Nicaragua)</p>
+      <a id="wa-nemer" href="#" target="_blank" class="wa-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.47 14.38c-.3-.15-1.77-.87-2.04-.97-.28-.1-.48-.15-.68.15s-.78.97-.95 1.17-.35.22-.65.07c-.3-.15-1.27-.47-2.42-1.49-.9-.8-1.5-1.78-1.68-2.08-.18-.3-.02-.46.13-.61.14-.13.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.38-.03-.52-.07-.15-.68-1.64-.93-2.24-.24-.59-.49-.51-.68-.52h-.58c-.2 0-.52.07-.79.38s-1.04 1.02-1.04 2.48 1.06 2.88 1.21 3.08c.15.2 2.09 3.19 5.07 4.47.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.13-.27-.2-.57-.35z"/>
+          <path d="M12 0C5.37 0 0 5.37 0 12c0 2.13.56 4.12 1.54 5.84L.07 23.27l5.56-1.46A11.94 11.94 0 0 0 12 24c6.63 0 12-5.37 12-12S18.63 0 12 0zm0 22c-1.85 0-3.6-.5-5.11-1.37l-.37-.22-3.8 1 1.01-3.69-.24-.38A9.96 9.96 0 0 1 2 12C2 6.48 6.48 2 12 2s10 4.48 10 10-4.48 10-10 10z"/>
+        </svg>
+        Send to Nemer
+      </a>
+      <a id="wa-direct" href="#" target="_blank" class="wa-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.47 14.38c-.3-.15-1.77-.87-2.04-.97-.28-.1-.48-.15-.68.15s-.78.97-.95 1.17-.35.22-.65.07c-.3-.15-1.27-.47-2.42-1.49-.9-.8-1.5-1.78-1.68-2.08-.18-.3-.02-.46.13-.61.14-.13.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.38-.03-.52-.07-.15-.68-1.64-.93-2.24-.24-.59-.49-.51-.68-.52h-.58c-.2 0-.52.07-.79.38s-1.04 1.02-1.04 2.48 1.06 2.88 1.21 3.08c.15.2 2.09 3.19 5.07 4.47.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.13-.27-.2-.57-.35z"/>
+          <path d="M12 0C5.37 0 0 5.37 0 12c0 2.13.56 4.12 1.54 5.84L.07 23.27l5.56-1.46A11.94 11.94 0 0 0 12 24c6.63 0 12-5.37 12-12S18.63 0 12 0zm0 22c-1.85 0-3.6-.5-5.11-1.37l-.37-.22-3.8 1 1.01-3.69-.24-.38A9.96 9.96 0 0 1 2 12C2 6.48 6.48 2 12 2s10 4.48 10 10-4.48 10-10 10z"/>
+        </svg>
+        Send directly to guest
+      </a>
+    </div>
+
+    <p style="font-size:12px;color:var(--text-muted);margin-bottom:16px;">The payment link expires in 24 hours. If it lapses, generate a new one.</p>
+
+    <button class="btn-new" onclick="resetForm()">← Create another link</button>
+  </div>
+
+</div>
+
+<script>
+  let adminPw = '';
+
+  function checkAuth() {
+    const pw = document.getElementById('pw-input').value.trim();
+    if (!pw) return;
+
+    // Verify against the server
+    fetch('/.netlify/functions/send-pay-link', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: pw, _auth_check: true }),
+    })
+    .then(r => {
+      // 401 = wrong password, 400 = correct password (missing fields = passed auth)
+      if (r.status === 401) {
+        document.getElementById('auth-error').style.display = 'block';
+      } else {
+        adminPw = pw;
+        document.getElementById('auth-gate').style.display = 'none';
+        document.getElementById('admin-panel').style.display = 'block';
+      }
+    })
+    .catch(() => {
+      // If network error, still allow in (avoid blocking on outages)
+      adminPw = pw;
+      document.getElementById('auth-gate').style.display = 'none';
+      document.getElementById('admin-panel').style.display = 'block';
+    });
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const checkin  = document.getElementById('checkin').value;
+    const checkout = document.getElementById('checkout').value;
+
+    if (checkin >= checkout) {
+      showFormError('Check-out must be after check-in.');
+      return;
+    }
+
+    const amountDollars = parseFloat(document.getElementById('amount').value);
+    if (isNaN(amountDollars) || amountDollars < 1) {
+      showFormError('Please enter a valid total amount.');
+      return;
+    }
+
+    const payload = {
+      password:    adminPw,
+      property_id: document.getElementById('property_id').value,
+      checkin,
+      checkout,
+      guests:      parseInt(document.getElementById('guests').value, 10),
+      amount_cents: Math.round(amountDollars * 100),
+      first_name:  document.getElementById('first_name').value.trim(),
+      last_name:   document.getElementById('last_name').value.trim(),
+      email:       document.getElementById('email').value.trim().toLowerCase(),
+      phone:       document.getElementById('phone').value.trim(),
+      note:        document.getElementById('note').value.trim(),
+    };
+
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    clearFormError();
+
+    fetch('/.netlify/functions/send-pay-link', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+    .then(r => r.json().then(data => ({ status: r.status, data })))
+    .then(({ status, data }) => {
+      btn.disabled = false;
+      btn.textContent = 'Send payment link →';
+
+      if (status !== 200) {
+        if (status === 401) {
+          // Session expired / password changed
+          adminPw = '';
+          document.getElementById('admin-panel').style.display = 'none';
+          document.getElementById('auth-gate').style.display = 'flex';
+          document.getElementById('auth-error').textContent = 'Session expired. Please log in again.';
+          document.getElementById('auth-error').style.display = 'block';
+        } else {
+          showFormError(data.error || 'Something went wrong. Please try again.');
+        }
+        return;
+      }
+
+      showResult(data.url, payload);
+    })
+    .catch(() => {
+      btn.disabled = false;
+      btn.textContent = 'Send payment link →';
+      showFormError('Network error. Check your connection and try again.');
+    });
+  }
+
+  function showResult(url, payload) {
+    document.getElementById('booking-form').style.display = 'none';
+    const panel = document.getElementById('result-panel');
+    panel.style.display = 'block';
+
+    const propertyName = document.getElementById('property_id').selectedOptions[0].text;
+    const nights = Math.round(
+      (new Date(payload.checkout + 'T12:00:00') - new Date(payload.checkin + 'T12:00:00')) / 86400000
+    );
+    const fmt = c => '$' + (c / 100).toFixed(2);
+
+    document.getElementById('result-sub').textContent =
+      `Email sent to ${payload.email} · ${propertyName} · ${payload.checkin} → ${payload.checkout} · ${nights} night${nights !== 1 ? 's' : ''} · ${fmt(payload.amount_cents)}`;
+
+    document.getElementById('result-url').value = url;
+
+    // WhatsApp for Nemer
+    const msg = encodeURIComponent(
+      `Hi, here is the payment link for ${payload.first_name} ${payload.last_name}:\n` +
+      `${propertyName} · ${payload.checkin} → ${payload.checkout}\n${url}`
+    );
+    document.getElementById('wa-nemer').href  = `https://wa.me/50558112744?text=${msg}`;
+    document.getElementById('wa-direct').href = payload.phone
+      ? `https://wa.me/${payload.phone.replace(/\D/g,'')}?text=${encodeURIComponent(
+          `Hi ${payload.first_name}! Here is your payment link for ${propertyName}:\n${url}`
+        )}`
+      : '#';
+
+    if (!payload.phone) {
+      document.getElementById('wa-direct').style.opacity = '0.4';
+      document.getElementById('wa-direct').style.pointerEvents = 'none';
+    }
+  }
+
+  function copyUrl() {
+    const input = document.getElementById('result-url');
+    input.select();
+    navigator.clipboard.writeText(input.value).then(() => {
+      const btn = document.getElementById('copy-btn');
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function resetForm() {
+    document.getElementById('result-panel').style.display = 'none';
+    document.getElementById('booking-form').style.display = 'block';
+    document.getElementById('booking-form').reset();
+  }
+
+  function showFormError(msg) {
+    const el = document.getElementById('form-msg');
+    el.textContent = msg;
+    el.style.display = 'block';
+    el.className = 'msg error';
+    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function clearFormError() {
+    const el = document.getElementById('form-msg');
+    el.style.display = 'none';
+  }
+</script>
+
+</body>
+</html>
