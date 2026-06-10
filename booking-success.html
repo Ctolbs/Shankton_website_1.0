@@ -289,7 +289,7 @@
       <div class="confirm-date-block">
         <div class="confirm-date-label">Check in</div>
         <div class="confirm-date-value" id="conf-checkin">—</div>
-        <div class="confirm-date-sub">3:00 PM</div>
+        <div class="confirm-date-sub">4:00 PM</div>
       </div>
       <div class="confirm-date-block">
         <div class="confirm-date-label">Check out</div>
@@ -332,7 +332,7 @@
         <div class="confirm-step-dot pending">4</div>
         <div>
           <div class="confirm-step-title">Day of check-in</div>
-          <div class="confirm-step-body" id="conf-step4">Self check-in at 3:00 PM. Your host is available if you need anything.</div>
+          <div class="confirm-step-body" id="conf-step4">Self check-in at 4:00 PM. Your host is available if you need anything.</div>
         </div>
       </div>
     </div>
@@ -347,6 +347,7 @@
     <div class="confirm-footer">
       <a href="/" id="conf-back-property">← Back to property</a>
       <a href="/">Back to Shankton</a>
+      <a href="/terms.html">Terms &amp; Conditions</a>
     </div>
   </div>
 </div>
@@ -363,8 +364,8 @@
   const guests    = p.get('guests')     || '';
 
   // Confirmation code from session_id — last 8 chars, uppercase
-  const rawCode = sessionId.replace(/^cs_(live|test)_/, '').slice(-8).toUpperCase();
-  document.getElementById('conf-code').textContent = rawCode ? 'SHK-' + rawCode : '';
+  const rawCode = sessionId.replace(/^cs_(test_|live_)/, '').slice(0, 8).toUpperCase();
+  document.getElementById('conf-code').textContent = rawCode ? 'SH-' + rawCode : '';
 
   // Property name and location
   document.getElementById('conf-property').textContent = property || 'Shankton Properties';
@@ -391,12 +392,12 @@
     document.getElementById('conf-step3').textContent =
       'Nemer will send check-in instructions 48 hours before arrival. He\'ll also coordinate your airport transfer if you need one.';
     document.getElementById('conf-step4').textContent =
-      'Self check-in at 3:00 PM. Nemer is on-site and available on WhatsApp for anything you need.';
+      'Self check-in at 4:00 PM. Nemer is on-site and available on WhatsApp for anything you need.';
   } else if (isPenin) {
     document.getElementById('conf-step3').textContent =
       'Jasmin will send check-in instructions 48 hours before arrival, including door code and parking details.';
     document.getElementById('conf-step4').textContent =
-      'Self check-in at 3:00 PM. Jasmin is available by email and phone if anything comes up.';
+      'Self check-in at 4:00 PM. Jasmin is available by email and phone if anything comes up.';
   }
 
   // Host contact block
