@@ -3,7 +3,6 @@
 // from this array — add/edit here, not in index.html.
 //
 // status: "active" | "coming-soon" | "offline"
-// When a photo is available, replace `gradient` with `photo: "img/filename.jpg"`
 
 const SHANKTON_PROPERTIES = [
   {
@@ -15,7 +14,13 @@ const SHANKTON_PROPERTIES = [
     rating: 4.87,
     reviews: 278,
     url: "harbour/",
-    photo: "images/nica/harbour/hero.jpg",
+    photos: [
+      "images/nica/harbour/hero.jpg",
+      "images/nica/harbour/pool.jpg",
+      "images/nica/harbour/bedroom.jpg",
+      "images/nica/harbour/dining.jpg",
+      "images/nica/harbour/kitchen.jpg",
+    ],
     gradient: "linear-gradient(160deg,#1A332F 0%,#0d1e1c 100%)",
     status: "active"
   },
@@ -28,7 +33,13 @@ const SHANKTON_PROPERTIES = [
     rating: 4.79,
     reviews: 290,
     url: "tower/",
-    photo: "images/nica/tower/hero.jpg",
+    photos: [
+      "images/nica/tower/hero.jpg",
+      "images/nica/tower/ocean-view.jpg",
+      "images/nica/tower/deck.jpg",
+      "images/nica/tower/bedroom.png",
+      "images/nica/tower/kitchen.jpg",
+    ],
     gradient: "linear-gradient(160deg,#152B28 0%,#0a1210 100%)",
     status: "active"
   },
@@ -41,7 +52,13 @@ const SHANKTON_PROPERTIES = [
     rating: 4.89,
     reviews: 351,
     url: "peninsula/",
-    photo: "images/lgb/rooftop.jpg",
+    photos: [
+      "images/lgb/rooftop.jpg",
+      "images/lgb/living.jpg",
+      "images/lgb/bedroom.jpg",
+      "images/lgb/kitchen.jpg",
+      "images/lgb/living2.jpg",
+    ],
     gradient: "linear-gradient(160deg,#1f2e2c 0%,#0e1a19 100%)",
     status: "active"
   },
@@ -72,14 +89,33 @@ const SHANKTON_PROPERTIES = [
   const nonActive = SHANKTON_PROPERTIES.filter(p => p.status !== 'active');
 
   grid.innerHTML = active.map(p => {
-    const img = p.photo
-      ? `<img src="${p.photo}" alt="${p.name}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">`
-      : `<div class="property-card-image-placeholder" style="background:${p.gradient};min-height:280px;">
-           <span class="eyebrow" style="color:rgba(245,241,232,0.3);">Photo coming</span>
-         </div>`;
+    let imageBlock;
+    if (p.photos && p.photos.length > 1) {
+      const slides = p.photos.map((src, i) =>
+        `<img src="${src}" alt="${p.name}" class="pc-slide${i === 0 ? ' active' : ''}" loading="${i === 0 ? 'eager' : 'lazy'}">`
+      ).join('');
+      const dots = p.photos.map((_, i) =>
+        `<span class="pc-dot${i === 0 ? ' active' : ''}"></span>`
+      ).join('');
+      imageBlock = `
+        <div class="pc" data-idx="0">
+          ${slides}
+          <button class="pc-prev" aria-label="Previous photo">&#8249;</button>
+          <button class="pc-next" aria-label="Next photo">&#8250;</button>
+          <div class="pc-dots">${dots}</div>
+        </div>`;
+    } else {
+      const src = (p.photos && p.photos[0]) || '';
+      imageBlock = src
+        ? `<img src="${src}" alt="${p.name}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">`
+        : `<div class="property-card-image-placeholder" style="background:${p.gradient};min-height:280px;">
+             <span class="eyebrow" style="color:rgba(245,241,232,0.3);">Photo coming</span>
+           </div>`;
+    }
+
     return `
     <a href="${p.url}" class="property-card">
-      <div class="property-card-image">${img}</div>
+      <div class="property-card-image">${imageBlock}</div>
       <div class="property-card-body">
         <p class="eyebrow property-card-location">${p.location}</p>
         <h3 class="property-card-name">${p.name}</h3>
@@ -107,4 +143,45 @@ const SHANKTON_PROPERTIES = [
       <a href="#newsletter" style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(245,241,232,0.3);white-space:nowrap;transition:color 0.15s;" onmouseover="this.style.color='rgba(245,241,232,0.7)'" onmouseout="this.style.color='rgba(245,241,232,0.3)'">Get notified →</a>
     </div>`).join('');
   }
+
+  initCarousels();
 })();
+
+// ── Carousel logic ────────────────────────────────────────────────────────────
+
+function initCarousels() {
+  document.querySelectorAll('.pc').forEach(pc => {
+    let timer = startAuto(pc);
+
+    pc.addEventListener('mouseenter', () => { clearInterval(timer); });
+    pc.addEventListener('mouseleave', () => { timer = startAuto(pc); });
+
+    pc.querySelector('.pc-prev').addEventListener('click', e => {
+      e.preventDefault(); e.stopPropagation();
+      pcStep(pc, -1);
+    });
+    pc.querySelector('.pc-next').addEventListener('click', e => {
+      e.preventDefault(); e.stopPropagation();
+      pcStep(pc, 1);
+    });
+  });
+}
+
+function startAuto(pc) {
+  return setInterval(() => pcStep(pc, 1), 4000);
+}
+
+function pcStep(pc, dir) {
+  const slides = pc.querySelectorAll('.pc-slide');
+  const dots   = pc.querySelectorAll('.pc-dot');
+  let idx = parseInt(pc.dataset.idx, 10);
+
+  slides[idx].classList.remove('active');
+  dots[idx].classList.remove('active');
+
+  idx = (idx + dir + slides.length) % slides.length;
+
+  slides[idx].classList.add('active');
+  dots[idx].classList.add('active');
+  pc.dataset.idx = idx;
+}
