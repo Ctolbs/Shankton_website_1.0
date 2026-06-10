@@ -331,6 +331,10 @@ section { padding: 80px 0; }
 }
 .hbw-prop-btn:hover { color: var(--bone); }
 .hbw-prop-btn.active { color: var(--sand); border-bottom-color: var(--sand); }
+.hbw-prop-btn--sub { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.hbw-btn-main { display: block; }
+.hbw-btn-sub { display: block; font-size: 8px; letter-spacing: 1px; text-transform: uppercase; opacity: 0.55; font-weight: 400; }
+.hbw-prop-btn--sub.active .hbw-btn-sub { opacity: 0.75; }
 
 .hbw-fields {
   display: grid;
