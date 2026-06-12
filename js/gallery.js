@@ -12,6 +12,19 @@
 
   if (!images.length) return;
 
+  // Track horizontal swipe on the gallery to suppress accidental lightbox opens
+  let galScrolling = false;
+  let galSwipeStartX = 0;
+  if (gallery) {
+    gallery.addEventListener('touchstart', e => {
+      galSwipeStartX = e.touches[0].clientX;
+      galScrolling   = false;
+    }, { passive: true });
+    gallery.addEventListener('touchmove', e => {
+      if (Math.abs(e.touches[0].clientX - galSwipeStartX) > 8) galScrolling = true;
+    }, { passive: true });
+  }
+
   // ── Lightbox ───────────────────────────────────────────────────────────────
   const lb = document.createElement('div');
   lb.className = 'glb';
@@ -47,7 +60,7 @@
     cell.setAttribute('role', 'button');
     cell.setAttribute('tabindex', '0');
     cell.setAttribute('aria-label', 'View photo ' + (i + 1) + ' of ' + images.length);
-    cell.addEventListener('click', () => show(i));
+    cell.addEventListener('click', () => { if (galScrolling) { galScrolling = false; return; } show(i); });
     cell.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); show(i); }
     });

@@ -189,7 +189,26 @@
     (function bindCalEvents() {
       const cal = $('bc-cal');
 
+      // Swipe left/right to change month on mobile
+      let calTouchStartX = 0;
+      let calSwipeSuppressed = false;
+      cal.addEventListener('touchstart', e => {
+        calTouchStartX      = e.touches[0].clientX;
+        calSwipeSuppressed  = false;
+      }, { passive: true });
+      cal.addEventListener('touchend', e => {
+        const dx = e.changedTouches[0].clientX - calTouchStartX;
+        if (Math.abs(dx) > 40) {
+          calSwipeSuppressed = true;
+          viewMonth += dx < 0 ? 1 : -1;
+          if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+          if (viewMonth < 0)  { viewMonth = 11; viewYear--; }
+          renderCal();
+        }
+      });
+
       cal.addEventListener('click', e => {
+        if (calSwipeSuppressed) { calSwipeSuppressed = false; return; }
         e.stopPropagation();
 
         const nav = e.target.closest('.bc-cal-nav');
