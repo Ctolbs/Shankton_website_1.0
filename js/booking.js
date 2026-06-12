@@ -142,7 +142,20 @@
 
       const rangeEnd  = (stage === 'checkout' && hoverDate) ? hoverDate : checkoutDate;
 
+      const ciDisp = checkinDate  ? toDisplay(checkinDate)  : 'Add date';
+      const coDisp = checkoutDate ? toDisplay(checkoutDate) : 'Add date';
+
       let html = `
+        <div class="bc-cal-tabs">
+          <div class="bc-cal-tab${stage === 'checkin'  ? ' active' : ''}" data-tab="checkin">
+            <div class="bc-cal-tab-label">Check-in</div>
+            <div class="bc-cal-tab-val">${ciDisp}</div>
+          </div>
+          <div class="bc-cal-tab${stage === 'checkout' ? ' active' : ''}" data-tab="checkout">
+            <div class="bc-cal-tab-label">Check-out</div>
+            <div class="bc-cal-tab-val">${coDisp}</div>
+          </div>
+        </div>
         <div class="bc-cal-header">
           <button class="bc-cal-nav" data-dir="-1">&#8249;</button>
           <span class="bc-cal-month">${label}</span>
@@ -180,7 +193,6 @@
       }
 
       html += `</div>`;
-      html += `<div class="bc-cal-hint">${stage === 'checkin' ? 'Select check-in date' : 'Select check-out date'}</div>`;
 
       cal.innerHTML = html;
     }
@@ -207,9 +219,33 @@
         }
       });
 
+      // Touch drag range preview — shows range as finger moves over dates in checkout stage
+      cal.addEventListener('touchmove', e => {
+        if (stage !== 'checkout' || !checkinDate) return;
+        if (Math.abs(e.touches[0].clientX - calTouchStartX) > 25) return; // becoming a month swipe
+        const el = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
+        const day = el && el.closest && el.closest('.bc-cal-day.avail');
+        if (!day || !day.dataset.date) return;
+        const date = parseLocal(day.dataset.date);
+        if (!date || date <= checkinDate) return;
+        if (!hoverDate || hoverDate.getTime() !== date.getTime()) {
+          hoverDate = date;
+          renderCal();
+        }
+      }, { passive: true });
+
       cal.addEventListener('click', e => {
         if (calSwipeSuppressed) { calSwipeSuppressed = false; return; }
         e.stopPropagation();
+
+        // Tab clicks: switch active stage
+        const tab = e.target.closest('.bc-cal-tab');
+        if (tab) {
+          const t = tab.dataset.tab;
+          if (t === 'checkin') { stage = 'checkin'; syncHighlight(); renderCal(); }
+          else if (t === 'checkout' && checkinDate) { stage = 'checkout'; syncHighlight(); renderCal(); }
+          return;
+        }
 
         const nav = e.target.closest('.bc-cal-nav');
         if (nav) {
@@ -242,6 +278,12 @@
           $('bc-terms').style.display          = 'none';
           stage = 'checkout';
           syncHighlight();
+          // Advance to next month if check-in is in the last week of the month
+          const lastOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+          if (date.getDate() >= lastOfMonth - 6) {
+            viewMonth++;
+            if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+          }
           renderCal();
 
         } else if (stage === 'checkout') {

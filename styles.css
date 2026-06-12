@@ -1727,6 +1727,37 @@ section { padding: 80px 0; }
   min-height: 18px;
   margin: 8px 0 4px;
 }
+/* ── Calendar stage tabs ─────────────────────────────────────────────────── */
+.bc-cal-tabs {
+  display: flex;
+  margin: -14px -16px 14px;
+  border-bottom: 1px solid rgba(0,0,0,0.09);
+}
+.bc-cal-tab {
+  flex: 1;
+  padding: 11px 14px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.15s;
+  user-select: none;
+}
+.bc-cal-tab:first-child { border-right: 1px solid rgba(0,0,0,0.09); }
+.bc-cal-tab.active { border-bottom-color: var(--emerald, #1a4a4d); }
+.bc-cal-tab-label {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+.bc-cal-tab-val {
+  font-size: 13px;
+  color: var(--text);
+}
+.bc-cal-tab.active .bc-cal-tab-label { color: var(--emerald, #1a4a4d); }
+.bc-cal-tab.active .bc-cal-tab-val   { color: var(--ink, #1a1a1a); font-weight: 600; }
+
 /* Date range picker */
 .bc-date-wrap { position: relative; margin-bottom: 0; }
 .bc-date-row  { cursor: pointer; margin-bottom: 0 !important; }
