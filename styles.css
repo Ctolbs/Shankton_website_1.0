@@ -2056,13 +2056,15 @@ section { padding: 80px 0; }
   background: white;
   border-bottom: 1px solid rgba(0,0,0,0.08);
   box-shadow: 0 4px 24px rgba(0,0,0,0.1);
-  transform: translateY(-100%);
+  transform: translateY(-110%);
   opacity: 0;
+  pointer-events: none;
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 .sticky-booker.sb-visible {
   transform: translateY(0);
   opacity: 1;
+  pointer-events: auto;
 }
 @media (min-width: 769px) {
   .sticky-booker { display: block; }
@@ -2153,10 +2155,14 @@ section { padding: 80px 0; }
   background: white;
   border-top: 1px solid rgba(0,0,0,0.08);
   box-shadow: 0 -4px 24px rgba(0,0,0,0.08);
-  transform: translateY(100%);
+  transform: translateY(110%);
+  pointer-events: none;
   transition: transform 0.3s ease;
 }
-.sb-mobile-bar.sb-visible { transform: translateY(0); }
+.sb-mobile-bar.sb-visible {
+  transform: translateY(0);
+  pointer-events: auto;
+}
 @media (max-width: 768px) {
   .sb-mobile-bar { display: block; }
 }

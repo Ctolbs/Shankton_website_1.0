@@ -14,7 +14,7 @@
     if (bar)    bar.setAttribute('aria-hidden', visible ? 'false' : 'true');
     if (bar)    bar.classList.toggle('sb-visible', visible);
     if (mobBar) mobBar.classList.toggle('sb-visible', visible);
-  }, { threshold: 0 });
+  }, { threshold: 0, rootMargin: '-80px 0px 0px 0px' });
   obs.observe(hero);
 
   // Build guests select
