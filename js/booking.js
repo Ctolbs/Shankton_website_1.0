@@ -104,6 +104,26 @@
       return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     }
 
+    // ── Blocked dates ────────────────────────────────────────────────────────
+    const blockedCache = {}; // keyed by 'YYYY-MM' → Set of 'YYYY-MM-DD' strings
+
+    function fetchBlocked(year, month) {
+      const key = `${year}-${String(month + 1).padStart(2, '0')}`;
+      if (blockedCache[key]) return Promise.resolve();
+      blockedCache[key] = new Set(); // optimistic empty while fetching
+      return fetch(
+        `/.netlify/functions/get-blocked-dates?property_id=${cfg.propertyId}&year=${year}&month=${month + 1}`
+      )
+        .then(r => r.json())
+        .then(data => { blockedCache[key] = new Set(data.blocked || []); renderCal(); })
+        .catch(() => {}); // fail open — show all dates as available
+    }
+
+    function isBlocked(date) {
+      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+      return !!(blockedCache[key] && blockedCache[key].has(toValue(date)));
+    }
+
     function openCalendar(startStage) {
       stage = startStage;
       if (startStage === 'checkout' && checkinDate) {
@@ -116,6 +136,11 @@
       renderCal();
       $('bc-cal').style.display = 'block';
       syncHighlight();
+      // Prefetch current month + next month
+      const ny = viewMonth === 11 ? viewYear + 1 : viewYear;
+      const nm = viewMonth === 11 ? 0 : viewMonth + 1;
+      fetchBlocked(viewYear, viewMonth);
+      fetchBlocked(ny, nm);
     }
 
     function closeCalendar() {
@@ -169,6 +194,7 @@
       for (let d = 1; d <= lastDay.getDate(); d++) {
         const date    = new Date(viewYear, viewMonth, d);
         const isPast  = date < tomorrow;
+        const isBlk   = !isPast && isBlocked(date);
         const isCI    = checkinDate  && date.getTime() === checkinDate.getTime();
         const isCO    = checkoutDate && date.getTime() === checkoutDate.getTime();
 
@@ -182,13 +208,14 @@
         }
 
         let cls = 'bc-cal-day';
-        if (isPast)            cls += ' past';
-        if (!isPast)           cls += ' avail';
-        if (isCI || isStart)   cls += ' sel start';
-        if (isCO || isEnd)     cls += ' sel end';
-        if (inRange)           cls += ' range';
+        if (isPast)              cls += ' past';
+        else if (isBlk)          cls += ' blocked';
+        else                     cls += ' avail';
+        if (isCI || isStart)     cls += ' sel start';
+        if (isCO || isEnd)       cls += ' sel end';
+        if (inRange && !isBlk)   cls += ' range';
 
-        const attr = !isPast ? ` data-date="${toValue(date)}"` : '';
+        const attr = (!isPast && !isBlk) ? ` data-date="${toValue(date)}"` : '';
         html += `<span class="${cls}"${attr}>${d}</span>`;
       }
 
@@ -252,6 +279,7 @@
           viewMonth += parseInt(nav.dataset.dir);
           if (viewMonth > 11) { viewMonth = 0; viewYear++; }
           if (viewMonth < 0)  { viewMonth = 11; viewYear--; }
+          fetchBlocked(viewYear, viewMonth);
           renderCal();
           return;
         }

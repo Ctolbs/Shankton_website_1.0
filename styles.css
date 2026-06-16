@@ -1798,9 +1798,10 @@ section { padding: 80px 0; }
   cursor: default;
   position: relative;
 }
-.bc-cal-day.avail  { cursor: pointer; }
+.bc-cal-day.avail   { cursor: pointer; }
 .bc-cal-day.avail:hover:not(.sel) { background: rgba(0,0,0,0.06); }
-.bc-cal-day.past   { color: rgba(0,0,0,0.22); }
+.bc-cal-day.past    { color: rgba(0,0,0,0.22); }
+.bc-cal-day.blocked { color: rgba(0,0,0,0.2); text-decoration: line-through; cursor: not-allowed; }
 .bc-cal-day.range  {
   background: rgba(26,74,77,0.09);
   border-radius: 0;
