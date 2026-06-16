@@ -1,10 +1,12 @@
 const API = 'https://public.api.hospitable.com/v2';
+const { PROPERTIES } = require('./property-config');
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'GET') return { statusCode: 405, body: 'Method not allowed' };
 
   const { property_id } = event.queryStringParameters || {};
   if (!property_id) return { statusCode: 400, body: JSON.stringify({ error: 'Missing property_id' }) };
+  if (!PROPERTIES[property_id]) return { statusCode: 400, body: JSON.stringify({ error: 'Unknown property' }) };
 
   const token = process.env.HOSPITABLE_TOKEN;
   if (!token) return { statusCode: 500, body: JSON.stringify({ error: 'Server config error' }) };

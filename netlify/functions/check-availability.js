@@ -1,3 +1,5 @@
+const { PROPERTIES } = require('./property-config');
+
 exports.handler = async (event) => {
   if (event.httpMethod !== 'GET') return { statusCode: 405, body: 'Method not allowed' };
 
@@ -5,6 +7,9 @@ exports.handler = async (event) => {
   const dateRe = /^\d{4}-\d{2}-\d{2}$/;
   if (!property_id || !checkin || !checkout) {
     return { statusCode: 400, body: JSON.stringify({ error: 'Missing parameters' }) };
+  }
+  if (!PROPERTIES[property_id]) {
+    return { statusCode: 400, body: JSON.stringify({ error: 'Unknown property' }) };
   }
   if (!dateRe.test(checkin) || !dateRe.test(checkout) || checkin >= checkout) {
     return { statusCode: 400, body: JSON.stringify({ error: 'Invalid dates' }) };
