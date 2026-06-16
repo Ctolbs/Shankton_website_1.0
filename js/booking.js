@@ -458,10 +458,11 @@
       const email     = $('bc-email').value.trim();
       const phone     = $('bc-phone').value.trim();
 
-      if (!firstName || !lastName || !email) {
+      const emailOk = email.includes('@') && email.includes('.');
+      if (!firstName || !lastName || !emailOk) {
         if (!firstName) $('bc-first').style.borderColor = '#b94040';
         if (!lastName)  $('bc-last').style.borderColor  = '#b94040';
-        if (!email)     $('bc-email').style.borderColor = '#b94040';
+        if (!emailOk)   $('bc-email').style.borderColor = '#b94040';
         return;
       }
 
@@ -503,8 +504,15 @@
       } catch {
         btn.textContent = 'Book Direct →';
         btn.disabled    = false;
-        alert('Something went wrong. Please try again or email contact@shankton.com');
+        $('bc-status').textContent = 'Something went wrong. Please try again or email contact@shankton.com';
+        $('bc-status').className   = 'bc-status no';
       }
+    });
+
+    // Reset red validation borders when user corrects a field
+    ['bc-first', 'bc-last', 'bc-email'].forEach(id => {
+      const el = $(id);
+      if (el) el.addEventListener('input', () => { el.style.borderColor = ''; });
     });
 
     // Apply pre-filled dates from URL params to the display

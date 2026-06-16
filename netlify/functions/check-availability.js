@@ -40,6 +40,10 @@ exports.handler = async (event) => {
   // inflated platform rates (e.g. Airbnb markup). pricing_id should point to
   // the equivalent VRBO/direct listing so guests see the real direct rate.
   let priceDays = stayNights;
+  if (pricing_id && pricing_id !== property_id && !PROPERTIES[pricing_id]) {
+    return { statusCode: 400, body: JSON.stringify({ error: 'Unknown pricing property' }) };
+  }
+
   if (pricing_id && pricing_id !== property_id) {
     const priceRes = await fetch(calUrl(pricing_id), { headers });
     if (priceRes.ok) {
