@@ -29,7 +29,7 @@ const SHANKTON_PROPERTIES = [
     id: "tower",
     name: "Shankton Tower",
     location: "Playa Gigante · Nicaragua",
-    tagline: "Cliff-top Pacific views. Malibu-rugged, four floors up. Infinity pool over the ocean. Private beach. Bunk room for the kids.",
+    tagline: "Cliff-top Pacific views. Malibu-rugged, four floors up. Cliff-edge pool over the ocean. Private beach. Bunk room for the kids.",
     specs: "4 BR + bunk · 4 BA · Sleeps 12",
     rating: 4.79,
     reviews: 293,
