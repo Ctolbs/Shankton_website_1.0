@@ -12,9 +12,10 @@ const SHANKTON_PROPERTIES = [
     tagline: "The only home in Gigante with its own sea shelf. Tide pools, snorkeling, and reef fishing — from your own platform.",
     specs: "3 BR · 3.5 BA · Sleeps 8",
     rating: 4.87,
-    reviews: 278,
+    reviews: 279,
     url: "harbour/",
     photos: [
+      "images/nica/harbour/pool-chairs-sunny.jpg",
       "images/nica/harbour/hero.jpg",
       "images/nica/harbour/pool.jpg",
       "images/nica/harbour/bedroom.jpg",
@@ -31,9 +32,10 @@ const SHANKTON_PROPERTIES = [
     tagline: "Cliff-top Pacific views. Malibu-rugged, four floors up. Infinity pool over the ocean. Private beach. Bunk room for the kids.",
     specs: "4 BR + bunk · 4 BA · Sleeps 12",
     rating: 4.79,
-    reviews: 290,
+    reviews: 293,
     url: "tower/",
     photos: [
+      "images/nica/tower/pool-cliff.jpg",
       "images/nica/tower/hero.jpg",
       "images/nica/tower/ocean-view.jpg",
       "images/nica/tower/deck.jpg",
@@ -50,7 +52,7 @@ const SHANKTON_PROPERTIES = [
     tagline: "Two private suites between the bay and the Pacific. Roof decks with 360° views. Fifty meters to sand. Walk to 2nd Street.",
     specs: "2 units · 2 Kings + sleeper · Sleeps 12",
     rating: 4.89,
-    reviews: 351,
+    reviews: 354,
     url: "peninsula/",
     photos: [
       "images/lgb/a/rooftop-full.jpg",
