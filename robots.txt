@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /_template/
 
 Sitemap: https://www.shankton.com/sitemap.xml

@@ -2,6 +2,17 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Inter:wght@400;500&display=swap');
 
+/* Visually-hidden (screen-reader / SEO only) */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 :root {
   --obsidian: #0B0F0E;
   --emerald:  #1A332F;
