@@ -53,7 +53,7 @@ const SHANKTON_PROPERTIES = [
     reviews: 351,
     url: "peninsula/",
     photos: [
-      "images/lgb/rooftop.jpg",
+      "images/lgb/a/rooftop-full.jpg",
       "images/lgb/living.jpg",
       "images/lgb/bedroom.jpg",
       "images/lgb/kitchen.jpg",
