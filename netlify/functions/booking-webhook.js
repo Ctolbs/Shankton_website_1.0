@@ -29,7 +29,7 @@ exports.handler = async (event) => {
 
   console.log(`Booking paid: ${email} · ${property_name} · ${checkin}→${checkout}`);
 
-  let res, result;
+  let res, result, reservationOk = false;
   try {
     res = await fetch('https://public.api.hospitable.com/v2/reservations', {
       method: 'POST',
@@ -62,30 +62,76 @@ exports.handler = async (event) => {
       }),
     });
     result = await res.json();
+    reservationOk = res.ok;
   } catch (err) {
     console.error('HOSPITABLE FETCH FAILED — manual action required');
-    console.error('Stripe session:', session.id, 'Guest:', email, 'Dates:', checkin, '→', checkout);
     console.error('Network error:', err.message);
-    return { statusCode: 200, body: 'OK' };
   }
 
-  if (!res.ok) {
+  if (reservationOk) {
+    console.log('Hospitable reservation created:', JSON.stringify(result));
+    // Guest confirmation only goes out once the reservation actually exists.
+    await sendConfirmationEmail({ first_name, last_name, email, property_name, checkin, checkout, nights, guests,
+      price_cents, cleaning_fee_cents, pet_fee_cents, tax_cents, session_id: session.id });
+  } else {
+    // Card was charged but no reservation was created. Do NOT send a "confirmed"
+    // email — alert ops to create the reservation manually and follow up with the guest.
     console.error('HOSPITABLE RESERVATION FAILED — manual action required');
     console.error('Stripe session:', session.id);
     console.error('Guest:', email, first_name, last_name);
     console.error('Dates:', checkin, '→', checkout, `(${nights} nights)`);
     console.error('Property:', property_id, property_name);
-    console.error('Hospitable error:', JSON.stringify(result));
-  } else {
-    console.log('Hospitable reservation created:', JSON.stringify(result));
+    console.error('Hospitable error:', JSON.stringify(result || {}));
+    await sendOpsAlert({ first_name, last_name, email, phone, property_name, property_id,
+      checkin, checkout, nights, guests, price_cents, cleaning_fee_cents, pet_fee_cents, tax_cents,
+      session_id: session.id, error: result });
   }
-
-  // Send guest confirmation email via Resend
-  await sendConfirmationEmail({ first_name, last_name, email, property_name, checkin, checkout, nights, guests,
-    price_cents, cleaning_fee_cents, pet_fee_cents, tax_cents, session_id: session.id });
 
   return { statusCode: 200, body: 'OK' };
 };
+
+// Charged-but-no-reservation alert to ops, so the team can create it manually.
+async function sendOpsAlert(d) {
+  const resendKey = process.env.RESEND_API_KEY;
+  if (!resendKey) { console.warn('RESEND_API_KEY not set — skipping ops alert'); return; }
+  const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const fmt = cents => '$' + (parseInt(cents || '0', 10) / 100).toFixed(2);
+  const total = parseInt(d.price_cents||0) + parseInt(d.cleaning_fee_cents||0) + parseInt(d.pet_fee_cents||0) + parseInt(d.tax_cents||0);
+  const ref = 'SH-' + (d.session_id || '').replace(/^cs_(test_|live_)/, '').slice(0, 8).toUpperCase();
+  const html = `<div style="font-family:Helvetica,Arial,sans-serif;font-size:14px;color:#222;line-height:1.6;">
+    <h2 style="color:#b94040;margin:0 0 8px;">⚠️ Paid booking — reservation NOT created</h2>
+    <p>A guest was <strong>charged via Stripe</strong> but the Hospitable reservation failed. Create it manually in Hospitable and confirm with the guest.</p>
+    <table cellpadding="4" style="border-collapse:collapse;">
+      <tr><td><strong>Booking ref</strong></td><td>${esc(ref)}</td></tr>
+      <tr><td><strong>Stripe session</strong></td><td>${esc(d.session_id)}</td></tr>
+      <tr><td><strong>Property</strong></td><td>${esc(d.property_name)} (${esc(d.property_id)})</td></tr>
+      <tr><td><strong>Guest</strong></td><td>${esc(d.first_name)} ${esc(d.last_name)}</td></tr>
+      <tr><td><strong>Email</strong></td><td>${esc(d.email)}</td></tr>
+      <tr><td><strong>Phone</strong></td><td>${esc(d.phone) || '—'}</td></tr>
+      <tr><td><strong>Dates</strong></td><td>${esc(d.checkin)} → ${esc(d.checkout)} (${esc(d.nights)} nights, ${esc(d.guests)} guests)</td></tr>
+      <tr><td><strong>Total charged</strong></td><td>${fmt(total)}</td></tr>
+    </table>
+    <p style="margin-top:12px;"><strong>Hospitable error:</strong></p>
+    <pre style="background:#f5f5f5;padding:10px;border-radius:4px;white-space:pre-wrap;font-size:12px;">${esc(JSON.stringify(d.error || {}, null, 2))}</pre>
+  </div>`;
+  try {
+    const r = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: 'Shankton Booking System <contact@shankton.com>',
+        to: 'contact@shankton.com',
+        reply_to: d.email,
+        subject: `⚠️ ACTION NEEDED — paid but no reservation · ${d.property_name} · ${d.checkin}`,
+        html,
+      }),
+    });
+    if (!r.ok) console.error('Ops alert Resend error:', r.status, await r.text());
+    else console.log('Ops alert sent for failed reservation', d.session_id);
+  } catch (err) {
+    console.error('Ops alert failed:', err.message);
+  }
+}
 
 async function sendConfirmationEmail(d) {
   const resendKey = process.env.RESEND_API_KEY;

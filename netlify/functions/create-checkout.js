@@ -18,6 +18,12 @@ exports.handler = async (event) => {
     return { statusCode: 400, body: JSON.stringify({ error: 'Missing required fields' }) };
   }
 
+  // Validate date format/order before they touch the calendar URL
+  const dateRe = /^\d{4}-\d{2}-\d{2}$/;
+  if (!dateRe.test(checkin) || !dateRe.test(checkout) || checkin >= checkout) {
+    return { statusCode: 400, body: JSON.stringify({ error: 'Invalid dates' }) };
+  }
+
   // Prevent open redirect — cancel_path must be a relative path on this site
   const safeCancelPath = (cancel_path && /^\/[^/]/.test(cancel_path)) ? cancel_path : '/';
 
