@@ -31,6 +31,11 @@ exports.handler = async (event) => {
   const guestCount = parseInt(guests, 10) || 1;
   const totalCents = parseInt(amount_cents, 10);
 
+  // Sanity-bound the admin-entered amount: $1 to $50,000
+  if (!Number.isInteger(totalCents) || totalCents < 100 || totalCents > 5000000) {
+    return { statusCode: 400, body: JSON.stringify({ error: 'Invalid amount' }) };
+  }
+
   let session;
   try {
     session = await stripe.checkout.sessions.create({

@@ -33,26 +33,46 @@ exports.handler = async (event) => {
     return { statusCode: 400, body: JSON.stringify({ error: 'Unknown property' }) };
   }
 
-  // Re-fetch authoritative nightly price from Hospitable — never trust the client
+  // Re-verify availability AND price server-side against Hospitable — never trust the client.
   const token = process.env.HOSPITABLE_TOKEN;
+  const headers = { Authorization: `Bearer ${token}`, Accept: 'application/json' };
+  const calUrl = id => `https://public.api.hospitable.com/v2/properties/${id}/calendar?start_date=${checkin}&end_date=${checkout}`;
   const pricingId = cfg.pricingPropertyId || property_id;
-  const calUrl = `https://public.api.hospitable.com/v2/properties/${pricingId}/calendar?start_date=${checkin}&end_date=${checkout}`;
 
   let priceCents;
   try {
-    const calRes = await fetch(calUrl, {
-      headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
-    });
-    if (!calRes.ok) throw new Error(`Calendar API ${calRes.status}`);
-    const calData = await calRes.json();
-    const days = (calData.data?.days || []).filter(d => d.date !== checkout);
-    if (days.length === 0) {
+    // Availability: always the actual property being booked
+    const availRes = await fetch(calUrl(property_id), { headers });
+    if (!availRes.ok) throw new Error(`Calendar API ${availRes.status}`);
+    const availData = await availRes.json();
+    const stayNights = (availData.data?.days || []).filter(d => d.date !== checkout);
+    if (stayNights.length === 0) {
       return { statusCode: 400, body: JSON.stringify({ error: 'Invalid date range' }) };
     }
-    priceCents = days.reduce((sum, d) => sum + d.price.amount, 0);
+
+    // Reject unavailable dates or below-minimum stays — mirrors check-availability
+    const isAvailable = d => d.status?.available ?? d.available ?? true;
+    const unavailableDay = stayNights.find(d => !isAvailable(d));
+    if (unavailableDay) {
+      return { statusCode: 409, body: JSON.stringify({ error: `${unavailableDay.date} is not available` }) };
+    }
+    const minStay = stayNights[0]?.min_stay || 1;
+    if (stayNights.length < minStay) {
+      return { statusCode: 409, body: JSON.stringify({ error: `Minimum stay is ${minStay} nights` }) };
+    }
+
+    // Price: from the pricing property (reuse the availability calendar when they're the same)
+    let priceDays = stayNights;
+    if (pricingId !== property_id) {
+      const priceRes = await fetch(calUrl(pricingId), { headers });
+      if (!priceRes.ok) throw new Error(`Pricing calendar ${priceRes.status}`);
+      const priceData = await priceRes.json();
+      priceDays = (priceData.data?.days || []).filter(d => d.date !== checkout);
+    }
+    priceCents = priceDays.reduce((sum, d) => sum + d.price.amount, 0);
   } catch (err) {
-    console.error('Price fetch error:', err.message);
-    return { statusCode: 502, body: JSON.stringify({ error: 'Could not verify pricing' }) };
+    console.error('Availability/price fetch error:', err.message);
+    return { statusCode: 502, body: JSON.stringify({ error: 'Could not verify availability' }) };
   }
 
   // Calculate all fees server-side
