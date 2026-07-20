@@ -203,7 +203,7 @@ async function sendPaymentEmail(d) {
     <p style="margin:0;font-size:12px;color:#aaa;line-height:2;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
       Shankton Properties · <a href="https://www.shankton.com" style="color:#aaa;text-decoration:none;">shankton.com</a> · <a href="https://www.shankton.com/terms.html" style="color:#aaa;text-decoration:none;">Terms &amp; Conditions</a><br>
       Questions? Email <a href="mailto:contact@shankton.com" style="color:#888;text-decoration:none;">contact@shankton.com</a><br>
-      Nicaragua: Nemer <a href="https://wa.me/50558112744" style="color:#888;text-decoration:none;">+505 5811 2744</a> (WhatsApp) &nbsp;·&nbsp; California: Jasmin <a href="tel:+17147376193" style="color:#888;text-decoration:none;">+1 714 737 6193</a>
+      Nicaragua: Nemer <a href="https://wa.me/50558112744" style="color:#888;text-decoration:none;">+505 5811 2744</a> (WhatsApp) &nbsp;·&nbsp; California: Jasmin <a href="tel:+18017598509" style="color:#888;text-decoration:none;">+1 801 759 8509</a>
     </p>
   </td></tr>
 
