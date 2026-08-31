@@ -420,6 +420,9 @@
                           : 0;
         const totalDollars = subtotal + taxDollars;
         const taxCents     = Math.round(taxDollars * 100);
+        // Airbnb adds a ~14% guest service fee on the pre-tax subtotal. Booking
+        // direct avoids it — surface the concrete saving at the point of intent.
+        const airbnbSaving = Math.round((data.price_dollars + cleaningDollars) * 0.14);
 
         status.textContent = '✓ Available — ' + data.nights + ' night' + (data.nights !== 1 ? 's' : '');
         status.className   = 'bc-status ok';
@@ -430,6 +433,7 @@
           ${petDollars ? `<div class="bc-price-row"><span>Pet fee</span><span>${fmt(petDollars)}</span></div>` : ''}
           ${taxDollars ? `<div class="bc-price-row"><span>${cfg.taxLabel || 'Taxes &amp; fees'}</span><span>${fmt(taxDollars)}</span></div><p class="bc-tax-note">Collected and remitted per local law</p>` : ''}
           <div class="bc-price-row total"><span>Total</span><span>${fmt(totalDollars)}</span></div>
+          ${airbnbSaving ? `<div class="bc-save-row">You save ~${fmt(airbnbSaving)} booking direct <span>vs Airbnb's ~14% service fee</span></div>` : ''}
           <p class="bc-cancel-note">Cancellations &amp; changes: <a href="mailto:contact@shankton.com">contact@shankton.com</a></p>
         `;
         $('bc-breakdown').style.display = 'block';

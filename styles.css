@@ -1427,8 +1427,9 @@ section { padding: 80px 0; }
 .booking-total-label { font-size: 14px; font-weight: 500; }
 .booking-total-amount { font-size: 16px; font-weight: 500; }
 .booking-note { font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 12px; line-height: 1.5; }
-.booking-airbnb { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(0,0,0,0.06); font-size: 12px; color: var(--text-muted); text-decoration: none; }
-.booking-airbnb:hover { color: var(--text-primary); }
+.booking-save { display: flex; align-items: flex-start; gap: 9px; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(0,0,0,0.06); font-size: 12px; line-height: 1.5; color: var(--text-muted); }
+.booking-save svg { flex-shrink: 0; margin-top: 1px; }
+.booking-save strong { color: var(--text-primary); font-weight: 600; }
 
 /* Specs grid */
 .specs-grid {
@@ -1895,6 +1896,24 @@ section { padding: 80px 0; }
   color: var(--text-muted, #888);
   margin: 2px 0 6px;
   padding: 0;
+}
+
+.bc-save-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 8px 10px;
+  background: rgba(47,107,79,0.09);
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #2f6b4f;
+}
+.bc-save-row span {
+  font-weight: 400;
+  font-size: 11px;
+  color: var(--text-muted, #888);
 }
 
 /* ── Focus styles ────────────────────────────────────────────────────────── */
