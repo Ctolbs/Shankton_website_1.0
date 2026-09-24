@@ -35,12 +35,12 @@ const SHANKTON_PROPERTIES = [
     reviews: 293,
     url: "tower/",
     photos: [
-      "images/nica/tower/pool-cliff.jpg",
+      "images/nica/tower/pool-infinity.jpg",
       "images/nica/tower/hero.jpg",
-      "images/nica/tower/ocean-view.jpg",
-      "images/nica/tower/deck.jpg",
-      "images/nica/tower/bedroom.png",
-      "images/nica/tower/kitchen.jpg",
+      "images/nica/tower/living-ocean-doors.jpg",
+      "images/nica/tower/exterior-cliff.jpg",
+      "images/nica/tower/bedroom.jpg",
+      "images/nica/tower/kitchen-island.jpg",
     ],
     gradient: "linear-gradient(160deg,#152B28 0%,#0a1210 100%)",
     status: "active"
