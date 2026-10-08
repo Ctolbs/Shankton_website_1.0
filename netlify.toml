@@ -8,6 +8,26 @@
 [build.environment]
   NODE_VERSION = "18"
 
+# Collapse index.html duplicates to clean canonical URLs (fixes GSC
+# "Alternate page with proper canonical tag")
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/:p1/index.html"
+  to = "/:p1/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/:p1/:p2/index.html"
+  to = "/:p1/:p2/"
+  status = 301
+  force = true
+
 [[redirects]]
   from = "/booking-success"
   to = "/booking-success.html"
