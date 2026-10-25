@@ -13,6 +13,9 @@ exports.handler = async (event) => {
   }
 
   const { property_id, checkin, checkout, guests, amount_cents, first_name, last_name, email, phone, note } = body;
+  // Payment for a stay already booked elsewhere (e.g. Booking.com) — the
+  // webhook must not create a second reservation in Hospitable.
+  const existingReservation = body.existing_reservation === true;
 
   if (!property_id || !checkin || !checkout || !email || !first_name || !last_name || !amount_cents) {
     return { statusCode: 400, body: JSON.stringify({ error: 'Missing required fields' }) };
@@ -65,6 +68,7 @@ exports.handler = async (event) => {
         email,
         phone:              phone || '',
         nights:             String(nights),
+        payment_type:       existingReservation ? 'existing_reservation' : 'new_booking',
         price_cents:        String(totalCents),
         cleaning_fee_cents: '0',
         pet_fee_cents:      '0',
@@ -86,6 +90,7 @@ exports.handler = async (event) => {
       amount_cents: totalCents,
       note,
       payment_url: session.url,
+      existing_reservation: existingReservation,
     });
   }
 
@@ -141,7 +146,7 @@ async function sendPaymentEmail(d) {
       <img src="https://www.shankton.com/logo-preview.svg" alt="Shankton Properties" width="120" style="display:block;width:120px;height:auto;">
     </a>
     <h1 style="margin:0 0 6px;color:#f5f1e8;font-size:28px;font-weight:700;letter-spacing:-0.5px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${d.property_name}</h1>
-    <p style="margin:0;color:rgba(245,241,232,0.7);font-size:16px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Your reservation is ready — complete payment to confirm.</p>
+    <p style="margin:0;color:rgba(245,241,232,0.7);font-size:16px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${d.existing_reservation ? 'Secure card payment for your upcoming stay.' : 'Your reservation is ready — complete payment to confirm.'}</p>
   </td></tr>
 
   <tr><td style="background:#ffffff;padding:32px 40px 0;">
@@ -153,7 +158,7 @@ async function sendPaymentEmail(d) {
           <p style="margin:0 0 8px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#999;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Check-in</p>
           <p style="margin:0;font-size:36px;font-weight:800;color:#1A332F;line-height:1;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${ci.day}</p>
           <p style="margin:6px 0 0;font-size:13px;color:#666;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${ci.weekday} · ${ci.month} ${ci.year}</p>
-          <p style="margin:4px 0 0;font-size:12px;color:#aaa;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">After 4:00 PM</p>
+          <p style="margin:4px 0 0;font-size:12px;color:#aaa;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">After 3:00 PM</p>
         </td>
         <td width="6%" align="center" style="color:#ccc;font-size:18px;vertical-align:middle;">→</td>
         <td width="47%" style="background:#f5f1e8;border-radius:4px;padding:22px 20px 18px;border-top:3px solid #c8c4bc;">
@@ -196,7 +201,7 @@ async function sendPaymentEmail(d) {
 
   <tr><td style="background:#1A332F;padding:28px 40px;">
     <p style="margin:0 0 6px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,241,232,0.4);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">After payment</p>
-    <p style="margin:0;font-size:13px;color:rgba(245,241,232,0.7);line-height:1.7;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">You'll receive a booking confirmation email instantly. Check-in instructions arrive 48 hours before your stay.</p>
+    <p style="margin:0;font-size:13px;color:rgba(245,241,232,0.7);line-height:1.7;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${d.existing_reservation ? 'Your reservation is already confirmed — this simply settles your balance. Check-in instructions arrive before your stay.' : 'You\'ll receive a booking confirmation email instantly. Check-in instructions arrive before your stay.'}</p>
   </td></tr>
 
   <tr><td style="background:#f0ede5;border-radius:0 0 6px 6px;padding:24px 40px;">
@@ -219,7 +224,9 @@ async function sendPaymentEmail(d) {
         from:     'Shankton Properties <contact@shankton.com>',
         to:       `${d.first_name} ${d.last_name} <${d.email}>`,
         reply_to: 'contact@shankton.com',
-        subject:  `Your reservation · ${d.property_name} · Complete payment to confirm`,
+        subject:  d.existing_reservation
+          ? `Payment for your stay · ${d.property_name}`
+          : `Your reservation · ${d.property_name} · Complete payment to confirm`,
         html,
       }),
     });

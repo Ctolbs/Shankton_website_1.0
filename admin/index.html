@@ -408,6 +408,16 @@
           <p class="hint">All-in total — includes cleaning, tax, everything.</p>
         </div>
       </div>
+
+      <div class="form-row full">
+        <div class="field">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+            <input type="checkbox" id="existing_reservation" style="width:auto;margin:0;">
+            Already booked on Booking.com / another platform
+          </label>
+          <p class="hint">Collects payment only — does not create a new reservation in Hospitable.</p>
+        </div>
+      </div>
     </div>
 
     <!-- Guest info -->
@@ -543,6 +553,7 @@
       email:       document.getElementById('email').value.trim().toLowerCase(),
       phone:       document.getElementById('phone').value.trim(),
       note:        document.getElementById('note').value.trim(),
+      existing_reservation: document.getElementById('existing_reservation').checked,
     };
 
     const btn = document.getElementById('submit-btn');

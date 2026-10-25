@@ -29,6 +29,14 @@ exports.handler = async (event) => {
 
   console.log(`Booking paid: ${email} · ${property_name} · ${checkin}→${checkout}`);
 
+  // Pay link for a stay already booked on another channel: the reservation
+  // exists, so just tell ops the money arrived.
+  if (session.metadata.payment_type === 'existing_reservation') {
+    await sendPaymentReceivedNotice({ first_name, last_name, email, property_name, checkin, checkout, nights, guests,
+      price_cents, session_id: session.id });
+    return { statusCode: 200, body: 'OK' };
+  }
+
   let res, result, reservationOk = false;
   try {
     res = await fetch('https://public.api.hospitable.com/v2/reservations', {
@@ -89,6 +97,42 @@ exports.handler = async (event) => {
 
   return { statusCode: 200, body: 'OK' };
 };
+
+// Paid-for-existing-reservation notice to ops (no Hospitable action needed).
+async function sendPaymentReceivedNotice(d) {
+  const resendKey = process.env.RESEND_API_KEY;
+  if (!resendKey) { console.warn('RESEND_API_KEY not set — skipping payment notice'); return; }
+  const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const fmt = cents => '$' + (parseInt(cents || '0', 10) / 100).toFixed(2);
+  const html = `<div style="font-family:Helvetica,Arial,sans-serif;font-size:14px;color:#222;line-height:1.6;">
+    <h2 style="color:#1A332F;margin:0 0 8px;">✅ Payment received — existing reservation</h2>
+    <p>A guest paid by card for a stay already booked on another platform. No new reservation was created — mark it paid on that booking.</p>
+    <table cellpadding="4" style="border-collapse:collapse;">
+      <tr><td><strong>Stripe session</strong></td><td>${esc(d.session_id)}</td></tr>
+      <tr><td><strong>Property</strong></td><td>${esc(d.property_name)}</td></tr>
+      <tr><td><strong>Guest</strong></td><td>${esc(d.first_name)} ${esc(d.last_name)} (${esc(d.email)})</td></tr>
+      <tr><td><strong>Dates</strong></td><td>${esc(d.checkin)} → ${esc(d.checkout)} (${esc(d.nights)} nights, ${esc(d.guests)} guests)</td></tr>
+      <tr><td><strong>Amount paid</strong></td><td>${fmt(d.price_cents)}</td></tr>
+    </table>
+  </div>`;
+  try {
+    const r = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: 'Shankton Booking System <contact@shankton.com>',
+        to: 'contact@shankton.com',
+        reply_to: d.email,
+        subject: `Payment received · ${d.property_name} · ${d.checkin} · ${fmt(d.price_cents)}`,
+        html,
+      }),
+    });
+    if (!r.ok) console.error('Payment notice Resend error:', r.status, await r.text());
+    else console.log('Payment notice sent', d.session_id);
+  } catch (err) {
+    console.error('Payment notice failed:', err.message);
+  }
+}
 
 // Charged-but-no-reservation alert to ops, so the team can create it manually.
 async function sendOpsAlert(d) {
@@ -197,7 +241,7 @@ async function sendConfirmationEmail(d) {
           <p style="margin:0 0 8px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#999;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Check-in</p>
           <p style="margin:0;font-size:36px;font-weight:800;color:#1A332F;line-height:1;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${ci.day}</p>
           <p style="margin:6px 0 0;font-size:13px;color:#666;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">${ci.weekday} · ${ci.month} ${ci.year}</p>
-          <p style="margin:4px 0 0;font-size:12px;color:#aaa;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">After 4:00 PM</p>
+          <p style="margin:4px 0 0;font-size:12px;color:#aaa;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">After 3:00 PM</p>
         </td>
         <td width="6%" align="center" style="color:#ccc;font-size:18px;vertical-align:middle;">→</td>
         <td width="47%" style="background:#f5f1e8;border-radius:4px;padding:22px 20px 18px;border-top:3px solid #c8c4bc;">
@@ -221,7 +265,7 @@ async function sendConfirmationEmail(d) {
         </td>
         <td align="center" style="padding:16px 12px;">
           <p style="margin:0 0 3px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#bbb;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Check-in time</p>
-          <p style="margin:0;font-size:20px;font-weight:700;color:#1A332F;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">4:00 PM</p>
+          <p style="margin:0;font-size:20px;font-weight:700;color:#1A332F;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">3:00 PM</p>
         </td>
       </tr>
     </table>
@@ -262,7 +306,7 @@ async function sendConfirmationEmail(d) {
           <table cellpadding="0" cellspacing="0" border="0"><tr><td style="width:32px;height:32px;background:rgba(255,255,255,0.1);border-radius:50%;text-align:center;vertical-align:middle;font-size:12px;font-weight:700;color:#f5f1e8;font-family:'Helvetice Neue',Helvetica,Arial,sans-serif;line-height:32px;">2</td></tr></table>
         </td>
         <td valign="top" style="padding-bottom:22px;">
-          <p style="margin:0 0 3px;font-size:14px;font-weight:600;color:#f5f1e8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Self check-in from 4:00 PM</p>
+          <p style="margin:0 0 3px;font-size:14px;font-weight:600;color:#f5f1e8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Self check-in from 3:00 PM</p>
           <p style="margin:0;font-size:13px;color:rgba(245,241,232,0.6);line-height:1.6;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">No need to meet anyone — arrive at your own pace.</p>
         </td>
       </tr>
