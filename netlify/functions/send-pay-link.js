@@ -55,7 +55,7 @@ exports.handler = async (event) => {
         quantity: 1,
       }],
       mode: 'payment',
-      success_url: `${siteUrl}/booking-success.html?session_id={CHECKOUT_SESSION_ID}&property=${encodeURIComponent(cfg.name)}&checkin=${checkin}&checkout=${checkout}&nights=${nights}&guests=${guestCount}`,
+      success_url: `${siteUrl}/booking-success.html?session_id={CHECKOUT_SESSION_ID}&property=${encodeURIComponent(cfg.name)}&checkin=${checkin}&checkout=${checkout}&nights=${nights}&guests=${guestCount}${existingReservation ? '&type=payment' : ''}`,
       cancel_url: `${siteUrl}/`,
       metadata: {
         property_id,

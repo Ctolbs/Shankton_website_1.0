@@ -542,6 +542,8 @@
         if (!priceEl) return;
         const sub = priceEl.querySelector('span');
         priceEl.childNodes[0].textContent = 'From $' + Math.round(data.floor_dollars).toLocaleString('en-US') + ' ';
+        const mobEl = document.querySelector('.mob-book-bar-amount');
+        if (mobEl) mobEl.textContent = 'From $' + Math.round(data.floor_dollars).toLocaleString('en-US');
         if (!sub) priceEl.appendChild(Object.assign(document.createElement('span'), {
           style: 'font-size:16px;color:var(--text-muted);font-family:\'Inter\',sans-serif;font-weight:400;',
           textContent: '/ night',

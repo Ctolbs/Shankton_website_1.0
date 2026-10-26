@@ -1,0 +1,32 @@
+name: Update review counts
+
+on:
+  schedule:
+    - cron: "17 10 * * *"   # daily, ~3 AM Pacific
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-reviews
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Refresh ratings from Airbnb (+ five-star % from Hospitable)
+        env:
+          HOSPITABLE_TOKEN: ${{ secrets.HOSPITABLE_TOKEN }}
+        run: python3 -I scripts/update-reviews.py
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet; then echo "No changes"; exit 0; fi
+          git config user.name  "shankton-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git commit -am "Update review counts from Airbnb"
+          git push

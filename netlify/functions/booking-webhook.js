@@ -297,7 +297,7 @@ async function sendConfirmationEmail(d) {
           <table cellpadding="0" cellspacing="0" border="0"><tr><td style="width:32px;height:32px;background:rgba(255,255,255,0.1);border-radius:50%;text-align:center;vertical-align:middle;font-size:12px;font-weight:700;color:#f5f1e8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:32px;">1</td></tr></table>
         </td>
         <td valign="top" style="padding-bottom:22px;">
-          <p style="margin:0 0 3px;font-size:14px;font-weight:600;color:#f5f1e8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">48 hours before arrival</p>
+          <p style="margin:0 0 3px;font-size:14px;font-weight:600;color:#f5f1e8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">a few days before arrival</p>
           <p style="margin:0;font-size:13px;color:rgba(245,241,232,0.6);line-height:1.6;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">You'll receive a separate email at this address with your door code, WiFi password, parking details, and full check-in instructions. Check your spam folder if you don't see it.</p>
         </td>
       </tr>
