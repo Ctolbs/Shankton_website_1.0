@@ -34,6 +34,7 @@ exports.handler = async (event) => {
   if (session.metadata.payment_type === 'existing_reservation') {
     await sendPaymentReceivedNotice({ first_name, last_name, email, property_name, checkin, checkout, nights, guests,
       price_cents, session_id: session.id });
+    await notifyPlaya({ first_name, last_name, property_name, checkin, checkout, amount_cents: session.amount_total || price_cents });
     return { statusCode: 200, body: 'OK' };
   }
 
@@ -358,5 +359,24 @@ async function sendConfirmationEmail(d) {
     }
   } catch (err) {
     console.error('Confirmation email failed:', err.message);
+  }
+}
+
+
+// Tell Playa (team WhatsApp agent) the guest paid, so it can post it in the team group. Best effort.
+async function notifyPlaya(d) {
+  if (!process.env.PLAYA_PAYLINK_KEY) return;
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), 5000);
+  try {
+    await fetch('https://shankton-playa.fly.dev/hooks/paid', {
+      method: 'POST', signal: ctrl.signal,
+      headers: { 'Content-Type': 'application/json', 'X-Playa-Key': process.env.PLAYA_PAYLINK_KEY },
+      body: JSON.stringify(d),
+    });
+  } catch (err) {
+    console.error('Playa notify failed:', err.message);
+  } finally {
+    clearTimeout(t);
   }
 }
