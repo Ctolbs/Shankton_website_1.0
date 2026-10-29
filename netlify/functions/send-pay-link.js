@@ -223,6 +223,7 @@ async function sendPaymentEmail(d) {
       body: JSON.stringify({
         from:     'Shankton Properties <contact@shankton.com>',
         to:       `${d.first_name} ${d.last_name} <${d.email}>`,
+        bcc:      'contact@shankton.com', // owner copy of every pay link (Nemer sends these too)
         reply_to: 'contact@shankton.com',
         subject:  d.existing_reservation
           ? `Payment for your stay · ${d.property_name}`
