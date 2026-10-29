@@ -8,7 +8,15 @@ exports.handler = async (event) => {
   try { body = JSON.parse(event.body); }
   catch { return { statusCode: 400, body: JSON.stringify({ error: 'Invalid JSON' }) }; }
 
-  if (!process.env.ADMIN_PASSWORD || body.password !== process.env.ADMIN_PASSWORD) {
+  // Two ways in: the admin form's password, or Playa's server key (Playa sends links for Nemer
+  // with the exact Hospitable total, so nobody else needs the password).
+  const same = (a, b) => {
+    const x = Buffer.from(String(a || '')), y = Buffer.from(String(b || ''));
+    return x.length > 0 && x.length === y.length && require('crypto').timingSafeEqual(x, y);
+  };
+  const passwordOk = process.env.ADMIN_PASSWORD && same(body.password, process.env.ADMIN_PASSWORD);
+  const playaOk = process.env.PLAYA_PAYLINK_KEY && same(event.headers['x-playa-key'], process.env.PLAYA_PAYLINK_KEY);
+  if (!passwordOk && !playaOk) {
     return { statusCode: 401, body: JSON.stringify({ error: 'Unauthorized' }) };
   }
 
