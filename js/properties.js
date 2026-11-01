@@ -12,7 +12,7 @@ const SHANKTON_PROPERTIES = [
     tagline: "The only home in Gigante with its own sea shelf. Tide pools, snorkeling, and reef fishing — from your own platform.",
     specs: "3 BR · 3.5 BA · Sleeps 8",
     rating: 4.85,
-    reviews: 290,
+    reviews: 291,
     url: "harbour/",
     photos: [
       "images/nica/harbour/pool-chairs-sunny.jpg",
