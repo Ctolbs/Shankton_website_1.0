@@ -411,9 +411,9 @@
       'Self check-in at 3:00 PM. Nemer is on-site and available on WhatsApp for anything you need.';
   } else if (isPenin) {
     document.getElementById('conf-step3').textContent =
-      'Jasmin will send check-in instructions a few days before arrival, including door code and parking details.';
+      'We'll send check-in instructions a few days before arrival, including door code and parking details.';
     document.getElementById('conf-step4').textContent =
-      'Self check-in at 3:00 PM. Jasmin is available by email and phone if anything comes up.';
+      'Self check-in at 3:00 PM. We're available by message and email if anything comes up.';
   }
 
   // Payment for an existing reservation (admin pay link) — no new booking was made
@@ -441,10 +441,10 @@
       </a>
       <a class="btn-email-contact" href="mailto:contact@shankton.com">contact@shankton.com</a>`;
   } else if (isPenin) {
-    nameEl.textContent = 'Jasmin';
+    nameEl.textContent = 'Clifton';
     roleEl.textContent = 'Host · Long Beach, CA';
     btnsEl.innerHTML = `
-      <a class="btn-email-contact" href="mailto:contact@shankton.com?subject=My%20booking%20—%20${encodeURIComponent(property)}">Email Jasmin</a>`;
+      <a class="btn-email-contact" href="mailto:contact@shankton.com?subject=My%20booking%20—%20${encodeURIComponent(property)}">Email us</a>`;
   } else {
     document.getElementById('conf-contact-block').style.display = 'none';
   }
