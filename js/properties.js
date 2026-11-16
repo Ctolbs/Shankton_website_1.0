@@ -52,7 +52,7 @@ const SHANKTON_PROPERTIES = [
     tagline: "Two private suites between the bay and the Pacific. Roof decks with 360° views. Fifty meters to sand. Walk to 2nd Street.",
     specs: "2 units · 2 Kings + sleeper · Sleeps 12",
     rating: 4.88,
-    reviews: 365,
+    reviews: 366,
     url: "peninsula/",
     photos: [
       "images/lgb/a/rooftop-full.jpg",
